@@ -4,9 +4,9 @@ const dontenv = require("dotenv");
 dontenv.config();
 
 
-const DATABASE = process.env.MYSQL_DATABASE || "securegest_db";
-const USERNAME = process.env.MYSQL_USER || "root";
-const PASSWORD = process.env.MYSQL_PASSWORD || "";
+const DATABASE = process.env.MYSQL_DATABASE || "u102941870_securegest_db";
+const USERNAME = process.env.MYSQL_USER || "u102941870_securegest";
+const PASSWORD = process.env.MYSQL_PASSWORD || "ny@oRW!c8xV/";
 const CONFIG = {
   dialect: "mysql",
   port: process.env.MYSQL_PORT || "3306",
