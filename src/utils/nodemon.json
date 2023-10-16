@@ -1,0 +1,12 @@
+{
+    "env": {
+        "MYSQL_USER": "root",
+        "MYSQL_PASSWORD": "",
+        "MYSQL_DATABASE": "securegest_db",
+        "MYSQL_HOST": "localhost",
+        "MYSQL_PORT": 3306,
+        "JWT_KEY": "whoami"
+    }
+}
+
+// Created by António Baptista #(24/08/2023)
