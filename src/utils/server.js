@@ -1,8 +1,6 @@
 // Importando o módulo 'app'
 const app = require('../app');
 
-const app = require('../app');
-
 // Criacao do Server para o APP
 const server = http.createServer(app);
 // Porta para o Server escutar
