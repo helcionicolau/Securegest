@@ -2,6 +2,12 @@ const Sequelize = require("sequelize");
 const dotenv = require("dotenv");
 dotenv.config();
 
+const User = require("../models/user/User");
+
+// Defina os modelos
+const UserModel = User(sequelize);
+
+
 // Obtendo informações do banco de dados a partir de variáveis de ambiente
 const DATABASE = process.env.MYSQL_DATABASE || "u102941870_securegest_db";
 const USERNAME = process.env.MYSQL_USER || "u102941870_securegest";
