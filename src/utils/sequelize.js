@@ -1,24 +1,30 @@
-const Sequelize = require("sequelize");
+const { Sequelize } = require("sequelize");
 const dotenv = require("dotenv");
 dotenv.config();
 
-
 // Obtendo informações do banco de dados a partir de variáveis de ambiente
-const DATABASE = process.env.MYSQL_DATABASE || "u102941870_securegest_db";
-const USERNAME = process.env.MYSQL_USER || "u102941870_securegest";
-const PASSWORD = process.env.MYSQL_PASSWORD || "ny@oRW!c8xV/";
-const PORT = process.env.MYSQL_PORT || "3306";
-const HOST = process.env.MYSQL_HOST || "localhost";
+const {
+  MYSQL_DATABASE,
+  MYSQL_USER,
+  MYSQL_PASSWORD,
+  MYSQL_PORT,
+  MYSQL_HOST,
+} = process.env;
 
-const sequelize = new Sequelize(DATABASE, USERNAME, PASSWORD, {
+// Configuração da instância do Sequelize
+const sequelize = new Sequelize({
   dialect: "mysql",
-  host: HOST,
-  port: PORT,
+  host: MYSQL_HOST || "localhost",
+  port: MYSQL_PORT || 3306,
+  username: MYSQL_USER || "u102941870_securegest",
+  password: MYSQL_PASSWORD || "ny@oRW!c8xV/",
+  database: MYSQL_DATABASE || "u102941870_securegest_db",
   define: {
     timestamps: false,
   },
 });
 
+// Função para autenticar a conexão com o banco de dados
 async function conexaoautenticacao() {
   try {
     await sequelize.authenticate();
@@ -28,5 +34,5 @@ async function conexaoautenticacao() {
   }
 }
 
-// Exporte o objeto Sequelize configurado e a função de autenticação
+// Exporte a instância do Sequelize configurada e a função de autenticação
 module.exports = { sequelize, conexaoautenticacao };
