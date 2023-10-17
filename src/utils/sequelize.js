@@ -5,7 +5,7 @@ dotenv.config();
 const User = require("../models/user/User");
 
 // Defina os modelos
-const UserModel = User(sequelize);
+const UserModel = User(Sequelize);
 
 
 // Obtendo informações do banco de dados a partir de variáveis de ambiente
