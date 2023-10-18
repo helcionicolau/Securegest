@@ -14,11 +14,11 @@ const {
 // Configuração da instância do Sequelize
 const sequelize = new Sequelize({
   dialect: "mysql",
-  host: MYSQL_HOST || "localhost",
+  host: MYSQL_HOST || "mysql-securegestdb.alwaysdata.net",
   port: MYSQL_PORT || 3306,
-  username: MYSQL_USER || "u102941870_securegest",
-  password: MYSQL_PASSWORD || "ny@oRW!c8xV/",
-  database: MYSQL_DATABASE || "u102941870_securegest_db",
+  username: MYSQL_USER || "331882_sec",
+  password: MYSQL_PASSWORD || "kjdhi%%"##$",
+  database: MYSQL_DATABASE || "securegestdb_master",
   define: {
     timestamps: false,
   },
