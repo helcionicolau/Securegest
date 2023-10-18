@@ -17,7 +17,7 @@ const sequelize = new Sequelize({
   host: MYSQL_HOST || "mysql-securegestdb.alwaysdata.net",
   port: MYSQL_PORT || 3306,
   username: MYSQL_USER || "331882_sec",
-  password: MYSQL_PASSWORD || 'kjdhi%%"##$',
+  password: MYSQL_PASSWORD || "kjdhi%%##$",
   database: MYSQL_DATABASE || "securegestdb_master",
   define: {
     timestamps: false,
