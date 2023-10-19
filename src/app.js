@@ -55,7 +55,7 @@ app.use((err, req, res, next) => {
 dontenv.config();
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}\n// Created by António Baptista #(24/08/2023)`);
+  console.log(`Servidor rodando em http://mysql-securegestdb.alwaysdata.net:${port}\n// Created by António Baptista #(24/08/2023)`);
 })
 
 // module.exports = app;
