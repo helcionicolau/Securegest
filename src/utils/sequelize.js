@@ -4,13 +4,13 @@ const dontenv = require("dotenv");
 dontenv.config();
 
 
-const DATABASE = process.env.MYSQL_DATABASE || "securegest_db";
-const USERNAME = process.env.MYSQL_USER || "root";
-const PASSWORD = process.env.MYSQL_PASSWORD || "";
+const DATABASE = process.env.MYSQL_DATABASE || "securegestdb_master";
+const USERNAME = process.env.MYSQL_USER || "331882_sec";
+const PASSWORD = process.env.MYSQL_PASSWORD || "kjdhi%%##$";
 const CONFIG = {
   dialect: "mysql",
   port: process.env.MYSQL_PORT || "3306",
-  host: process.env.MYSQL_HOST || "localhost",
+  host: process.env.MYSQL_HOST || "mysql-securegestdb.alwaysdata.net",
   define: {
     timestamps: false,
   }
