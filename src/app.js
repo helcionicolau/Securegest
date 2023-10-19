@@ -17,7 +17,9 @@ app.use(bodyParser.json()); // Formato JSON
 app.use(cors());
 
 // Usar as rotas definidas no arquivo index.js
-app.use('/', routes);
+app.use(
+  express.json(), routes, express.urlencoded({ extended: false })
+);
 
 // Monitora toda a execução
 app.use(morgan('dev'));
@@ -26,23 +28,18 @@ app.use(morgan('dev'));
 // Servidores acessíveis para a API, nesse caso @Todos 
 // Métodos que serão manipulados por esse servidor que vai acessar a API
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); // Todos os endereços de servidores
-    res.header('Access-Control-Allow-Headers',
+  res.header('Access-Control-Allow-Origin', '*'); // Todos os endereços de servidores
+  res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
-    if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
-        return res.status(200).send({});
-    }
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+    return res.status(200).send({});
+  }
 
-    next();
+  next();
 });
 
-dontenv.config();
-const port = process.env.PORT || 8080;
-app.listen(port, ()=>{
-    console.log(`Servidor rodando na porta: ${port}`);
-})
 
 // Lidar com rotas não encontradas (404)
 app.use((req, res, next) => {
@@ -55,7 +52,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Erro interno do servidor' });
 });
 
-
+dontenv.config();
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}\n// Created by António Baptista #(24/08/2023)`);
+})
 
 // module.exports = app;
 

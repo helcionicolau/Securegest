@@ -1,98 +1,97 @@
-const Departamento = require('../../../models/rh/departments/Department');
+const {departamentsModel} = require('../../../models/index');
 
-exports.registerDepartamento = async (req, res) => {
-  const { nome, descricao } = req.body;
+module.exports = {
+  async registerDepartamento(req, res) {
+    const { nome, descricao } = req.body;
 
-  try {
-    const newDepartamento = await Departamento.create({
-      nome,
-      descricao
-    });
+    try {
+      const newDepartamento = await departamentsModel.create({
+        nome,
+        descricao
+      });
 
-    res.status(201).json({ message: 'Departamento registrado com sucesso!' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao registrar departamento' });
-  }
-};
-
-exports.getAllDepartamentos = async (req, res) => {
-  try {
-    const departamentos = await Departamento.findAll();
-    res.json(departamentos);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao buscar departamentos' });
-  }
-};
-
-exports.getTotalDepartamentos = async (req, res) => {
-  try {
-    // Obtém o número total de departamentos usando a função count do Sequelize
-    const totalDepartamentos = await Departamento.count();
-    
-    res.json( totalDepartamentos );
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao buscar o número total de departamentos' });
-  }
-};
-
-exports.getDepartamentoById = async (req, res) => {
-  const departamentoId = req.params.departamentoId; // ID do departamento a ser buscado
-
-  try {
-    const departamento = await Departamento.findByPk(departamentoId);
-    if (!departamento) {
-      return res.status(404).json({ error: 'Departamento não encontrado' });
+      res.status(201).json({ message: 'Departamento registrado com sucesso!' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao registrar departamento' });
     }
-    res.json(departamento);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao buscar departamento por ID' });
-  }
-};
+  },
 
-exports.updateDepartamento = async (req, res) => {
-  const departamentoId = req.params.departamentoId; // ID do departamento a ser atualizado
-  const { nome, descricao } = req.body;
-
-  try {
-    const departamento = await Departamento.findByPk(departamentoId);
-    if (!departamento) {
-      return res.status(404).json({ error: 'Departamento não encontrado' });
+  async getAllDepartamentos(req, res) {
+    try {
+      const departamentos = await departamentsModel.findAll();
+      res.json(departamentos);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar departamentos' });
     }
+  },
 
-    // Atualiza apenas os campos fornecidos na requisição
-    Object.assign(departamento, {
-      nome,
-      descricao
-    });
-
-    await departamento.save();
-
-    res.json({ message: 'Departamento atualizado com sucesso' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao atualizar departamento' });
-  }
-};
-
-exports.deleteDepartamento = async (req, res) => {
-  const departamentoId = req.params.departamentoId; // ID do departamento a ser excluído
-
-  try {
-    const departamento = await Departamento.findByPk(departamentoId);
-    if (!departamento) {
-      return res.status(404).json({ error: 'Departamento não encontrado' });
+  async getTotalDepartamentos(req, res) {
+    try {
+      const totalDepartamentos = await departamentsModel.count();
+      res.json(totalDepartamentos);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar o número total de departamentos' });
     }
+  },
 
-    await departamento.destroy();
+  async getDepartamentoById(req, res) {
+    const departamentoId = req.params.departamentoId;
 
-    res.json({ message: 'Departamento excluído com sucesso' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao excluir departamento' });
+    try {
+      const departamento = await departamentsModel.findByPk(departamentoId);
+      if (!departamento) {
+        return res.status(404).json({ error: 'Departamento não encontrado' });
+      }
+      res.json(departamento);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar departamento por ID' });
+    }
+  },
+
+  async updateDepartamento(req, res) {
+    const departamentoId = req.params.departamentoId;
+    const { nome, descricao } = req.body;
+
+    try {
+      const departamento = await departamentsModel.findByPk(departamentoId);
+      if (!departamento) {
+        return res.status(404).json({ error: 'Departamento não encontrado' });
+      }
+
+      Object.assign(departamento, {
+        nome,
+        descricao
+      });
+
+      await departamento.save();
+
+      res.json({ message: 'Departamento atualizado com sucesso' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao atualizar departamento' });
+    }
+  },
+
+  async deleteDepartamento(req, res) {
+    const departamentoId = req.params.departamentoId;
+
+    try {
+      const departamento = await departamentsModel.findByPk(departamentoId);
+      if (!departamento) {
+        return res.status(404).json({ error: 'Departamento não encontrado' });
+      }
+
+      await departamento.destroy();
+
+      res.json({ message: 'Departamento excluído com sucesso' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao excluir departamento' });
+    }
   }
 };
 

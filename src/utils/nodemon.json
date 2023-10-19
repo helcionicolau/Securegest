@@ -1,8 +1,8 @@
 {
     "env": {
-        "MYSQL_USER": "331882_sec",
-        "MYSQL_PASSWORD": "kjdhi%%##$",
-        "MYSQL_DATABASE": "securegestdb_master",
+        "MYSQL_USER": "root",
+        "MYSQL_PASSWORD": "",
+        "MYSQL_DATABASE": "securegest_db",
         "MYSQL_HOST": "localhost",
         "MYSQL_PORT": 3306,
         "JWT_KEY": "whoami"
