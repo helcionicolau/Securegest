@@ -1,9 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dontenv = require("dotenv");
 const morgan = require('morgan');
 const routes = require('./routes');
+const db = require("./utils/sequelize");
 const app = express();
+
+db.conexaoautenticao();
 
 // Middleware para processar dados do corpo das requisições
 app.use(bodyParser.urlencoded({ extended: false })); // Dados simples
@@ -34,6 +38,12 @@ app.use((req, res, next) => {
     next();
 });
 
+dontenv.config();
+const port = process.env.PORT || 8080;
+app.listen(port, ()=>{
+    console.log(`Servidor rodando na porta: ${port}`);
+})
+
 // Lidar com rotas não encontradas (404)
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Rota não encontrada' });
@@ -45,6 +55,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Erro interno do servidor' });
 });
 
-module.exports = app;
+
+
+// module.exports = app;
 
 // Created by António Baptista #(24/08/2023)
