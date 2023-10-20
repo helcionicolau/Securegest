@@ -20,16 +20,16 @@ let db = {};
 try {
     db = new sequelize(database,username,db_password,db_config);
 } catch (error) {
-    console.error("Erro  1na sua conexao com a Base de dado" + error);
+    console.error("Erro na conexão com a base de dados..." + error);
 }
 
 async function conexaoautenticao(){
 
     try {
         await db.authenticate();
-        console.log("conectado no banco de dado com sucesso...");
+        console.log("Conectado ao banco de dados...");
     } catch (error) {
-        console.error("Erro na sua conexão com a Base de dado " + error);
+        console.error("Erro na sua conexão com a Base de dado." + error);
     }
 }
 
