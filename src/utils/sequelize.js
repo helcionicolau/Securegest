@@ -30,7 +30,7 @@ async function conexaoautenticao() {
     await db.authenticate();
     console.log("Conectado com sucesso ao banco de dados...");
   } catch (error) {
-    console.error("Erro na conxeão com o banco de dados." + error);
+    console.error("Erro na conexão com o banco de dados." + error);
   }
 }
 
