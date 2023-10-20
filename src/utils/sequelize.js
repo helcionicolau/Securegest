@@ -1,43 +1,41 @@
 const sequelize = require("sequelize");
 
 const dontenv = require("dotenv");
+
 dontenv.config();
 
 
-const DATABASE = process.env.MYSQL_DATABASE || "securegestdb_master";
-const USERNAME = process.env.MYSQL_USER || "331882_sec";
-const PASSWORD = process.env.MYSQL_PASSWORD || "kjdhi%%##$";
-const CONFIG = {
-  dialect: "mysql",
-  port: process.env.MYSQL_PORT || "3306",
-  host: process.env.MYSQL_HOST || "mysql-securegestdb.alwaysdata.net",
-  define: {
-    timestamps: false,
-  }
+const database = 'securegestdb_master';
+const username = '331882_sec';
+const db_password = 'kjdhi%%##$' ;
+const db_config = {
+    dialect: "mysql", port: "3306", host: 'mysql-securegestdb.alwaysdata.net',
+    define: { 
+        timestamps: false,
+    }
 }
 
 let db = {};
 
 try {
-  db = new sequelize(DATABASE, USERNAME, PASSWORD, CONFIG);
+    db = new sequelize(database,username,db_password,db_config);
 } catch (error) {
-  console.error("Erro na conxeão com o banco de dados." + error);
+    console.error("Erro  1na sua conexao com a Base de dado" + error);
 }
 
-async function conexaoautenticao() {
+async function conexaoautenticao(){
 
-  try {
-    await db.authenticate();
-    console.log("Conectado com sucesso ao banco de dados...");
-  } catch (error) {
-    console.error("Erro na conexão com o banco de dados." + error);
-  }
+    try {
+        await db.authenticate();
+        console.log("conectado no banco de dado com sucesso...");
+    } catch (error) {
+        console.error("Erro na sua conexão com a Base de dado " + error);
+    }
 }
 
-Object.assign(db, {
-  conexaoautenticao
+//console.log(db);
+Object.assign(db,{
+    conexaoautenticao
 });
 
 module.exports = db;
-
-// Created by António Baptista #(24/08/2023)
