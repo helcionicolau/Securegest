@@ -53,7 +53,7 @@ app.use((err, req, res, next) => {
 });
 
 dontenv.config();
-const port = process.env.PORT || 8080;
+const port = 8080;
 app.listen(port, () => {
   console.log(`Servidor rodando em http://mysql-securegestdb.alwaysdata.net:${port}\n// Created by António Baptista #(24/08/2023)`);
 })
