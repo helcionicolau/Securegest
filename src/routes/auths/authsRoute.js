@@ -6,6 +6,9 @@ const router = express.Router();
 // Rota para login de usuário
 router.post('/login', authController.loginUser);
 
+// Rota para login de funcionário
+router.post('/login', authController.loginEmployee);
+
 // Rota para logout de usuário (usando o middleware de autenticação)
 router.post('/logout', authMiddleware.authenticateUserMiddleware, authController.logoutUser);
 

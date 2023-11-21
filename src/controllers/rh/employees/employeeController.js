@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { employeesModel } = require('../../../models/index');
 const { Op } = require('sequelize');
 
