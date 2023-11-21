@@ -1,15 +1,17 @@
-const {employeesModel} = require('../../../models/index');
+const { employeesModel } = require('../../../models/index');
 const { Op } = require('sequelize');
 
 module.exports = {
   async registerFuncionario(req, res) {
     const {
-      n_mec, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, cargo_id, carga_horaria_diaria,
+      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, cargo_id, carga_horaria_diaria,
     } = req.body;
 
     try {
+      const hashedPassword = await bcrypt.hash(senha, 10);
       const newFuncionario = await employeesModel.create({
         n_mec,
+        senha: hashedPassword,
         nome,
         sexo,
         estado_civil,
@@ -109,10 +111,11 @@ module.exports = {
   async updateFuncionario(req, res) {
     const funcionarioId = req.params.funcionarioId; // ID do funcionário a ser atualizado
     const {
-      n_mec, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, cargo_id, carga_horaria_diaria,
+      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, cargo_id, carga_horaria_diaria,
     } = req.body;
 
     try {
+      const hashedPassword = await bcrypt.hash(senha, 10);
       const funcionario = await employeesModel.findByPk(funcionarioId);
       if (!funcionario) {
         return res.status(404).json({ error: 'Funcionário não encontrado' });
@@ -121,6 +124,7 @@ module.exports = {
       // Atualiza apenas os campos fornecidos na requisição
       Object.assign(funcionario, {
         n_mec,
+        senha: hashedPassword,
         nome,
         sexo,
         estado_civil,
