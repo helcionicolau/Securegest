@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = {
-  authenticateUserMiddleware: (req, res, next) => {
+  authenticateMiddleware: (scope) => (req, res, next) => {
     try {
       const token = req.headers.authorization.split(' ')[1];
       if (!token) {
@@ -15,8 +15,8 @@ module.exports = {
         return res.status(401).json({ error: 'Token expirado' });
       }
 
-      // Verificação de escopo (exemplo: apenas usuários autenticados)
-      if (!decodedToken.scope.includes('user')) {
+      // Verificação de escopo
+      if (!decodedToken.scope.includes(scope)) {
         return res.status(403).json({ error: 'Acesso não autorizado' });
       }
 
