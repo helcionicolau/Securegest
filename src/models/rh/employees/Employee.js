@@ -8,6 +8,11 @@ module.exports = db.define('funcionarios', {
     autoIncrement: true,
     field: "id_funcionario"
   },
+  n_mec: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    field: "n_mec"
+  },
   nome: {
     type: DataTypes.STRING,
     allowNull: false,

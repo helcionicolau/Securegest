@@ -4,11 +4,12 @@ const { Op } = require('sequelize');
 module.exports = {
   async registerFuncionario(req, res) {
     const {
-      nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, cargo_id, carga_horaria_diaria,
+      n_mec, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, cargo_id, carga_horaria_diaria,
     } = req.body;
 
     try {
       const newFuncionario = await employeesModel.create({
+        n_mec,
         nome,
         sexo,
         estado_civil,
@@ -108,7 +109,7 @@ module.exports = {
   async updateFuncionario(req, res) {
     const funcionarioId = req.params.funcionarioId; // ID do funcionário a ser atualizado
     const {
-      nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, cargo_id, carga_horaria_diaria,
+      n_mec, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, cargo_id, carga_horaria_diaria,
     } = req.body;
 
     try {
@@ -119,6 +120,7 @@ module.exports = {
 
       // Atualiza apenas os campos fornecidos na requisição
       Object.assign(funcionario, {
+        n_mec,
         nome,
         sexo,
         estado_civil,
