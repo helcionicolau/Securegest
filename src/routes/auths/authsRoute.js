@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/login', authController.login);
 
 // Rota para logout de usuário (usando o middleware de autenticação)
-router.post('/logout', authMiddleware.authenticateMiddleware, authController.logoutUser);
+router.post('/logout', authMiddleware.authenticateMiddleware('user'), authController.logoutUser);
 
 // Adicione outras rotas de autenticação, como redefinição de senha, etc., se necessário
 
