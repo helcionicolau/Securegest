@@ -4,10 +4,7 @@ const authMiddleware = require('../../middleware/authMiddleware');
 const router = express.Router();
 
 // Rota para login de usuário
-router.post('/login', authController.loginUser);
-
-// Rota para login de funcionário
-router.post('/login', authController.loginEmployee);
+router.post('/login', authController.login);
 
 // Rota para logout de usuário (usando o middleware de autenticação)
 router.post('/logout', authMiddleware.authenticateUserMiddleware, authController.logoutUser);

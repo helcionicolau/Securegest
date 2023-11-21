@@ -5,53 +5,36 @@ const Employee = require('../../models/rh/employees/Employee');
 const Logout = require('../../models/auth/Auth');
 const db = require('../../utils/sequelize');
 
-exports.loginUser = async (req, res) => {
-    const { email, senha } = req.body;
+exports.login = async (req, res) => {
+    const { email, senha, n_mec } = req.body;
+    let user, id, scope;
 
     try {
-        const user = await User.findOne({ where: { email } });
+        // Verifica se está vindo um email, se sim, é usuário; se não, é funcionário
+        if (email) {
+            user = await User.findOne({ where: { email } });
+            id = user.id_usuario;
+            scope = 'user';
+        } else if (n_mec) {
+            user = await Employee.findOne({ where: { n_mec } });
+            id = user.id_funcionario;
+            scope = 'employee';
+        } else {
+            return res.status(400).json({ error: 'Credenciais inválidas' });
+        }
 
         if (!user) {
             return res.status(401).json({ error: 'Credenciais inválidas' });
         }
-
+        
         const passwordMatch = await bcrypt.compare(senha, user.senha);
 
         if (!passwordMatch) {
             return res.status(401).json({ error: 'Credenciais inválidas' });
         }
 
-        const token = jwt.sign({ userId: user.id_usuario, scope: 'user' }, process.env.JWT_KEY || "whoami", {
-            expiresIn: '24h' // Tempo de expiração de 24 horas
-            //expiresIn: '180s' // Tempo de expiração de 3 minutos
-        });
-
-        res.json({ token });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Erro ao fazer login' });
-    }
-};
-
-exports.loginEmployee = async (req, res) => {
-    const { n_mec, senha } = req.body;
-
-    try {
-        const employee = await Employee.findOne({ where: { n_mec } });
-
-        if (!employee) {
-            return res.status(401).json({ error: 'Credenciais inválidas' });
-        }
-
-        const passwordMatch = await bcrypt.compare(senha, employee.senha);
-
-        if (!passwordMatch) {
-            return res.status(401).json({ error: 'Credenciais inválidas' });
-        }
-
-        const token = jwt.sign({ funcionarioId: employee.id_funcionario, scope: 'employee' }, process.env.JWT_KEY || "foreigner", {
-            expiresIn: '24h' // Tempo de expiração de 24 horas
-            //expiresIn: '180s' // Tempo de expiração de 3 minutos
+        const token = jwt.sign({ userId: id, scope }, process.env.JWT_KEY || "whoami", {
+            expiresIn: '24h'
         });
 
         res.json({ token });
