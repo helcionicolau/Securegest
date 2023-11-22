@@ -5,23 +5,11 @@ const Employee = require('../../models/rh/employees/Employee');
 const Logout = require('../../models/auth/Auth');
 const db = require('../../utils/sequelize');
 
-exports.login = async (req, res) => {
-    const { email, senha, n_mec } = req.body;
-    let user, id, scope;
+exports.loginUser = async (req, res) => {
+    const { email, senha } = req.body;
 
     try {
-        // Verifica se está vindo um email, se sim, é usuário; se não, é funcionário
-        if (email) {
-            user = await User.findOne({ where: { email } });
-            id = user.id_usuario;
-            scope = 'user';
-        } else if (n_mec) {
-            user = await Employee.findOne({ where: { n_mec } });
-            id = user.id_funcionario;
-            scope = 'employee';
-        } else {
-            return res.status(400).json({ error: 'Credenciais inválidas' });
-        }
+        const user = await User.findOne({ where: { email } });
 
         if (!user) {
             return res.status(401).json({ error: 'Credenciais inválidas' });
@@ -33,8 +21,9 @@ exports.login = async (req, res) => {
             return res.status(401).json({ error: 'Credenciais inválidas' });
         }
 
-        const token = jwt.sign({ userId: id, scope }, process.env.JWT_KEY || "whoami", {
-            expiresIn: '24h'
+        const token = jwt.sign({ userId: user.id_usuario, scope: 'user' }, process.env.JWT_KEY || "whoami", {
+            expiresIn: '24h' // Tempo de expiração de 24 horas
+            //expiresIn: '180s' // Tempo de expiração de 3 minutos
         });
 
         res.json({ token });
