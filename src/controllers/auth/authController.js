@@ -44,45 +44,32 @@ exports.login = async (req, res) => {
     }
 };
 
-exports.logout = async (req, res) => {
+exports.logoutUser = async (req, res) => {
     try {
-        let userId, employeeId, scope;
-
-        if (req.userData && req.userData.userId) {
-            userId = req.userData.userId;
-            scope = 'user';
-        } else if (req.userData && req.userData.funcionarioId) {
-            employeeId = req.userData.funcionarioId;
-            scope = 'employee';
-        } else {
-            return res.status(400).json({ error: 'ID do usuário ou funcionário não fornecido' });
+        if (!req.userData || !req.userData.userId) {
+            return res.status(400).json({ error: 'ID do usuário não fornecido' });
         }
 
+        const userId = req.userData.userId; // ID do usuário que fez logout
         const logoutTime = new Date(); // Hora atual
 
-        if (scope === 'user') {
-            // Inserir um registro na tabela de logs_logout para usuários
-            await Logout.create({
-                user_id: userId,
-                data_hora: logoutTime
-            });
-
-            res.json({ message: 'Logout de usuário bem-sucedido' });
-        } else if (scope === 'employee') {
-            // Inserir um registro na tabela de logs_logout para funcionários
-            await Logout.create({
-                employee_id: employeeId,
-                data_hora: logoutTime
-            });
-
-            res.json({ message: 'Logout de funcionário bem-sucedido' });
-        } else {
+        if (req.userData.userId !== userId) {
             return res.status(403).json({ error: 'Acesso não autorizado' });
         }
+
+        // Inserir um registro na tabela de logs_logout
+        await Logout.create({
+            user_id: userId,
+            data_hora: logoutTime
+        });
+
+        res.json({ message: 'Logout bem-sucedido' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Erro ao fazer logout' });
     }
 };
+
+
 
 // Created by António Baptista #(24/08/2023)
