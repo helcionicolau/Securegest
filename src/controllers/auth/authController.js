@@ -26,7 +26,7 @@ exports.login = async (req, res) => {
         if (!user) {
             return res.status(401).json({ error: 'Credenciais inválidas' });
         }
-        
+
         const passwordMatch = await bcrypt.compare(senha, user.senha);
 
         if (!passwordMatch) {
@@ -44,32 +44,45 @@ exports.login = async (req, res) => {
     }
 };
 
-exports.logoutUser = async (req, res) => {
+exports.logout = async (req, res) => {
     try {
-        if (!req.userData || !req.userData.userId) {
-            return res.status(400).json({ error: 'ID do usuário não fornecido' });
+        let userId, employeeId, scope;
+
+        if (req.userData && req.userData.userId) {
+            userId = req.userData.userId;
+            scope = 'user';
+        } else if (req.userData && req.userData.funcionarioId) {
+            employeeId = req.userData.funcionarioId;
+            scope = 'employee';
+        } else {
+            return res.status(400).json({ error: 'ID do usuário ou funcionário não fornecido' });
         }
 
-        const userId = req.userData.userId; // ID do usuário que fez logout
         const logoutTime = new Date(); // Hora atual
 
-        if (req.userData.userId !== userId) {
+        if (scope === 'user') {
+            // Inserir um registro na tabela de logs_logout para usuários
+            await Logout.create({
+                user_id: userId,
+                data_hora: logoutTime
+            });
+
+            res.json({ message: 'Logout de usuário bem-sucedido' });
+        } else if (scope === 'employee') {
+            // Inserir um registro na tabela de logs_logout para funcionários
+            await Logout.create({
+                employee_id: employeeId,
+                data_hora: logoutTime
+            });
+
+            res.json({ message: 'Logout de funcionário bem-sucedido' });
+        } else {
             return res.status(403).json({ error: 'Acesso não autorizado' });
         }
-
-        // Inserir um registro na tabela de logs_logout
-        await Logout.create({
-            user_id: userId,
-            data_hora: logoutTime
-        });
-
-        res.json({ message: 'Logout bem-sucedido' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Erro ao fazer logout' });
     }
 };
-
-
 
 // Created by António Baptista #(24/08/2023)
