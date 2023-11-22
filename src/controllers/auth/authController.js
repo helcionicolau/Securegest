@@ -46,13 +46,13 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        let userId, employeeId, scope;
+        let userId, funcionarioId, scope;
 
         if (req.userData && req.userData.userId) {
             userId = req.userData.userId;
             scope = 'user';
         } else if (req.userData && req.userData.funcionarioId) {
-            employeeId = req.userData.funcionarioId;
+            funcionarioId = req.userData.funcionarioId;
             scope = 'employee';
         } else {
             return res.status(400).json({ error: 'ID do usuário ou funcionário não fornecido' });
@@ -71,7 +71,7 @@ exports.logout = async (req, res) => {
         } else if (scope === 'employee') {
             // Inserir um registro na tabela de logs_logout para funcionários
             await Logout.create({
-                employee_id: employeeId,
+                employee_id: funcionarioId,
                 data_hora: logoutTime
             });
 
