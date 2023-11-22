@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = {
-  authenticateMiddleware: (requiredScopes) => (req, res, next) => {
+  authenticateMiddleware: (requiredScope) => (req, res, next) => {
     try {
       const token = req.headers.authorization.split(' ')[1];
       if (!token) {
         return res.status(401).json({ error: 'Token não fornecido' });
       }
 
-      const decodedToken = jwt.verify(token, process.env.JWT_KEY || 'whoami');
+      const decodedToken = jwt.verify(token, process.env.JWT_KEY || "whoami");
 
       // Verificação de validade do token
       if (decodedToken.exp <= Math.floor(Date.now() / 1000)) {
@@ -16,11 +16,7 @@ module.exports = {
       }
 
       // Verificação de escopo
-      const hasRequiredScope = requiredScopes.some((scope) =>
-        decodedToken.scope.includes(scope)
-      );
-
-      if (!hasRequiredScope) {
+      if (!decodedToken.scope.includes(requiredScope)) {
         return res.status(403).json({ error: 'Acesso não autorizado' });
       }
 
@@ -28,7 +24,7 @@ module.exports = {
       req.userData = {
         userId: decodedToken.userId,
         funcionarioId: decodedToken.funcionarioId,
-        scope: decodedToken.scope,
+        scope: decodedToken.scope
       };
 
       next();
@@ -36,7 +32,7 @@ module.exports = {
       console.error(error);
       return res.status(401).json({ error: 'Autenticação falhou' });
     }
-  },
+  }
 };
 
 // Created by António Baptista #(24/08/2023)
