@@ -32,6 +32,16 @@ module.exports = db.define('posto', {
     type: DataTypes.INTEGER,
     allowNull: true,
     field: "n_operadores"
+  },
+  latitude: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: "latitude"
+  },
+  longitude: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: "longitude"
   }
 }, {
   tableName: "posto"
