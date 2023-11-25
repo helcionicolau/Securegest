@@ -7,8 +7,7 @@ module.exports = {
     try {
       const newArea = await areaModel.create({
         nome,
-        descricao,
-        longitude
+        descricao
       });
 
       res.status(201).json({ message: 'Área registrada com sucesso!' });
