@@ -2,14 +2,13 @@ const { areaModel } = require('../../../models/index');
 
 module.exports = {
   async registerArea(req, res) {
-    const { nome, descricao, longitude, latitude } = req.body;
+    const { nome, descricao } = req.body;
 
     try {
       const newArea = await areaModel.create({
         nome,
         descricao,
-        longitude,
-        latitude,
+        longitude
       });
 
       res.status(201).json({ message: 'Área registrada com sucesso!' });
@@ -46,7 +45,7 @@ module.exports = {
 
   async updateArea(req, res) {
     const areaId = req.params.areaId;
-    const { nome, descricao, longitude, latitude } = req.body;
+    const { nome, descricao } = req.body;
 
     try {
       const area = await areaModel.findByPk(areaId);
@@ -56,9 +55,7 @@ module.exports = {
 
       Object.assign(area, {
         nome,
-        descricao,
-        longitude,
-        latitude,
+        descricao
       });
 
       await area.save();

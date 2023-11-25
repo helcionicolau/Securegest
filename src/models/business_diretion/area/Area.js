@@ -17,16 +17,6 @@ module.exports = db.define('area', {
     type: DataTypes.TEXT,
     allowNull: true,
     field: "descricao"
-  },
-  longitude: {
-    type: DataTypes.DECIMAL(10, 6),
-    allowNull: true,
-    field: "longitude"
-  },
-  latitude: {
-    type: DataTypes.DECIMAL(10, 6),
-    allowNull: true,
-    field: "latitude"
   }
 }, {
   tableName: "area"
