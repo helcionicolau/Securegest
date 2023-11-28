@@ -58,11 +58,11 @@ module.exports = db.define('funcionarios', {
     allowNull: false,
     field: "departamento_id"
   },
-  cargo_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    field: "cargo_id"
-  },
+  // cargo_id: {
+  //   type: DataTypes.INTEGER,
+  //   allowNull: false,
+  //   field: "cargo_id"
+  // },
   data_registro: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
