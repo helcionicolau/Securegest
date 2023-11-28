@@ -10,52 +10,57 @@ module.exports = db.define('funcionarios', {
   },
   n_mec: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     field: "n_mec"
   },
   senha: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     field: "senha"
   },
   nome: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     field: "nome"
   },
   sexo: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     field: "sexo"
   },
   estado_civil: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     field: "estado_civil"
   },
   data_nascimento: {
     type: DataTypes.DATE,
+    allowNull: true,
     field: "data_nascimento"
   },
   nif: {
     type: DataTypes.STRING,
+    allowNull: true,
     field: "nif"
   },
   cargo: {
     type: DataTypes.STRING,
+    allowNull: true,
     field: "cargo"
   },
   data_contratacao: {
     type: DataTypes.DATE,
+    allowNull: true,
     field: "data_contratacao"
   },
   salario: {
     type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
     field: "salario"
   },
   departamento_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     field: "departamento_id"
   },
   // cargo_id: {
@@ -66,6 +71,7 @@ module.exports = db.define('funcionarios', {
   data_registro: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
+    allowNull: false,
     field: "data_registro"
   },
   carga_horaria_diaria: {
