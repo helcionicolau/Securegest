@@ -4,27 +4,34 @@ const { Op } = require('sequelize');
 
 module.exports = {
   async registerFuncionario(req, res) {
-    const {
-      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, departamento_id, carga_horaria_diaria,
-    } = req.body;
-
     try {
-      const hashedPassword = await bcrypt.hash(senha, 10);
-      const newFuncionario = await employeesModel.create({
-        n_mec,
-        senha: hashedPassword,
-        nome,
-        sexo,
-        estado_civil,
-        data_nascimento,
-        nif,
-        cargo,
-        data_contratacao,
-        departamento_id,
-        data_registro: new Date(),
-        carga_horaria_diaria,
+      // Inicialize um objeto vazio para armazenar os dados do funcionário
+      const funcionarioData = {};
+  
+      // Lista de campos permitidos
+      const allowedFields = [
+        'n_mec', 'senha', 'nome', 'sexo', 'estado_civil', 'data_nascimento',
+        'nif', 'cargo', 'departamento_id', 'carga_horaria_diaria'
+      ];
+  
+      // Preencha o objeto de dados do funcionário apenas com os campos fornecidos
+      allowedFields.forEach(field => {
+        if (req.body[field] !== undefined) {
+          funcionarioData[field] = req.body[field];
+        }
       });
-
+  
+      // Se uma senha foi fornecida, faça o hash dela
+      if (funcionarioData.senha) {
+        funcionarioData.senha = await bcrypt.hash(funcionarioData.senha, 10);
+      }
+  
+      // Adicione a data de registro
+      funcionarioData.data_registro = new Date();
+  
+      // Use a função create do Sequelize para criar um novo funcionário com os dados fornecidos
+      const newFuncionario = await employeesModel.create(funcionarioData);
+  
       res.status(201).json({ message: 'Funcionário registrado com sucesso!' });
     } catch (error) {
       console.error(error);
@@ -108,35 +115,44 @@ module.exports = {
   },
 
   async updateFuncionario(req, res) {
-    const funcionarioId = req.params.funcionarioId; // ID do funcionário a ser atualizado
-    const {
-      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, departamento_id, carga_horaria_diaria,
-    } = req.body;
-
+    const funcionarioId = req.params.funcionarioId;
+  
     try {
-      const hashedPassword = await bcrypt.hash(senha, 10);
       const funcionario = await employeesModel.findByPk(funcionarioId);
       if (!funcionario) {
         return res.status(404).json({ error: 'Funcionário não encontrado' });
       }
-
-      // Atualiza apenas os campos fornecidos na requisição
-      Object.assign(funcionario, {
-        n_mec,
-        senha: hashedPassword,
-        nome,
-        sexo,
-        estado_civil,
-        data_nascimento,
-        nif,
-        cargo,
-        data_atualizacao: new Date(),
-        departamento_id,
-        carga_horaria_diaria,
+  
+      // Inicialize um objeto vazio para armazenar os dados do funcionário
+      const funcionarioData = {};
+  
+      // Lista de campos permitidos para atualização
+      const allowedFields = [
+        'n_mec', 'senha', 'nome', 'sexo', 'estado_civil', 'data_nascimento',
+        'nif', 'cargo', 'departamento_id', 'carga_horaria_diaria'
+      ];
+  
+      // Preencha o objeto de dados do funcionário apenas com os campos fornecidos
+      allowedFields.forEach(field => {
+        if (req.body[field] !== undefined) {
+          funcionarioData[field] = req.body[field];
+        }
       });
-
+  
+      // Se uma senha foi fornecida, faça o hash dela
+      if (funcionarioData.senha) {
+        funcionarioData.senha = await bcrypt.hash(funcionarioData.senha, 10);
+      }
+  
+      // Adicione a data de atualização
+      funcionarioData.data_atualizacao = new Date();
+  
+      // Atualiza apenas os campos fornecidos na requisição
+      Object.assign(funcionario, funcionarioData);
+  
+      // Salva as alterações no banco de dados
       await funcionario.save();
-
+  
       res.json({ message: 'Funcionário atualizado com sucesso' });
     } catch (error) {
       console.error(error);
