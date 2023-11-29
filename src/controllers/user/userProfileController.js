@@ -3,18 +3,25 @@ const { Op } = require('sequelize');
 
 module.exports = {
     async registerPerfil(req, res) {
-        const { nome, descricao } = req.body;
-
         try {
-            const newPerfil = await userProfileModel.create({
-                nome,
-                descricao
+            const perfilData = {};
+
+            // Lista de campos permitidos
+            const allowedFields = [
+                'nome', 'descricao'
+            ];
+
+            allowedFields.forEach(field => {
+                if (req.body[field] !== undefined) {
+                    perfilData[field] = req.body[field];
+                }
             });
 
+            const newPerfil = await userProfileModel.create(perfilData);
             res.status(201).json({ message: 'Perfil registrado com sucesso!' });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Erro ao registrar perfil' });
+            res.status(500).json({ error: 'Erro ao registrar perfil.' });
         }
     },
 
@@ -45,27 +52,38 @@ module.exports = {
 
     async updatePerfil(req, res) {
         const perfilId = req.params.perfilId;
-        const { nome, descricao } = req.body;
-    
+
         try {
-          const perfil = await userProfileModel.findByPk(perfilId);
-          if (!perfil) {
-            return res.status(404).json({ error: 'Perfil não encontrado' });
-          }
-    
-          Object.assign(perfil, {
-            nome,
-            descricao
-          });
-    
-          await perfil.save();
-    
-          res.json({ message: 'Perfil atualizado com sucesso' });
+            const perfil = await employeesModel.findByPk(perfilId);
+            if (!perfil) {
+                return res.status(404).json({ error: 'Perfil não encontrado' });
+            }
+
+            const perfilData = {};
+
+            // Lista de campos permitidos para atualização
+            const allowedFields = [
+                'nome', 'descricao'
+            ];
+
+            allowedFields.forEach(field => {
+                if (req.body[field] !== undefined) {
+                    perfilData[field] = req.body[field];
+                }
+            });
+
+            // Atualiza apenas os campos fornecidos na requisição
+            Object.assign(perfil, perfilData);
+
+            // Salva as alterações no banco de dados
+            await perfil.save();
+
+            res.json({ message: 'Perfil atualizado com sucesso' });
         } catch (error) {
-          console.error(error);
-          res.status(500).json({ error: 'Erro ao atualizar perfil' });
+            console.error(error);
+            res.status(500).json({ error: 'Erro ao atualizar perfil' });
         }
-      },
+    },
 
     async deletePerfil(req, res) {
         const perfilId = req.params.perfilId;
