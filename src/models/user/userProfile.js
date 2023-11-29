@@ -2,7 +2,7 @@ const db = require("../../../utils/sequelize");
 const { DataTypes } = require("sequelize");
 
 module.exports = db.define('perfis_usuario', {
-    id_funcionario: {
+    id_perfil: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
