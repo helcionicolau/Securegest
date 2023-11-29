@@ -13,7 +13,7 @@ module.exports = db.define('perfis_usuario', {
         allowNull: true,
         field: "nome"
     },
-    sexo: {
+    descricao: {
         type: DataTypes.STRING,
         allowNull: true,
         field: "decricao"
