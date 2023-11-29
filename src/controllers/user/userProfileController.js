@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { userProfileModel } = require('../../../models/index');
+const { userProfileModel } = require('../../models/index');
 const { Op } = require('sequelize');
 
 module.exports = {
