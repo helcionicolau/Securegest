@@ -110,7 +110,7 @@ module.exports = {
   async updateFuncionario(req, res) {
     const funcionarioId = req.params.funcionarioId; // ID do funcionário a ser atualizado
     const {
-      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, carga_horaria_diaria,
+      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, departamento_id, carga_horaria_diaria,
     } = req.body;
 
     try {
