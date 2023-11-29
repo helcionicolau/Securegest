@@ -12,11 +12,12 @@ const employee_departamentsModel = require("./rh/employees_departments/ED");
 const holidaysModel = require("./rh/holidays/Holiday");
 const leave_typesModel = require("./rh/leave_types/leaveType");
 const userModel = require("./user/User");
-const areaModel =require("./business_diretion/area/Area");
-const logisticModel =require("./business_diretion/logistic/Logistic");
-const postModel =require("./business_diretion/post/Post");
-const zoneModel =require("./business_diretion/zone/Zone");
-const providerModel =require("./business_diretion/provider/Provider");
+const userProfileModel = require("./user/userProfile");
+const areaModel = require("./business_diretion/area/Area");
+const logisticModel = require("./business_diretion/logistic/Logistic");
+const postModel = require("./business_diretion/post/Post");
+const zoneModel = require("./business_diretion/zone/Zone");
+const providerModel = require("./business_diretion/provider/Provider");
 
 
 
@@ -91,6 +92,11 @@ userModel.hasMany(userModel, {
     foreignKey: "id_usuario"
 });
 
+userProfileModel.hasMany(userProfileModel, {
+    construent: true,
+    foreignKey: "id_perfil"
+});
+
 areaModel.hasMany(areaModel, {
     construent: true,
     foreignKey: "id_area"
@@ -131,6 +137,7 @@ module.exports = {
     holidaysModel,
     leave_typesModel,
     userModel,
+    userProfileModel,
     areaModel,
     logisticModel,
     postModel,
