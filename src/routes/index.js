@@ -1,5 +1,6 @@
 const express = require('express');
 const userRoutes = require('./users/usersRoute');
+const userProfileRoutes = require('./users/usersProfileRoute');
 const authRoutes = require('./auths/authsRoute');
 const employeeRoutes = require('./rh/employees/employeesRoute');
 const employeeRoleRoutes = require('./rh/employees/rolesRoute');
@@ -23,6 +24,7 @@ const router = express.Router();
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
+router.use('/user_profile', userProfileRoutes);
 router.use('/employees', employeeRoutes);
 router.use('/employee_roles', employeeRoleRoutes);
 router.use('/departments', departmentRoutes);
