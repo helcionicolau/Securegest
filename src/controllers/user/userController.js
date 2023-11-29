@@ -3,7 +3,7 @@ const { userModel } = require('../../models/index');
 
 module.exports = {
   async registerUser(req, res) {
-    const { nome_usuario, email, senha, telefone } = req.body;
+    const { nome_usuario, email, senha, telefone, id_perfil, id_funcionario } = req.body;
 
     try {
       const hashedPassword = await bcrypt.hash(senha, 10);
@@ -12,6 +12,8 @@ module.exports = {
         email,
         senha: hashedPassword,
         telefone,
+        id_perfil,
+        id_funcionario
       });
 
       res.status(201).json({ message: 'Usuário registrado com sucesso!' });
@@ -47,8 +49,8 @@ module.exports = {
   },
 
   async updateUser(req, res) {
-    const userId = req.params.userId; // ID do usuário a ser atualizado
-    const { nome_usuario, email, senha, telefone } = req.body;
+    const userId = req.params.userId;
+    const { nome_usuario, email, senha, telefone, id_perfil, id_funcionario } = req.body;
 
     try {
       const user = await userModel.findByPk(userId);
@@ -71,6 +73,14 @@ module.exports = {
 
       if (telefone) {
         user.telefone = telefone;
+      }
+
+      if (id_perfil) {
+        user.id_perfil = id_perfil;
+      }
+
+      if (id_funcionario) {
+        user.id_funcionario = id_funcionario;
       }
 
       await user.save();
