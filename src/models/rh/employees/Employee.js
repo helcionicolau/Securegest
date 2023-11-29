@@ -71,8 +71,14 @@ module.exports = db.define('funcionarios', {
   data_registro: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: false,
+    allowNull: true,
     field: "data_registro"
+  },
+  data_atualizacao: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    allowNull: true,
+    field: "data_atualizacao"
   },
   carga_horaria_diaria: {
     type: DataTypes.TIME,

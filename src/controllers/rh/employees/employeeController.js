@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 module.exports = {
   async registerFuncionario(req, res) {
     const {
-      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, departamento_id, carga_horaria_diaria,
+      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, departamento_id, carga_horaria_diaria,
     } = req.body;
 
     try {
@@ -110,7 +110,7 @@ module.exports = {
   async updateFuncionario(req, res) {
     const funcionarioId = req.params.funcionarioId; // ID do funcionário a ser atualizado
     const {
-      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, departamento_id, carga_horaria_diaria,
+      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, departamento_id, carga_horaria_diaria,
     } = req.body;
 
     try {
@@ -130,7 +130,7 @@ module.exports = {
         data_nascimento,
         nif,
         cargo,
-        data_contratacao,
+        data_atualizacao: new Date(),
         departamento_id,
         carga_horaria_diaria,
       });
