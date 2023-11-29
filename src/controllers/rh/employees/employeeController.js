@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 module.exports = {
   async registerFuncionario(req, res) {
     const {
-      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, salario, departamento_id, carga_horaria_diaria,
+      n_mec, senha, nome, sexo, estado_civil, data_nascimento, nif, cargo, data_contratacao, departamento_id, carga_horaria_diaria,
     } = req.body;
 
     try {
@@ -20,7 +20,6 @@ module.exports = {
         nif,
         cargo,
         data_contratacao,
-        salario,
         departamento_id,
         data_registro: new Date(),
         carga_horaria_diaria,
@@ -132,7 +131,6 @@ module.exports = {
         nif,
         cargo,
         data_contratacao,
-        salario,
         departamento_id,
         carga_horaria_diaria,
       });
