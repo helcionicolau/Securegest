@@ -3,7 +3,14 @@ const { userModel } = require('../../models/index');
 
 module.exports = {
   async registerUser(req, res) {
-    const { nome_usuario, email, senha, telefone, id_perfil, id_funcionario } = req.body;
+    const {
+      nome_usuario,
+      email,
+      senha,
+      telefone,
+      id_perfil,
+      id_funcionario,
+    } = req.body;
 
     try {
       const hashedPassword = await bcrypt.hash(senha, 10);
@@ -13,7 +20,7 @@ module.exports = {
         senha: hashedPassword,
         telefone,
         id_perfil,
-        id_funcionario
+        id_funcionario,
       });
 
       res.status(201).json({ message: 'Usuário registrado com sucesso!' });
@@ -50,7 +57,6 @@ module.exports = {
 
   async updateUser(req, res) {
     const userId = req.params.userId;
-    const { nome_usuario, email, senha, telefone, id_perfil, id_funcionario } = req.body;
 
     try {
       const user = await userModel.findByPk(userId);
@@ -58,30 +64,18 @@ module.exports = {
         return res.status(404).json({ error: 'Usuário não encontrado' });
       }
 
-      if (nome_usuario) {
-        user.nome_usuario = nome_usuario;
-      }
-
-      if (email) {
-        user.email = email;
-      }
-
-      if (senha) {
-        const hashedPassword = await bcrypt.hash(senha, 10);
-        user.senha = hashedPassword;
-      }
-
-      if (telefone) {
-        user.telefone = telefone;
-      }
-
-      if (id_perfil) {
-        user.id_perfil = id_perfil;
-      }
-
-      if (id_funcionario) {
-        user.id_funcionario = id_funcionario;
-      }
+      // Atualiza apenas os campos fornecidos na requisição
+      Object.keys(req.body).forEach((field) => {
+        if (req.body[field] !== undefined) {
+          // Verifica se a senha está presente e faz o hash
+          if (field === 'senha') {
+            const hashedPassword = bcrypt.hashSync(req.body[field], 10);
+            user[field] = hashedPassword;
+          } else {
+            user[field] = req.body[field];
+          }
+        }
+      });
 
       await user.save();
 
