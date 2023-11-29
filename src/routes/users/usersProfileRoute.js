@@ -6,9 +6,9 @@ const authMiddleware = require('../../middleware/authMiddleware');
 
 router.post('/register', userProfileController.registerPerfil);
 router.get('/', authMiddleware.authenticateUserMiddleware, userProfileController.getAllPerfis);
-router.get('/:userId', authMiddleware.authenticateUserMiddleware, userProfileController.getPerfilById);
-router.put('/:userId', authMiddleware.authenticateUserMiddleware, userProfileController.updatePerfil);
-router.delete('/:userId', authMiddleware.authenticateUserMiddleware, userProfileController.deletePerfil);
+router.get('/:perfilId', authMiddleware.authenticateUserMiddleware, userProfileController.getPerfilById);
+router.put('/:perfilId', authMiddleware.authenticateUserMiddleware, userProfileController.updatePerfil);
+router.delete('/:perfilId', authMiddleware.authenticateUserMiddleware, userProfileController.deletePerfil);
 
 module.exports = router;
 
