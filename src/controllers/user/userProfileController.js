@@ -54,7 +54,7 @@ module.exports = {
         const perfilId = req.params.perfilId;
 
         try {
-            const perfil = await employeesModel.findByPk(perfilId);
+            const perfil = await userProfileModel.findByPk(perfilId);
             if (!perfil) {
                 return res.status(404).json({ error: 'Perfil não encontrado' });
             }
