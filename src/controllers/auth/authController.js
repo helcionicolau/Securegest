@@ -1,15 +1,14 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const User = require('../../models/user/User');
-const Employee = require('../../models/rh/employees/Employee');
-const Logout = require('../../models/auth/Auth');
+const userModel = require('../../models/index');
+const Logout = require('../../models/index');
 const db = require('../../utils/sequelize');
 
 exports.loginUser = async (req, res) => {
     const { email, senha } = req.body;
 
     try {
-        const user = await User.findOne({ where: { email } });
+        const user = await userModel.findOne({ where: { email } });
 
         if (!user) {
             return res.status(401).json({ error: 'Credenciais inválidas' });
@@ -58,7 +57,5 @@ exports.logoutUser = async (req, res) => {
         res.status(500).json({ error: 'Erro ao fazer logout' });
     }
 };
-
-
 
 // Created by António Baptista #(24/08/2023)
