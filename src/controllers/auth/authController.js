@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const userModel = require('../../models/index');
-const Logout = require('../../models/index');
+const User = require('../../models/index');
+const Logout = require('../../models/auth/Auth');
 const db = require('../../utils/sequelize');
 
 exports.loginUser = async (req, res) => {
     const { email, senha } = req.body;
 
     try {
-        const user = await userModel.findOne({ where: { email } });
+        const user = await User.findOne({ where: { email } });
 
         if (!user) {
             return res.status(401).json({ error: 'Credenciais inválidas' });
