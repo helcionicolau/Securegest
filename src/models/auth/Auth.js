@@ -5,7 +5,7 @@ module.exports = db.define('logs_logout', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true, // Adicionado para indicar autoincremento
         field: "id"
     },
     user_id: {
