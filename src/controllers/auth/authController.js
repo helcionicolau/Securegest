@@ -46,6 +46,13 @@ exports.logoutUser = async (req, res) => {
             return res.status(403).json({ error: 'Acesso não autorizado' });
         }
 
+        // Verifique se o usuário existe antes de criar o registro na tabela logs_logout
+        const userExists = await User.findByPk(userId);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
         // Inserir um registro na tabela de logs_logout
         await Logout.create({
             user_id: userId,
