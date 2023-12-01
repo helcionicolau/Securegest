@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const User = require('../../models/index');
+const User = require('../../models/user/User');
+const Employee = require('../../models/rh/employees/Employee');
 const Logout = require('../../models/auth/Auth');
 const db = require('../../utils/sequelize');
 
@@ -57,5 +58,7 @@ exports.logoutUser = async (req, res) => {
         res.status(500).json({ error: 'Erro ao fazer logout' });
     }
 };
+
+
 
 // Created by António Baptista #(24/08/2023)
