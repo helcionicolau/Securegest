@@ -2,7 +2,7 @@ const { postModel } = require('../../../models/index');
 
 module.exports = {
   async registerPosto(req, res) {
-    const { nome, descricao, id_zona, id_cliente, id_logistica, n_operadores, latitude, longitude } = req.body;
+    const { nome, descricao, id_zona, id_cliente, id_logistica, n_operadores, provincia, municipio, latitude, longitude } = req.body;
 
     try {
       const newPosto = await postModel.create({
@@ -12,6 +12,8 @@ module.exports = {
         id_cliente,
         id_logistica,
         n_operadores,
+        provincia,
+        municipio,
         latitude,
         longitude
       });
@@ -50,7 +52,7 @@ module.exports = {
 
   async updatePosto(req, res) {
     const postoId = req.params.postoId;
-    const { nome, descricao, id_zona, id_cliente, id_logistica, n_operadores, latitude, longitude } = req.body;
+    const { nome, descricao, id_zona, id_cliente, id_logistica, n_operadores, provincia, municipio, latitude, longitude } = req.body;
 
     try {
       const posto = await postModel.findByPk(postoId);
@@ -65,6 +67,8 @@ module.exports = {
         id_cliente,
         id_logistica,
         n_operadores,
+        provincia,
+        municipio,
         latitude,
         longitude
       });
