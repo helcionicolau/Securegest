@@ -8,6 +8,11 @@ module.exports = db.define('posto', {
     autoIncrement: true,
     field: "id_posto"
   },
+  nome: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: "nome"
+  },
   descricao: {
     type: DataTypes.TEXT,
     allowNull: true,
