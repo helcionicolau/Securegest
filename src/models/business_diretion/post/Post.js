@@ -33,6 +33,16 @@ module.exports = db.define('posto', {
     allowNull: true,
     field: "n_operadores"
   },
+  provincia: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: "provincia"
+  },
+  municipio: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: "municipio"
+  },
   latitude: {
     type: DataTypes.STRING,
     allowNull: true,
