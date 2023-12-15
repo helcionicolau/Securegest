@@ -18,6 +18,7 @@ const logisticModel = require("./business_diretion/logistic/Logistic");
 const postModel = require("./business_diretion/post/Post");
 const zoneModel = require("./business_diretion/zone/Zone");
 const providerModel = require("./business_diretion/provider/Provider");
+const postoSupervisorModel = require("./operation_control/supervisor/attributionPostSupervisor");
 
 
 
@@ -122,6 +123,11 @@ providerModel.hasMany(providerModel, {
     foreignKey: "id_provedora"
 });
 
+postoSupervisorModel.hasMany(postoSupervisorModel, {
+    construent: true,
+    foreignKey: "id_ps"
+});
+
 module.exports = {
     authModel,
     employee_tasksModel,
@@ -142,5 +148,6 @@ module.exports = {
     logisticModel,
     postModel,
     zoneModel,
-    providerModel
+    providerModel,
+    postoSupervisorModel
 }
