@@ -1,115 +1,89 @@
-const { postoSupervisorModel } = require('../../../models/index');
-const { Op } = require('sequelize');
+const {postoSupervisorModel} = require('../../../models/index');
 
 module.exports = {
-    async registerPostoSupervisor(req, res) {
-        try {
-            const posto_supervisorData = {};
+  async registerPostoSupervisor(req, res) {
+    const { id_usuario, id_posto } = req.body;
 
-            // Lista de campos permitidos
-            const allowedFields = [
-                'id_usuario', 'id_posto'
-            ];
+    try {
+      const newSupervisorPosto = await postoSupervisorModel.create({
+        id_usuario,
+        id_posto
+      });
 
-            allowedFields.forEach(field => {
-                if (req.body[field] !== undefined) {
-                    posto_supervisorData[field] = req.body[field];
-                }
-            });
+      res.status(201).json({ message: 'Posto atribuído com sucesso ao supervisor' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao atribuir o posto ao supervisor' });
+    }
+  },
 
-            // Adicione a data de registro
-            posto_supervisorData.data_registro = new Date();
+  async getAllPostosSupervisores(req, res) {
+    try {
+      const postosSupervisor = await postoSupervisorModel.findAll();
+      res.json(postosSupervisor);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar postos atribuídos aos supervisores' });
+    }
+  },
 
-            const newPostoSupervisor = await postoSupervisorModel.create(posto_supervisorData);
+  async getPostoSupervisorById(req, res) {
+    const postoSupervisorId = req.params.postoSupervisorId;
 
-            res.status(201).json({ message: 'Posto atribuído ao Supervisor com sucesso!' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Erro ao atribuir posto ao supervisor' });
-        }
-    },
+    try {
+      const postosSupervisor = await postoSupervisorModel.findByPk(postoSupervisorId);
+      if (!postosSupervisor) {
+        return res.status(404).json({ error: 'Posto do supervisor não encontrado' });
+      }
+      res.json(postosSupervisor);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar posto atribuído por ID' });
+    }
+  },
 
-    async getAllPostosSupervisores(req, res) {
-        try {
-            const posto_supervisores = await postoSupervisorModel.findAll();
-            res.json(posto_supervisores);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Erro ao buscar atribuições dos postos aos supervisores' });
-        }
-    },
+  async updatePostoSupervisor(req, res) {
+    const postoSupervisorId = req.params.postoSupervisorId;
+    const { id_usuario, id_posto } = req.body;
 
-    async getPostoSupervisorById(req, res) {
-        const postoSupervisorId = req.params.postoSupervisorId;
+    try {
+      const postosSupervisor = await postoSupervisorModel.findByPk(postoSupervisorId);
+      if (!postosSupervisor) {
+        return res.status(404).json({ error: 'Posto atribuído ao supervisor não encontrado' });
+      }
 
-        try {
-            const posto_supervisor = await postoSupervisorModel.findByPk(postoSupervisorId);
-            if (!posto_supervisor) {
-                return res.status(404).json({ error: 'Posto atribuido ao supervisor não encontrado' });
-            }
-            res.json(posto_supervisor);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Erro ao buscar posto atribuido ao supervisor por ID' });
-        }
-    },
+      Object.assign(postosSupervisor, {
+        id_usuario,
+        id_posto
+      });
 
-    async updatePostoSupervisor(req, res) {
-        const postoSupervisorId = req.params.postoSupervisorId;
+      await postosSupervisor.save();
 
-        try {
-            const posto_supervisor = await postoSupervisorModel.findByPk(postoSupervisorId);
-            if (!posto_supervisor) {
-                return res.status(404).json({ error: 'Posto atribuído ao supervisor não encontrado' });
-            }
+      res.json({ message: 'Posto atribuído ao supervisor atualizado com sucesso' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao atualizar o posto ao supervisor' });
+    }
+  },
 
-            const posto_supervisorData = {};
+  async deletePostoSupervisor(req, res) {
+    const postoSupervisorId = req.params.postoSupervisorId;
 
-            // Lista de campos permitidos para atualização
-            const allowedFields = [
-                'id_usuario', 'id_posto'
-            ];
+    try {
+      const postosSupervisor = await postoSupervisorModel.findByPk(postoSupervisorId);
+      if (!postosSupervisor) {
+        return res.status(404).json({ error: 'Posto atribuído ao supervisor não encontrado' });
+      }
 
-            allowedFields.forEach(field => {
-                if (req.body[field] !== undefined) {
-                    posto_supervisorData[field] = req.body[field];
-                }
-            });
+      await postosSupervisor.destroy();
 
-            // Adicione a data de atualização
-            posto_supervisorData.data_atualizacao = new Date();
-
-            // Atualiza apenas os campos fornecidos na requisição
-            Object.assign(posto_supervisor, posto_supervisorData);
-
-            // Salva as alterações no banco de dados
-            await posto_supervisor.save();
-
-            res.json({ message: 'Posto atualizado ao supervisor com sucesso' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Erro ao atualizar o posto ao supervisor' });
-        }
-    },
-
-    async deletePostoSupervisor(req, res) {
-        const postoSupervisorId = req.params.postoSupervisorId;
-
-        try {
-            const posto_supervisor = await postoSupervisorModel.findByPk(postoSupervisorId);
-            if (!posto_supervisor) {
-                return res.status(404).json({ error: 'Posto atribuído ao supervisor não encontrado' });
-            }
-
-            await posto_supervisor.destroy();
-
-            res.json({ message: 'Posto atribuído ao supervisor excluído com sucesso' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Erro ao excluir posto atribuído ao supervisor' });
-        }
-    },
-
+      res.json({ message: 'Posto atribuído ao supervisor excluído com sucesso' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao excluir o posto atribuído ao supervisor' });
+    }
+  }
 };
 
+// Adicione outras operações relacionadas ao departamento aqui, se necessário
 // Created by António Baptista #(24/08/2023)
