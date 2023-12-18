@@ -83,7 +83,7 @@ module.exports = {
             Object.assign(posto_supervisor, posto_supervisorData);
 
             // Salva as alterações no banco de dados
-            await funcionario.save();
+            await posto_supervisor.save();
 
             res.json({ message: 'Posto atualizado ao supervisor com sucesso' });
         } catch (error) {
