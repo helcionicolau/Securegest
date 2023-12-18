@@ -7,7 +7,8 @@ module.exports = {
     try {
       const newSupervisorPosto = await postoSupervisorModel.create({
         id_usuario,
-        id_posto
+        id_posto,
+        data_registro: new Date()
       });
 
       res.status(201).json({ message: 'Posto atribuído com sucesso ao supervisor' });
@@ -54,7 +55,8 @@ module.exports = {
 
       Object.assign(postosSupervisor, {
         id_usuario,
-        id_posto
+        id_posto,
+        data_atualizacao: new Date()
       });
 
       await postosSupervisor.save();
