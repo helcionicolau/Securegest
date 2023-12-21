@@ -1,4 +1,5 @@
 const { postoSupervisorModel } = require('../../../models/index');
+const { userModel, userProfileModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSupervisor(req, res) {
@@ -25,6 +26,24 @@ module.exports = {
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Erro ao buscar postos atribuídos aos supervisores' });
+        }
+    },
+
+    async getAllSupervisorUsers(req, res) {
+        try {
+            const supervisorUsers = await userModel.findAll({
+                where: {
+                    id_perfil: await userProfileModel.findOne({
+                        where: { nome: 'Supervisor' },
+                        attributes: ['id_perfil'],
+                    }),
+                },
+            });
+
+            res.json(supervisorUsers);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Erro ao buscar usuários com perfil de Supervisor' });
         }
     },
 
