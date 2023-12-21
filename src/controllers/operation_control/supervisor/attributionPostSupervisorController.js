@@ -3,12 +3,13 @@ const { userModel, userProfileModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSupervisor(req, res) {
-        const { id_usuario, id_posto } = req.body;
+        const { id_usuario, id_posto, n_segurancas } = req.body;
 
         try {
             const newSupervisorPosto = await postoSupervisorModel.create({
                 id_usuario,
                 id_posto,
+                n_segurancas,
                 data_registro: new Date(), // Adicionando a data de registro
             });
 
@@ -35,24 +36,24 @@ module.exports = {
                 where: { nome: 'Supervisor' },
                 attributes: ['id_perfil'],
             });
-    
+
             if (!supervisorProfile) {
                 return res.status(404).json({ error: 'Perfil de Supervisor não encontrado' });
             }
-    
+
             const supervisorUsers = await userModel.findAll({
                 where: {
                     id_perfil: supervisorProfile.id_perfil,
                 },
             });
-    
+
             res.json(supervisorUsers);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Erro ao buscar usuários com perfil de Supervisor' });
         }
     },
-    
+
 
     async getPostoSupervisorById(req, res) {
         const postoSupervisorId = req.params.postoSupervisorId;
@@ -71,7 +72,7 @@ module.exports = {
 
     async updatePostoSupervisor(req, res) {
         const postoSupervisorId = req.params.postoSupervisorId;
-        const { id_usuario, id_posto } = req.body;
+        const { id_usuario, id_posto, n_segurancas } = req.body;
 
         try {
             const postosSupervisor = await postoSupervisorModel.findByPk(postoSupervisorId);
@@ -82,6 +83,7 @@ module.exports = {
             postosSupervisor.set({
                 id_usuario,
                 id_posto,
+                n_segurancas,
                 data_atualizacao: new Date(), // Adicionando a data de atualização
             });
 
