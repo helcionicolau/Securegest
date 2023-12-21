@@ -6,7 +6,7 @@ const authMiddleware = require('../../../middleware/authMiddleware');
 // Rotas para o CRUD de departamentos
 router.post('/register', authMiddleware.authenticateUserMiddleware, postoSupervisorController.registerPostoSupervisor);
 router.get('/', authMiddleware.authenticateUserMiddleware, postoSupervisorController.getAllPostosSupervisores);
-router.get('/', authMiddleware.authenticateUserMiddleware, postoSupervisorController.getAllSupervisorUsers);
+router.get('/supervisor-users', authMiddleware.authenticateUserMiddleware, postoSupervisorController.getAllSupervisorUsers);
 router.get('/:postoSupervisorId', authMiddleware.authenticateUserMiddleware, postoSupervisorController.getPostoSupervisorById);
 router.put('/:postoSupervisorId', authMiddleware.authenticateUserMiddleware, postoSupervisorController.updatePostoSupervisor);
 router.delete('/:postoSupervisorId', authMiddleware.authenticateUserMiddleware, postoSupervisorController.deletePostoSupervisor);
