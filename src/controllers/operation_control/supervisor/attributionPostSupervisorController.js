@@ -31,21 +31,28 @@ module.exports = {
 
     async getAllSupervisorUsers(req, res) {
         try {
+            const supervisorProfile = await userProfileModel.findOne({
+                where: { nome: 'Supervisor' },
+                attributes: ['id_perfil'],
+            });
+    
+            if (!supervisorProfile) {
+                return res.status(404).json({ error: 'Perfil de Supervisor não encontrado' });
+            }
+    
             const supervisorUsers = await userModel.findAll({
                 where: {
-                    id_perfil: await userProfileModel.findOne({
-                        where: { nome: 'SuperAdmin' },
-                        attributes: ['id_perfil'],
-                    }),
+                    id_perfil: supervisorProfile.id_perfil,
                 },
             });
-
+    
             res.json(supervisorUsers);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Erro ao buscar usuários com perfil de Supervisor' });
         }
     },
+    
 
     async getPostoSupervisorById(req, res) {
         const postoSupervisorId = req.params.postoSupervisorId;
