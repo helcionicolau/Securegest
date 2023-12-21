@@ -34,7 +34,7 @@ module.exports = {
             const supervisorUsers = await userModel.findAll({
                 where: {
                     id_perfil: await userProfileModel.findOne({
-                        where: { nome: 'Supervisor' },
+                        where: { nome: 'SuperAdmin' },
                         attributes: ['id_perfil'],
                     }),
                 },
