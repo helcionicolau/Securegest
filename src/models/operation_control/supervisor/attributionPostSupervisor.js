@@ -16,10 +16,6 @@ module.exports = db.define('posto_supervisor', {
         type: DataTypes.INTEGER,
         field: "id_posto"
     },
-    n_segurancas: {
-        type: DataTypes.INTEGER,
-        field: "n_segurancas"
-    },
     data_registro: {
         type: DataTypes.DATE,
         allowNull: true,
