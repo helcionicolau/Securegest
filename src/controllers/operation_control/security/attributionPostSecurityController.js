@@ -3,11 +3,15 @@ const { postoSegurancaModel, employeesModel, userProfileModel } = require('../..
 
 module.exports = {
     async getSegurancasDisponiveis(req, res) {
-
         try {
+            // Obtenha os n_mec dos seguranças já atribuídos
+            const segurancasAtribuidos = await postoSegurancaModel.findAll({
+                attributes: ['n_mec'],
+            });
 
             const nMecsAtribuidos = segurancasAtribuidos.map((item) => item.n_mec);
 
+            // Encontre os seguranças que não estão atribuídos a nenhum posto
             const segurancasDisponiveis = await employeesModel.findAll({
                 where: {
                     n_mec: { [Op.notIn]: nMecsAtribuidos },
