@@ -19,7 +19,7 @@ const postModel = require("./business_diretion/post/Post");
 const zoneModel = require("./business_diretion/zone/Zone");
 const providerModel = require("./business_diretion/provider/Provider");
 const postoSupervisorModel = require("./operation_control/supervisor/attributionPostSupervisor");
-
+const postoSegurancaModel = require("./operation_control/security/attributionPostSecurity"); 
 
 
 authModel.hasMany(authModel, {
@@ -128,6 +128,11 @@ postoSupervisorModel.hasMany(postoSupervisorModel, {
     foreignKey: "id_ps"
 });
 
+postoSegurancaModel.hasMany(postoSegurancaModel, {
+    construent: true,
+    foreignKey: "id_pss"
+});
+
 module.exports = {
     authModel,
     employee_tasksModel,
@@ -149,5 +154,6 @@ module.exports = {
     postModel,
     zoneModel,
     providerModel,
-    postoSupervisorModel
+    postoSupervisorModel,
+    postoSegurancaModel
 }

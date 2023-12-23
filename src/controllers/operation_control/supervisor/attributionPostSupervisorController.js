@@ -3,13 +3,12 @@ const { userModel, userProfileModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSupervisor(req, res) {
-        const { id_usuario, id_posto, n_segurancas } = req.body;
+        const { id_usuario, id_posto } = req.body;
 
         try {
             const newSupervisorPosto = await postoSupervisorModel.create({
                 id_usuario,
                 id_posto,
-                n_segurancas,
                 data_registro: new Date(), // Adicionando a data de registro
             });
 
@@ -72,7 +71,7 @@ module.exports = {
 
     async updatePostoSupervisor(req, res) {
         const postoSupervisorId = req.params.postoSupervisorId;
-        const { id_usuario, id_posto, n_segurancas } = req.body;
+        const { id_usuario, id_posto } = req.body;
 
         try {
             const postosSupervisor = await postoSupervisorModel.findByPk(postoSupervisorId);
@@ -83,7 +82,6 @@ module.exports = {
             postosSupervisor.set({
                 id_usuario,
                 id_posto,
-                n_segurancas,
                 data_atualizacao: new Date(), // Adicionando a data de atualização
             });
 
