@@ -13,11 +13,6 @@ module.exports = db.define('funcionarios', {
     allowNull: true,
     field: "n_mec"
   },
-  senha: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    field: "senha"
-  },
   nome: {
     type: DataTypes.STRING,
     allowNull: true,
