@@ -29,6 +29,7 @@ module.exports = {
     },
 
     async registerPostoSeguranca(req, res) {
+        console.log('Perfil do usuário logado:', req.userData);
         const { id_posto, segurancas } = req.body;
 
         try {
