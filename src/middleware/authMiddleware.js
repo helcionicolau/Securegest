@@ -21,7 +21,12 @@ module.exports = {
       }
 
       // Adicionar os dados decodificados à solicitação para uso posterior
-      req.userData = { userId: decodedToken.userId, scope: decodedToken.scope };
+      req.userData = {
+        userId: decodedToken.userId,
+        id_perfil: decodedToken.id_perfil,
+        scope: decodedToken.scope
+      };
+
       next();
     } catch (error) {
       console.error(error);
