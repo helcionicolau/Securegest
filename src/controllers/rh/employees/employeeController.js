@@ -21,11 +21,6 @@ module.exports = {
         }
       });
 
-      // Se uma senha foi fornecida, faça o hash dela
-      if (funcionarioData.senha) {
-        funcionarioData.senha = await bcrypt.hash(funcionarioData.senha, 10);
-      }
-
       // Adicione a data de registro
       funcionarioData.data_registro = new Date();
 
@@ -98,7 +93,6 @@ module.exports = {
 
   async getFuncionariosByDepartamento(req, res) {
     const departamentoId = req.params.departamentoId; // ID do departamento a ser filtrado
-
     try {
       // Use a função findAll do Sequelize para obter todos os funcionários com o departamento_id correspondente
       const funcionarios = await employeesModel.findAll({
@@ -138,11 +132,6 @@ module.exports = {
           funcionarioData[field] = req.body[field];
         }
       });
-
-      // Se uma senha foi fornecida, faça o hash dela
-      if (funcionarioData.senha) {
-        funcionarioData.senha = await bcrypt.hash(funcionarioData.senha, 10);
-      }
 
       // Adicione a data de atualização
       funcionarioData.data_atualizacao = new Date();
