@@ -5,26 +5,30 @@ const Employee = require('../../models/rh/employees/Employee');
 const Logout = require('../../models/auth/Auth');
 const db = require('../../utils/sequelize');
 
+const JWT_KEY = process.env.JWT_KEY || "whoami";
+const TOKEN_EXPIRATION = '24h'; // Tempo de expiração de 24 horas
+// const TOKEN_EXPIRATION = '180s'; // Tempo de expiração de 3 minutos
+
+const ERROR_INVALID_CREDENTIALS = 'Credenciais inválidas';
+const ERROR_USER_NOT_FOUND = 'Usuário não encontrado';
+const ERROR_LOGOUT_UNAUTHORIZED = 'Acesso não autorizado';
+const ERROR_LOGOUT_FAILED = 'Erro ao fazer logout';
+
 exports.loginUser = async (req, res) => {
     const { email, senha } = req.body;
 
     try {
         const user = await User.findOne({ where: { email } });
 
-        if (!user) {
-            return res.status(401).json({ error: 'Credenciais inválidas' });
+        if (!user || !(await bcrypt.compare(senha, user.senha))) {
+            return res.status(401).json({ error: ERROR_INVALID_CREDENTIALS });
         }
 
-        const passwordMatch = await bcrypt.compare(senha, user.senha);
-
-        if (!passwordMatch) {
-            return res.status(401).json({ error: 'Credenciais inválidas' });
-        }
-
-        const token = jwt.sign({ userId: user.id_usuario, scope: 'user' }, process.env.JWT_KEY || "whoami", {
-            expiresIn: '24h' // Tempo de expiração de 24 horas
-            //expiresIn: '180s' // Tempo de expiração de 3 minutos
-        });
+        const token = jwt.sign(
+            { userId: user.id_usuario, id_perfil: user.id_perfil, scope: 'user' },
+            JWT_KEY,
+            { expiresIn: TOKEN_EXPIRATION }
+        );
 
         res.json({ token });
     } catch (error) {
@@ -43,14 +47,14 @@ exports.logoutUser = async (req, res) => {
         const logoutTime = new Date(); // Hora atual
 
         if (req.userData.userId !== userId) {
-            return res.status(403).json({ error: 'Acesso não autorizado' });
+            return res.status(403).json({ error: ERROR_LOGOUT_UNAUTHORIZED });
         }
 
         // Verifique se o usuário existe antes de criar o registro na tabela logs_logout
         const userExists = await User.findByPk(userId);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
+            return res.status(404).json({ error: ERROR_USER_NOT_FOUND });
         }
 
         // Inserir um registro na tabela de logs_logout
@@ -62,10 +66,6 @@ exports.logoutUser = async (req, res) => {
         res.json({ message: 'Logout bem-sucedido' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Erro ao fazer logout' });
+        res.status(500).json({ error: ERROR_LOGOUT_FAILED });
     }
 };
-
-
-
-// Created by António Baptista #(24/08/2023)
