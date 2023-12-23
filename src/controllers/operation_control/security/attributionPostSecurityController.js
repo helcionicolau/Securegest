@@ -36,6 +36,7 @@ module.exports = {
             const userData = req.userData;
 
             if (!userData || !userData.id_perfil) {
+                console.error('Erro de autorização: Dados do usuário ou ID de perfil ausentes.');
                 return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
             }
 
@@ -44,7 +45,13 @@ module.exports = {
                 attributes: ['nome'],
             });
 
-            if (!perfil || !['Supervisor', 'SuperAdmin', 'Admin'].includes(perfil.nome)) {
+            if (!perfil) {
+                console.error('Erro de autorização: Perfil não encontrado.');
+                return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
+            }
+
+            if (!['Supervisor', 'SuperAdmin', 'Admin'].includes(perfil.nome)) {
+                console.error('Erro de autorização: Perfil não autorizado.');
                 return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
             }
 
@@ -58,7 +65,7 @@ module.exports = {
 
             res.status(201).json({ message: 'Seguranças atribuídos com sucesso ao posto', segurancas: newSegurancas });
         } catch (error) {
-            console.error(error);
+            console.error('Erro ao atribuir seguranças ao posto:', error);
             res.status(500).json({ error: 'Erro ao atribuir seguranças ao posto' });
         }
     },
