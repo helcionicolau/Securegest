@@ -44,11 +44,6 @@ module.exports = {
                 return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
             }
 
-            // Verifica se o usuário tem permissão para adicionar seguranças ao posto especificado
-            if (!['Supervisor', 'SuperAdmin', 'Admin'].includes(perfil.nome)) {
-                return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças a este posto' });
-            }
-
             // Adiciona os seguranças ao posto
             const segurancasData = segurancas.map((n_mec) => ({ id_posto, n_mec }));
 
