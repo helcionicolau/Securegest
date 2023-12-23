@@ -1,4 +1,4 @@
-// controllers/operation_control/security/postoSegurancasController.js
+const { Op } = require('sequelize');
 const { postoSegurancaModel, employeesModel, userProfileModel } = require('../../../models/index');
 
 module.exports = {
