@@ -33,10 +33,14 @@ module.exports = {
 
         try {
             // Verifica se o usuário tem permissão para adicionar seguranças
-            const { id_perfil } = req.userData;
+            const userData = req.userData;
+
+            if (!userData || !userData.id_perfil) {
+                return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
+            }
 
             const perfil = await userProfileModel.findOne({
-                where: { id_perfil },
+                where: { id_perfil: userData.id_perfil },
                 attributes: ['nome'],
             });
 
