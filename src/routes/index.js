@@ -20,6 +20,7 @@ const postRoutes = require('./business_diretion/post/postsRoute');
 const providerRoutes = require('./business_diretion/provider/providersRoute');
 const zoneRoutes = require('./business_diretion/zone/zonesRoute');
 const postoSupervisorRoutes = require('./operation_control/supervisor/attributionPostSupervisorsRoute');
+const postoSecurityRoutes = require('./operation_control/security/attributionPostSecuritiesRoute');
 
 const router = express.Router();
 
@@ -44,6 +45,7 @@ router.use('/post', postRoutes);
 router.use('/provider', providerRoutes);
 router.use('/zone', zoneRoutes);
 router.use('/post_supervisor', postoSupervisorRoutes);
+router.use('/post_security', postoSecurityRoutes);
 
 module.exports = router;
 
