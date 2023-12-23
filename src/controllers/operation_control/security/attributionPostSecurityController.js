@@ -58,15 +58,16 @@ module.exports = {
     
             // Adiciona os seguranças ao posto
             const segurancasAtribuidos = await postoSegurancaModel.findAll({
+                where: { id_posto },
                 attributes: ['n_mec'],
             });
-    
+            
             // Verifica se há seguranças atribuídos antes de chamar map
             const nMecsAtribuidos = segurancasAtribuidos ? segurancasAtribuidos.map((item) => item.n_mec) : [];
-    
+            
             // Filtra os seguranças que ainda não foram atribuídos
             const segurancasNaoAtribuidos = segurancas.filter((n_mec) => !nMecsAtribuidos.includes(n_mec));
-    
+            
             // Cria os novos registros apenas para seguranças não atribuídos
             const newSegurancas = await postoSegurancaModel.bulkCreate(
                 segurancasNaoAtribuidos.map((n_mec) => ({ id_posto, n_mec })),
