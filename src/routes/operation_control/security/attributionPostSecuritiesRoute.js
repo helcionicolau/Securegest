@@ -4,7 +4,7 @@ const postoSegurancasController = require('../../../controllers/operation_contro
 const authMiddleware = require('../../../middleware/authMiddleware');
 
 // Rotas para o CRUD de seguranças em postos
-router.get('/segurancas-disponiveis/:id_posto', authMiddleware.authenticateUserMiddleware, postoSegurancasController.getSegurancasDisponiveis);
+router.get('/segurancas-disponiveis', authMiddleware.authenticateUserMiddleware, postoSegurancasController.getSegurancasDisponiveis);
 router.post('/register', authMiddleware.authenticateUserMiddleware, postoSegurancasController.registerPostoSeguranca);
 router.get('/', authMiddleware.authenticateUserMiddleware, postoSegurancasController.getAllPostosSegurancas);
 router.get('/:postoSegurancaId', authMiddleware.authenticateUserMiddleware, postoSegurancasController.getPostoSegurancaById);
