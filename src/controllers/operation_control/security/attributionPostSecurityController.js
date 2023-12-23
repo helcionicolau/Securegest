@@ -3,13 +3,8 @@ const { postoSegurancaModel, employeesModel, userProfileModel } = require('../..
 
 module.exports = {
     async getSegurancasDisponiveis(req, res) {
-        const { id_posto } = req.params;
 
         try {
-            const segurancasAtribuidos = await postoSegurancaModel.findAll({
-                where: { id_posto },
-                attributes: ['n_mec'],
-            });
 
             const nMecsAtribuidos = segurancasAtribuidos.map((item) => item.n_mec);
 
