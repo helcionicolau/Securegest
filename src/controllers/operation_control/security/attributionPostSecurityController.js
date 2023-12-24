@@ -29,12 +29,9 @@ module.exports = {
     },
 
     async registerPostoSeguranca(req, res) {
-        console.log('Perfil do usuário logado:', req.userData);
         const { id_posto, segurancas } = req.body;
-        console.log('Corpo da requisição:', req.body);
 
         try {
-            // Verifica se o usuário tem permissão para adicionar seguranças
             const userData = req.userData;
 
             if (!userData || !userData.id_perfil) {
@@ -47,39 +44,36 @@ module.exports = {
                 attributes: ['nome'],
             });
 
-            if (!perfil) {
-                console.error('Erro de autorização: Perfil não encontrado.');
-                return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
-            }
-
-            if (!['Supervisor', 'SuperAdmin', 'Admin'].includes(perfil.nome)) {
+            if (!perfil || !['Supervisor', 'SuperAdmin', 'Admin'].includes(perfil.nome)) {
                 console.error('Erro de autorização: Perfil não autorizado.');
                 return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
             }
+
+            const id_posto = req.body.id_posto;
 
             if (!id_posto) {
                 return res.status(400).json({ error: 'O campo id_posto é obrigatório' });
             }
 
-            const segurancasAtribuidos = await postoSegurancaModel.findAll({
-                where: { id_posto },
-                attributes: ['n_mec'],
-            });
+            const newSegurancas = [];
 
-            // Verifica se há seguranças atribuídos antes de chamar map
-            const nMecsAtribuidos = segurancasAtribuidos ? segurancasAtribuidos.map((item) => item.n_mec) : [];
+            for (const n_mec of segurancas) {
+                const existingSeguranca = await postoSegurancaModel.findOne({
+                    where: { id_posto, n_mec },
+                    attributes: ['n_mec'],
+                });
 
-            // Filtra os seguranças que ainda não foram atribuídos
-            const segurancasNaoAtribuidos = segurancas.filter((n_mec) => !nMecsAtribuidos.includes(n_mec));
+                if (!existingSeguranca) {
+                    // Cria o registro apenas se não existir
+                    const createdSeguranca = await postoSegurancaModel.create({
+                        id_posto,
+                        n_mec,
+                        data_registro: new Date(),
+                    });
 
-            // Cria os novos registros apenas para seguranças não atribuídos
-            const newSegurancas = await postoSegurancaModel.bulkCreate(
-                segurancasNaoAtribuidos.map((n_mec) => ({ id_posto, n_mec })),
-                {
-                    returning: true,
-                    individualHooks: true,
+                    newSegurancas.push(createdSeguranca);
                 }
-            );
+            }
 
             res.status(201).json({ message: 'Seguranças atribuídos com sucesso ao posto', segurancas: newSegurancas });
         } catch (error) {
@@ -87,7 +81,6 @@ module.exports = {
             res.status(500).json({ error: 'Erro ao atribuir seguranças ao posto' });
         }
     },
-
 
     async getAllPostosSegurancas(req, res) {
         try {
