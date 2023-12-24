@@ -28,7 +28,7 @@ module.exports = {
         }
     },
 
-    async registerPostoSegurancar(req, res) {
+    async registerPostoSeguranca(req, res) {
         const { id_posto, n_mec } = req.body;
 
         try {
