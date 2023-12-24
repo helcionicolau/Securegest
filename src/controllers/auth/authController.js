@@ -28,7 +28,7 @@ exports.loginUser = async (req, res) => {
             { userId: user.id_usuario, id_perfil: user.id_perfil, scope: 'user' },
             JWT_KEY,
             { expiresIn: TOKEN_EXPIRATION }
-        );
+        );        
 
         res.json({ token });
     } catch (error) {
