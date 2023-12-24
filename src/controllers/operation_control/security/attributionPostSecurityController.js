@@ -31,6 +31,7 @@ module.exports = {
     async registerPostoSeguranca(req, res) {
         console.log('Perfil do usuário logado:', req.userData);
         const { id_posto, segurancas } = req.body;
+        console.log('Corpo da requisição:', req.body);
 
         try {
             // Verifica se o usuário tem permissão para adicionar seguranças
