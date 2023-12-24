@@ -57,7 +57,6 @@ module.exports = {
                 return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
             }
 
-            const id_posto = req.body.id_posto; // Certifique-se de que o campo está sendo enviado no corpo da requisição
             if (!id_posto) {
                 return res.status(400).json({ error: 'O campo id_posto é obrigatório' });
             }
