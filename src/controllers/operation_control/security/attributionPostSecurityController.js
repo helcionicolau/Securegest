@@ -28,55 +28,20 @@ module.exports = {
         }
     },
 
-    async registerPostoSeguranca(req, res) {
-        const { id_posto, segurancas } = req.body;
+    async registerPostoSegurancar(req, res) {
+        const { id_posto, n_mec } = req.body;
 
         try {
-            const userData = req.userData;
-
-            if (!userData || !userData.id_perfil) {
-                console.error('Erro de autorização: Dados do usuário ou ID de perfil ausentes.');
-                return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
-            }
-
-            const perfil = await userProfileModel.findOne({
-                where: { id_perfil: userData.id_perfil },
-                attributes: ['nome'],
+            const newSegurancaPosto = await postoSegurancaModel.create({
+                id_posto,
+                n_mec,
+                data_registro: new Date(), // Adicionando a data de registro
             });
 
-            if (!perfil || !['Supervisor', 'SuperAdmin', 'Admin'].includes(perfil.nome)) {
-                console.error('Erro de autorização: Perfil não autorizado.');
-                return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
-            }
-
-            if (!id_posto) {
-                return res.status(400).json({ error: 'O campo id_posto é obrigatório' });
-            }
-
-            const newSegurancas = [];
-
-            for (const n_mec of segurancas) {
-                const existingSeguranca = await postoSegurancaModel.findOne({
-                    where: { id_posto, n_mec },
-                    attributes: ['n_mec'],
-                });
-
-                if (!existingSeguranca) {
-                    // Cria o registro apenas se não existir
-                    const createdSeguranca = await postoSegurancaModel.create({
-                        id_posto,
-                        n_mec,
-                        data_registro: new Date(),
-                    });
-
-                    newSegurancas.push(createdSeguranca);
-                }
-            }
-
-            res.status(201).json({ message: 'Seguranças atribuídos com sucesso ao posto', segurancas: newSegurancas });
+            res.status(201).json({ message: 'Posto atribuído com sucesso ao supervisor' });
         } catch (error) {
-            console.error('Erro ao atribuir seguranças ao posto:', error);
-            res.status(500).json({ error: 'Erro ao atribuir seguranças ao posto' });
+            console.error(error);
+            res.status(500).json({ error: 'Erro ao atribuir o posto ao supervisor' });
         }
     },
 
