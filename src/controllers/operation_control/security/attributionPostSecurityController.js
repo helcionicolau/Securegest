@@ -1,37 +1,12 @@
-const { Op } = require('sequelize');
 const { postoSegurancaModel, employeesModel, userProfileModel } = require('../../../models/index');
+const { Op } = require('sequelize');
 
 module.exports = {
-    async getSegurancasDisponiveis(req, res) {
-        try {
-            // Obtém os seguranças já atribuídos a algum posto
-            const segurancasAtribuidos = await postoSegurancaModel.findAll({
-                attributes: ['n_mec'],
-            });
-
-            // Obtém os NMECs dos seguranças já atribuídos
-            const nMecsAtribuidos = segurancasAtribuidos.map((item) => item.n_mec);
-
-            // Obtém os seguranças que ainda não foram atribuídos a nenhum posto
-            const segurancasDisponiveis = await employeesModel.findAll({
-                where: {
-                    n_mec: { [Op.notIn]: nMecsAtribuidos },
-                    cargo: 'Seguranca',
-                    // Adicione outras condições, se necessário
-                },
-            });
-
-            res.json(segurancasDisponiveis);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Erro ao buscar seguranças disponíveis' });
-        }
-    },
-
     async registerPostoSeguranca(req, res) {
         const { id_posto, segurancas } = req.body;
 
         try {
+            // Verifica se o usuário tem permissão para adicionar seguranças
             const userData = req.userData;
 
             if (!userData || !userData.id_perfil) {
@@ -49,29 +24,31 @@ module.exports = {
                 return res.status(403).json({ error: 'Usuário não autorizado a adicionar seguranças' });
             }
 
+            // Verifica se o campo id_posto é fornecido
             if (!id_posto) {
                 return res.status(400).json({ error: 'O campo id_posto é obrigatório' });
             }
 
-            const newSegurancas = [];
- 
-            for (const n_mec of segurancas) {
-                const existingSeguranca = await postoSegurancaModel.findOne({
-                    where: { id_posto, n_mec },
-                    attributes: ['n_mec'],
-                });
+            // Obtém os NMECs dos seguranças já atribuídos ao posto
+            const segurancasAtribuidos = await postoSegurancaModel.findAll({
+                where: { id_posto },
+                attributes: ['n_mec'],
+            });
 
-                if (!existingSeguranca) {
-                    // Cria o registro apenas se não existir
-                    const createdSeguranca = await postoSegurancaModel.create({
-                        id_posto,
-                        n_mec,
-                        data_registro: new Date(),
-                    });
+            // Verifica se há seguranças atribuídos antes de chamar map
+            const nMecsAtribuidos = segurancasAtribuidos ? segurancasAtribuidos.map((item) => item.n_mec) : [];
 
-                    newSegurancas.push(createdSeguranca);
+            // Filtra os seguranças que ainda não foram atribuídos
+            const segurancasNaoAtribuidos = segurancas.filter((n_mec) => !nMecsAtribuidos.includes(n_mec));
+
+            // Cria os novos registros apenas para seguranças não atribuídos
+            const newSegurancas = await postoSegurancaModel.bulkCreate(
+                segurancasNaoAtribuidos.map((n_mec) => ({ id_posto, n_mec })),
+                {
+                    returning: true,
+                    individualHooks: true,
                 }
-            }
+            );
 
             res.status(201).json({ message: 'Seguranças atribuídos com sucesso ao posto', segurancas: newSegurancas });
         } catch (error) {
