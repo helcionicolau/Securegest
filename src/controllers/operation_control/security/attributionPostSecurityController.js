@@ -31,8 +31,7 @@ module.exports = {
             console.error('Erro ao atribuir seguranças ao posto:', error);
             res.status(500).json({ error: 'Erro ao atribuir seguranças ao posto' });
         }
-    }
-    
+    },
 
     async getAllPostosSegurancas(req, res) {
         try {
