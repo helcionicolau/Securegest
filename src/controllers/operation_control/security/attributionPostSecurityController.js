@@ -5,10 +5,6 @@ module.exports = {
         const { id_posto, segurancas } = req.body;
 
         try {
-            if (!id_posto) {
-                return res.status(400).json({ error: 'O campo id_posto é obrigatório' });
-            }
-
             const segurancasAtribuidos = await postoSegurancaModel.findAll({
                 where: { id_posto },
                 attributes: ['n_mec'],
