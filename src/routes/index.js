@@ -45,6 +45,7 @@ router.use('/post', postRoutes);
 router.use('/provider', providerRoutes);
 router.use('/zone', zoneRoutes);
 router.use('/post_supervisor', postoSupervisorRoutes);
+router.use('/post_security', postoSecurityRoutes);
 
 module.exports = router;
 
