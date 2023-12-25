@@ -1,9 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../../models/user/User');
-const Employee = require('../../models/rh/employees/Employee');
 const Logout = require('../../models/auth/Auth');
-const db = require('../../utils/sequelize');
 
 const JWT_KEY = process.env.JWT_KEY || "whoami";
 const TOKEN_EXPIRATION = '24h'; // Tempo de expiração de 24 horas
