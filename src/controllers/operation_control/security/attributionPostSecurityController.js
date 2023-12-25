@@ -1,25 +1,38 @@
 const { postoSegurancaModel } = require('../../../models/index');
-const { Op } = require('sequelize');
+
 
 module.exports = {
     async registerPostoSeguranca(req, res) {
         const { id_posto, segurancas } = req.body;
-
+    
         try {
+            const segurancasAtribuidos = await postoSegurancaModel.findAll({
+                where: { id_posto },
+                attributes: ['n_mec'],
+            });
+    
+            // Verifica se há seguranças atribuídos antes de chamar map
+            const nMecsAtribuidos = segurancasAtribuidos && segurancasAtribuidos.map ? segurancasAtribuidos.map((item) => item.n_mec) : [];
+    
+            // Filtra os seguranças que ainda não foram atribuídos
+            const segurancasNaoAtribuidos = segurancas.filter((n_mec) => !nMecsAtribuidos.includes(n_mec));
+    
+            // Cria os novos registros apenas para seguranças não atribuídos
             const newSegurancas = await postoSegurancaModel.bulkCreate(
-                segurancas.map((n_mec) => ({ id_posto, n_mec })),
+                segurancasNaoAtribuidos.map((n_mec) => ({ id_posto, n_mec })),
                 {
                     returning: true,
                     individualHooks: true,
                 }
             );
-
+    
             res.status(201).json({ message: 'Seguranças atribuídos com sucesso ao posto', segurancas: newSegurancas });
         } catch (error) {
             console.error('Erro ao atribuir seguranças ao posto:', error);
             res.status(500).json({ error: 'Erro ao atribuir seguranças ao posto' });
         }
-    },
+    }
+    
 
     async getAllPostosSegurancas(req, res) {
         try {
