@@ -6,20 +6,14 @@ module.exports = {
         const { id_posto, segurancas } = req.body;
     
         try {
-            const segurancasAtribuidos = await postoSegurancaModel.findAll({
-                where: { id_posto },
-                attributes: ['n_mec'],
-            });
+            // Verifica se o id_posto e segurancas estão presentes na requisição
+            if (!id_posto || !segurancas || !Array.isArray(segurancas)) {
+                return res.status(400).json({ error: 'Campos id_posto e segurancas são obrigatórios' });
+            }
     
-            // Verifica se há seguranças atribuídos antes de chamar map
-            const nMecsAtribuidos = segurancasAtribuidos && segurancasAtribuidos.map ? segurancasAtribuidos.map((item) => item.n_mec) : [];
-    
-            // Filtra os seguranças que ainda não foram atribuídos
-            const segurancasNaoAtribuidos = segurancas.filter((n_mec) => !nMecsAtribuidos.includes(n_mec));
-    
-            // Cria os novos registros apenas para seguranças não atribuídos
+            // Cria os novos registros para cada segurança
             const newSegurancas = await postoSegurancaModel.bulkCreate(
-                segurancasNaoAtribuidos.map((n_mec) => ({ id_posto, n_mec })),
+                segurancas.map((n_mec) => ({ id_posto, n_mec })),
                 {
                     returning: true,
                     individualHooks: true,
@@ -32,7 +26,7 @@ module.exports = {
             res.status(500).json({ error: 'Erro ao atribuir seguranças ao posto' });
         }
     },
-
+    
     async getAllPostosSegurancas(req, res) {
         try {
             const postosSegurancas = await postoSegurancaModel.findAll();
