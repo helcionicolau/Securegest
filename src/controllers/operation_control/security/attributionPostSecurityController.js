@@ -1,4 +1,5 @@
 const { postoSegurancaModel } = require('../../../models/index');
+const { Op } = require('sequelize');
 
 module.exports = {
     async registerPostoSeguranca(req, res) {
