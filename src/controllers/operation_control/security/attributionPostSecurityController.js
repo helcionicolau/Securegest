@@ -2,35 +2,25 @@ const { postoSegurancaModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSeguranca(req, res) {
-        const { id_posto, n_mec } = req.body;
+        const data = req.body;
 
         try {
-            // Verificar se já existe um registro para o id_posto
-            const existingRecord = await postoSegurancaModel.findOne({
-                where: { id_posto }
-            });
+            // Iterar sobre cada objeto no array
+            for (const record of data) {
+                const { id_posto, n_mec } = record;
 
-            if (existingRecord) {
-                // Se existe, adicionar os novos n_mec a esse registro existente
-                existingRecord.n_mec = [...existingRecord.n_mec, ...[].concat(n_mec)];
-                existingRecord.data_atualizacao = new Date();
-
-                await existingRecord.save();
-
-                res.status(201).json({ message: 'Seguranças atribuídos com sucesso ao posto existente' });
-            } else {
-                // Se não existe, criar um novo registro
-                const newPostoSeguranca = await postoSegurancaModel.create({
+                // Criar um novo registro para cada par id_posto e n_mec
+                await postoSegurancaModel.create({
                     id_posto,
-                    n_mec: [].concat(n_mec), // Certifica-se de que n_mec é uma array
-                    data_registro: new Date(),
+                    n_mec,
+                    data_registro: new Date()
                 });
-
-                res.status(201).json({ message: 'Seguranças atribuídos com sucesso a um novo posto' });
             }
+
+            res.status(201).json({ message: 'Seguranças atribuídos com sucesso aos postos' });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Erro ao atribuir os seguranças ao posto' });
+            res.status(500).json({ error: 'Erro ao atribuir os seguranças aos postos' });
         }
     },
 
