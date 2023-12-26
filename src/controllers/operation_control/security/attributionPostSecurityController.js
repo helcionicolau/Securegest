@@ -12,7 +12,7 @@ module.exports = {
 
             if (existingRecord) {
                 // Se existe, adicionar os novos n_mec a esse registro existente
-                existingRecord.n_mec = [...new Set([...existingRecord.n_mec, ...[].concat(n_mec)])]; // Use Set para garantir valores únicos
+                existingRecord.n_mec = [...existingRecord.n_mec, ...[].concat(n_mec)];
                 existingRecord.data_atualizacao = new Date();
 
                 await existingRecord.save();
