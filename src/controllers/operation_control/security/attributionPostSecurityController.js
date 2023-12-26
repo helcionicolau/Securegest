@@ -1,40 +1,30 @@
-const { postoSegurancaModel } = require('../../../models/index');
-
+const { postoSegurancasModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSeguranca(req, res) {
-        const { id_posto, segurancas } = req.body;
-        console.log('Corpo da Requisição:', req.body);
-    
+        const { id_posto, n_mec } = req.body;
+
         try {
-            // Verifica se o id_posto e segurancas estão presentes na requisição
-            if (!id_posto || !segurancas || !Array.isArray(segurancas)) {
-                return res.status(400).json({ error: 'Campos id_posto e segurancas são obrigatórios' });
-            }
-    
-            // Cria os novos registros para cada segurança
-            const newSegurancas = await postoSegurancaModel.bulkCreate(
-                segurancas.map((n_mec) => ({ id_posto, n_mec })),
-                {
-                    returning: true,
-                    individualHooks: true,
-                }
-            );
-    
-            res.status(201).json({ message: 'Seguranças atribuídos com sucesso ao posto', segurancas: newSegurancas });
+            const newPostoSeguranca = await postoSegurancasModel.create({
+                id_posto,
+                n_mec,
+                data_registro: new Date(),
+            });
+
+            res.status(201).json({ message: 'Segurança atribuído com sucesso ao posto' });
         } catch (error) {
-            console.error('Erro ao atribuir seguranças ao posto:', error);
-            res.status(500).json({ error: 'Erro ao atribuir seguranças ao posto' });
+            console.error(error);
+            res.status(500).json({ error: 'Erro ao atribuir o segurança ao posto' });
         }
     },
-    
+
     async getAllPostosSegurancas(req, res) {
         try {
-            const postosSegurancas = await postoSegurancaModel.findAll();
+            const postosSegurancas = await postoSegurancasModel.findAll();
             res.json(postosSegurancas);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Erro ao buscar postos atribuídos aos seguranças' });
+            res.status(500).json({ error: 'Erro ao buscar seguranças atribuídos aos postos' });
         }
     },
 
@@ -42,14 +32,14 @@ module.exports = {
         const postoSegurancaId = req.params.postoSegurancaId;
 
         try {
-            const postoSeguranca = await postoSegurancaModel.findByPk(postoSegurancaId);
+            const postoSeguranca = await postoSegurancasModel.findByPk(postoSegurancaId);
             if (!postoSeguranca) {
-                return res.status(404).json({ error: 'Posto do segurança não encontrado' });
+                return res.status(404).json({ error: 'Segurança do posto não encontrado' });
             }
             res.json(postoSeguranca);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Erro ao buscar posto atribuído por ID' });
+            res.status(500).json({ error: 'Erro ao buscar segurança atribuído por ID' });
         }
     },
 
@@ -58,23 +48,23 @@ module.exports = {
         const { id_posto, n_mec } = req.body;
 
         try {
-            const postoSeguranca = await postoSegurancaModel.findByPk(postoSegurancaId);
+            const postoSeguranca = await postoSegurancasModel.findByPk(postoSegurancaId);
             if (!postoSeguranca) {
-                return res.status(404).json({ error: 'Posto atribuído ao segurança não encontrado' });
+                return res.status(404).json({ error: 'Segurança atribuído ao posto não encontrado' });
             }
 
             postoSeguranca.set({
                 id_posto,
                 n_mec,
-                data_atualizacao: new Date(), // Adicionando a data de atualização
+                data_atualizacao: new Date(),
             });
 
             await postoSeguranca.save();
 
-            res.json({ message: 'Posto atribuído ao segurança atualizado com sucesso' });
+            res.json({ message: 'Segurança atribuído ao posto atualizado com sucesso' });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Erro ao atualizar o posto ao segurança' });
+            res.status(500).json({ error: 'Erro ao atualizar o segurança ao posto' });
         }
     },
 
@@ -82,17 +72,17 @@ module.exports = {
         const postoSegurancaId = req.params.postoSegurancaId;
 
         try {
-            const postoSeguranca = await postoSegurancaModel.findByPk(postoSegurancaId);
+            const postoSeguranca = await postoSegurancasModel.findByPk(postoSegurancaId);
             if (!postoSeguranca) {
-                return res.status(404).json({ error: 'Posto atribuído ao segurança não encontrado' });
+                return res.status(404).json({ error: 'Segurança atribuído ao posto não encontrado' });
             }
 
             await postoSeguranca.destroy();
 
-            res.json({ message: 'Posto atribuído ao segurança excluído com sucesso' });
+            res.json({ message: 'Segurança atribuído ao posto excluído com sucesso' });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Erro ao excluir o posto atribuído ao segurança' });
+            res.status(500).json({ error: 'Erro ao excluir o segurança atribuído ao posto' });
         }
     }
 };
