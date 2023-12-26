@@ -4,7 +4,7 @@ const { postoSegurancaModel } = require('../../../models/index');
 module.exports = {
     async registerPostoSeguranca(req, res) {
         const { id_posto, segurancas } = req.body;
-        console.log(id_posto, segurancas)
+        console.log('Corpo da Requisição:', req.body);
     
         try {
             // Verifica se o id_posto e segurancas estão presentes na requisição
