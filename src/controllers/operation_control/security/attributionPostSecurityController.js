@@ -12,10 +12,10 @@ module.exports = {
 
             if (existingRecord) {
                 // Se existe, adicionar os novos n_mec a esse registro existente
-                await existingRecord.update({
-                    n_mec: [...existingRecord.n_mec, ...n_mec],
-                    data_atualizacao: new Date(),
-                });
+                existingRecord.n_mec = existingRecord.n_mec.concat(n_mec);
+                existingRecord.data_atualizacao = new Date();
+
+                await existingRecord.save();
 
                 res.status(201).json({ message: 'Seguranças atribuídos com sucesso ao posto existente' });
             } else {
