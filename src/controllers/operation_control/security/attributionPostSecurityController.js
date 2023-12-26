@@ -6,31 +6,31 @@ module.exports = {
 
         try {
             // Verificar se já existe um registro para o id_posto
-            const existingRecord = await postoSegurancaModel.findOne({
+            const existingRecord = await postoSegurancasModel.findOne({
                 where: { id_posto }
             });
 
             if (existingRecord) {
-                // Se existe, adicionar o novo n_mec a esse registro existente
+                // Se existe, adicionar os novos n_mec a esse registro existente
                 await existingRecord.update({
-                    n_mec: [...existingRecord.n_mec, n_mec],
+                    n_mec: [...existingRecord.n_mec, ...n_mec],
                     data_atualizacao: new Date(),
                 });
 
-                res.status(201).json({ message: 'Segurança atribuído com sucesso ao posto existente' });
+                res.status(201).json({ message: 'Seguranças atribuídos com sucesso ao posto existente' });
             } else {
                 // Se não existe, criar um novo registro
-                const newPostoSeguranca = await postoSegurancaModel.create({
+                const newPostoSeguranca = await postoSegurancasModel.create({
                     id_posto,
-                    n_mec: [n_mec], // Armazenar n_mec como uma lista
+                    n_mec,
                     data_registro: new Date(),
                 });
 
-                res.status(201).json({ message: 'Segurança atribuído com sucesso a um novo posto' });
+                res.status(201).json({ message: 'Seguranças atribuídos com sucesso a um novo posto' });
             }
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Erro ao atribuir o segurança ao posto' });
+            res.status(500).json({ error: 'Erro ao atribuir os seguranças ao posto' });
         }
     },
 
