@@ -1,11 +1,11 @@
-const { postoSegurancasModel } = require('../../../models/index');
+const { postoSegurancaModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSeguranca(req, res) {
         const { id_posto, n_mec } = req.body;
 
         try {
-            const newPostoSeguranca = await postoSegurancasModel.create({
+            const newPostoSeguranca = await postoSegurancaModel.create({
                 id_posto,
                 n_mec,
                 data_registro: new Date(),
@@ -20,7 +20,7 @@ module.exports = {
 
     async getAllPostosSegurancas(req, res) {
         try {
-            const postosSegurancas = await postoSegurancasModel.findAll();
+            const postosSegurancas = await postoSegurancaModel.findAll();
             res.json(postosSegurancas);
         } catch (error) {
             console.error(error);
@@ -32,7 +32,7 @@ module.exports = {
         const postoSegurancaId = req.params.postoSegurancaId;
 
         try {
-            const postoSeguranca = await postoSegurancasModel.findByPk(postoSegurancaId);
+            const postoSeguranca = await postoSegurancaModel.findByPk(postoSegurancaId);
             if (!postoSeguranca) {
                 return res.status(404).json({ error: 'Segurança do posto não encontrado' });
             }
@@ -48,7 +48,7 @@ module.exports = {
         const { id_posto, n_mec } = req.body;
 
         try {
-            const postoSeguranca = await postoSegurancasModel.findByPk(postoSegurancaId);
+            const postoSeguranca = await postoSegurancaModel.findByPk(postoSegurancaId);
             if (!postoSeguranca) {
                 return res.status(404).json({ error: 'Segurança atribuído ao posto não encontrado' });
             }
@@ -72,7 +72,7 @@ module.exports = {
         const postoSegurancaId = req.params.postoSegurancaId;
 
         try {
-            const postoSeguranca = await postoSegurancasModel.findByPk(postoSegurancaId);
+            const postoSeguranca = await postoSegurancaModel.findByPk(postoSegurancaId);
             if (!postoSeguranca) {
                 return res.status(404).json({ error: 'Segurança atribuído ao posto não encontrado' });
             }
