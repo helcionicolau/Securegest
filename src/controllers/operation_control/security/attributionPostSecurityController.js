@@ -6,7 +6,7 @@ module.exports = {
 
         try {
             // Verificar se já existe um registro para o id_posto
-            const existingRecord = await postoSegurancasModel.findOne({
+            const existingRecord = await postoSegurancaModel.findOne({
                 where: { id_posto }
             });
 
@@ -20,7 +20,7 @@ module.exports = {
                 res.status(201).json({ message: 'Segurança atribuído com sucesso ao posto existente' });
             } else {
                 // Se não existe, criar um novo registro
-                const newPostoSeguranca = await postoSegurancasModel.create({
+                const newPostoSeguranca = await postoSegurancaModel.create({
                     id_posto,
                     n_mec: [n_mec], // Armazenar n_mec como uma lista
                     data_registro: new Date(),
