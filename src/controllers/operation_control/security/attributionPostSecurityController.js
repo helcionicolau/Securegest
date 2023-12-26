@@ -12,7 +12,7 @@ module.exports = {
 
             if (existingRecord) {
                 // Se existe, adicionar os novos n_mec a esse registro existente
-                existingRecord.n_mec = existingRecord.n_mec.concat(n_mec);
+                existingRecord.n_mec = [...existingRecord.n_mec, ...[].concat(n_mec)];
                 existingRecord.data_atualizacao = new Date();
 
                 await existingRecord.save();
@@ -22,7 +22,7 @@ module.exports = {
                 // Se não existe, criar um novo registro
                 const newPostoSeguranca = await postoSegurancaModel.create({
                     id_posto,
-                    n_mec,
+                    n_mec: [].concat(n_mec), // Certifica-se de que n_mec é uma array
                     data_registro: new Date(),
                 });
 
