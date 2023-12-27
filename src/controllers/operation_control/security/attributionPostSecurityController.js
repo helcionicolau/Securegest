@@ -11,7 +11,7 @@ module.exports = {
 
                 // Criar um novo registro para cada par id_posto e n_mec
                 await postoSegurancaModel.create({
-                    id_posto,
+                    id_posto,   
                     n_mec,
                     data_registro: new Date()
                 });
