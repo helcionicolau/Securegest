@@ -113,6 +113,26 @@ module.exports = {
         const postoSegurancaId = req.params.postoSegurancaId;
 
         try {
+            // Verifica se o usuário é um supervisor cadastrado e está atribuído ao posto
+            const supervisorPosto = await postoSupervisorModel.findOne({
+                where: { id_usuario: req.userData.userId, id_posto: postoSeguranca.id_posto }
+            });
+
+            if (!supervisorPosto) {
+                // Verifica se o usuário é "SuperAdmin" ou "Admin"
+                const usuario = await userModel.findByPk(req.userData.userId);
+                if (!usuario) {
+                    return res.status(404).json({ error: 'Usuário não encontrado' });
+                }
+
+                const perfilId = usuario.id_perfil;
+
+                if (perfilId !== 3 && perfilId !== 4 && perfilId !== 6) {
+                    return res.status
+                        (403).json({ error: 'Acesso não autorizado. Apenas SuperAdmin, Admin ou Supervisor associado ao posto podem visualizar seguranças por ID.' });
+                }
+            }
+
             const postoSeguranca = await postoSegurancaModel.findByPk(postoSegurancaId);
             if (!postoSeguranca) {
                 return res.status(404).json({ error: 'Segurança do posto não encontrado' });
@@ -129,6 +149,25 @@ module.exports = {
         const { id_posto, n_mec } = req.body;
 
         try {
+            // Verifica se o usuário é um supervisor cadastrado e está atribuído ao posto
+            const supervisorPosto = await postoSupervisorModel.findOne({
+                where: { id_usuario: req.userData.userId, id_posto }
+            });
+
+            if (!supervisorPosto) {
+                // Verifica se o usuário é "SuperAdmin" ou "Admin"
+                const usuario = await userModel.findByPk(req.userData.userId);
+                if (!usuario) {
+                    return res.status(404).json({ error: 'Usuário não encontrado' });
+                }
+
+                const perfilId = usuario.id_perfil;
+
+                if (perfilId !== 3 && perfilId !== 4 && perfilId !== 6) {
+                    return res.status(403).json({ error: 'Acesso não autorizado. Apenas SuperAdmin, Admin ou Supervisor associado ao posto podem atualizar seguranças.' });
+                }
+            }
+
             const postoSeguranca = await postoSegurancaModel.findByPk(postoSegurancaId);
             if (!postoSeguranca) {
                 return res.status(404).json({ error: 'Segurança atribuído ao posto não encontrado' });
@@ -153,6 +192,25 @@ module.exports = {
         const postoSegurancaId = req.params.postoSegurancaId;
 
         try {
+            // Verifica se o usuário é um supervisor cadastrado e está atribuído ao posto
+            const supervisorPosto = await postoSupervisorModel.findOne({
+                where: { id_usuario: req.userData.userId, id_posto: postoSeguranca.id_posto }
+            });
+
+            if (!supervisorPosto) {
+                // Verifica se o usuário é "SuperAdmin" ou "Admin"
+                const usuario = await userModel.findByPk(req.userData.userId);
+                if (!usuario) {
+                    return res.status(404).json({ error: 'Usuário não encontrado' });
+                }
+
+                const perfilId = usuario.id_perfil;
+
+                if (perfilId !== 3 && perfilId !== 4 && perfilId !== 6) {
+                    return res.status(403).json({ error: 'Acesso não autorizado. Apenas SuperAdmin, Admin ou Supervisor associado ao posto podem excluir seguranças.' });
+                }
+            }
+
             const postoSeguranca = await postoSegurancaModel.findByPk(postoSegurancaId);
             if (!postoSeguranca) {
                 return res.status(404).json({ error: 'Segurança atribuído ao posto não encontrado' });
@@ -165,5 +223,5 @@ module.exports = {
             console.error(error);
             res.status(500).json({ error: 'Erro ao excluir o segurança atribuído ao posto' });
         }
-    }
+    },
 };
