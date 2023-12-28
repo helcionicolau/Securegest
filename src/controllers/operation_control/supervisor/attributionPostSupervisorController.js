@@ -6,25 +6,19 @@ module.exports = {
         const { id_usuario, id_posto } = req.body;
 
         try {
-            // Verifica se o usuário é um supervisor cadastrado
-            const supervisor = await postoSupervisorModel.findOne({
-                where: { id_usuario: req.userData.userId }
-            });
-
-            if (!supervisor) {
-                // Verifica se o usuário é "SuperAdmin" ou "Admin"
-                const usuario = await userModel.findByPk(req.userData.userId);
-                if (!usuario) {
-                    return res.status(404).json({ error: 'Usuário não encontrado' });
-                }
-
-                const perfilId = usuario.id_perfil;
-
-                if (perfilId !== 3 && perfilId !== 4 && perfilId !== 6) {
-                    return res.status(403).json({ error: 'Acesso não autorizado. Apenas SuperAdmin ou Admin podem atribuir postos a supervisores.' });
-                }
+            // Verifica se o usuário é "SuperAdmin" ou "Admin"
+            const usuario = await userModel.findByPk(req.userData.userId);
+            if (!usuario) {
+                return res.status(404).json({ error: 'Usuário não encontrado' });
             }
 
+            const perfilId = usuario.id_perfil;
+
+            if (perfilId !== 3 && perfilId !== 4) {
+                return res.status(403).json({ error: 'Acesso não autorizado. Apenas SuperAdmin ou Admin podem atribuir postos a supervisores.' });
+            }
+
+            // Restante do código para registrar o supervisor
             const newSupervisorPosto = await postoSupervisorModel.create({
                 id_usuario,
                 id_posto,
