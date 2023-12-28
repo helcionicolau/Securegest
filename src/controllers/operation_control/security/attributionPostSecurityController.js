@@ -20,7 +20,7 @@ module.exports = {
 
                 const perfilId = usuario.id_perfil;
 
-                if (perfilId !== 3 && perfilId !== 4) {
+                if (perfilId !== 3 && perfilId !== 4 && perfilId !== 6) {
                     return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores, SuperAdmin ou Admin podem registrar seguranças.' });
                 }
             }
