@@ -23,20 +23,20 @@ module.exports = {
                 if (perfilId !== 3 && perfilId !== 4 && perfilId !== 6) {
                     return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores, SuperAdmin ou Admin podem registrar seguranças.' });
                 }
-            }
-
-            // Iterar sobre cada objeto no array
-            for (const record of data) {
-                const { id_posto, n_mec } = record;
-
+            } else {
                 // Verifica se o supervisor está atribuído ao posto
                 const supervisorPosto = await postoSupervisorModel.findOne({
-                    where: { id_usuario: userId, id_posto }
+                    where: { id_usuario: userId, id_posto: data[0].id_posto }
                 });
 
                 if (!supervisorPosto) {
                     return res.status(403).json({ error: 'Acesso não autorizado. O supervisor não está atribuído a este posto.' });
                 }
+            }
+
+            // Iterar sobre cada objeto no array
+            for (const record of data) {
+                const { id_posto, n_mec } = record;
 
                 // Verifica se o n_mec já existe na tabela postoSegurancaModel
                 const existeMec = await postoSegurancaModel.findOne({
