@@ -48,7 +48,7 @@ module.exports = {
 
             const perfilId = usuario.id_perfil;
 
-            if (perfilId !== 3 && perfilId !== 4 && perfilId !== 6) {
+            if (perfilId !== 3 && perfilId !== 4) {
                 return res.status(403).json({ error: 'Acesso não autorizado. Apenas SuperAdmin ou Admin podem visualizar postos atribuídos a supervisores.' });
             }
 
