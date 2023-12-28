@@ -42,12 +42,11 @@ module.exports = {
         try {
             // Verificar se o usuário tem o perfil de Supervisor, SuperAdmin ou Admin
             const allowedProfiles = ['Supervisor', 'SuperAdmin', 'Admin'];
-            const user = await userModel.findOne({
-                where: { id_usuario: userId },
-                include: [{ model: userProfileModel, attributes: ['nome'] }]
+            const user = await userModel.findByPk(userId, {
+                include: [{ model: userProfileModel, as: 'perfil' }]
             });
 
-            if (!user || !allowedProfiles.includes(user.user_profile.nome)) {
+            if (!user || !user.perfil || !allowedProfiles.includes(user.perfil.nome)) {
                 return res.status(403).json({ error: 'Acesso não autorizado. Perfis permitidos: Supervisor, SuperAdmin, Admin' });
             }
 
