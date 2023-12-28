@@ -1,4 +1,4 @@
-const { postoSegurancaModel, postoSupervisorModel, userModel, userProfileModel } = require('../../../models/index');
+const { postoSegurancaModel, postoSupervisorModel, userModel, userProfileModel, postModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSeguranca(req, res) {
@@ -45,6 +45,21 @@ module.exports = {
 
                 if (existeMec) {
                     return res.status(400).json({ error: `O n_mec ${n_mec} já está registrado.` });
+                }
+
+                // Verifica o limite de seguranças permitido para o posto
+                const posto = await postModel.findByPk(id_posto);
+                if (!posto) {
+                    return res.status(404).json({ error: 'Posto não encontrado' });
+                }
+
+                // Verifica se o número de seguranças já atingiu o limite
+                const segurancasRegistrados = await postoSegurancaModel.count({
+                    where: { id_posto }
+                });
+
+                if (segurancasRegistrados >= posto.n_operadores) {
+                    return res.status(403).json({ error: 'Limite de seguranças atingido para este posto.' });
                 }
 
                 // Criar um novo registro para cada par id_posto e n_mec
