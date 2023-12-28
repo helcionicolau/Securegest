@@ -1,32 +1,25 @@
-const { postoSegurancaModel, postoSupervisorModel } = require('../../../models/index');
+const { postoSegurancaModel, postoSupervisorModel, userModel, userProfileModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSeguranca(req, res) {
         const data = req.body;
-        const supervisorId = req.userData.userId;
+        const userId = req.userData.userId;
 
         try {
-            // Verifica se o usuário é um supervisor cadastrado
-            const supervisor = await postoSupervisorModel.findOne({
-                where: { id_usuario: supervisorId }
+            // Verificar se o usuário tem o perfil de Supervisor, SuperAdmin ou Admin
+            const allowedProfiles = ['Supervisor', 'SuperAdmin', 'Admin'];
+            const user = await userModel.findOne({
+                where: { id_usuario: userId },
+                include: [{ model: userProfileModel, attributes: ['nome'] }]
             });
 
-            if (!supervisor) {
-                return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores podem registrar seguranças.' });
+            if (!user || !allowedProfiles.includes(user.user_profile.nome)) {
+                return res.status(403).json({ error: 'Acesso não autorizado. Perfis permitidos: Supervisor, SuperAdmin, Admin' });
             }
 
             // Iterar sobre cada objeto no array
             for (const record of data) {
                 const { id_posto, n_mec } = record;
-
-                // Verifica se o supervisor está atribuído ao posto
-                const supervisorPosto = await postoSupervisorModel.findOne({
-                    where: { id_usuario: supervisorId, id_posto }
-                });
-
-                if (!supervisorPosto) {
-                    return res.status(403).json({ error: 'Acesso não autorizado. O supervisor não está atribuído a este posto.' });
-                }
 
                 // Criar um novo registro para cada par id_posto e n_mec
                 await postoSegurancaModel.create({
