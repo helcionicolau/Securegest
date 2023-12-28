@@ -3,16 +3,26 @@ const { postoSegurancaModel, postoSupervisorModel, userModel, userProfileModel }
 module.exports = {
     async registerPostoSeguranca(req, res) {
         const data = req.body;
-        const supervisorId = req.userData.userId;
+        const userId = req.userData.userId;
 
         try {
             // Verifica se o usuário é um supervisor cadastrado
             const supervisor = await postoSupervisorModel.findOne({
-                where: { id_usuario: supervisorId }
+                where: { id_usuario: userId }
             });
 
             if (!supervisor) {
-                return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores podem registrar seguranças.' });
+                // Verifica se o usuário é "SuperAdmin" ou "Admin"
+                const usuario = await userModel.findByPk(userId);
+                if (!usuario) {
+                    return res.status(404).json({ error: 'Usuário não encontrado' });
+                }
+
+                const perfilId = usuario.id_perfil;
+
+                if (perfilId !== 3 && perfilId !== 4) {
+                    return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores, SuperAdmin ou Admin podem registrar seguranças.' });
+                }
             }
 
             // Iterar sobre cada objeto no array
@@ -21,7 +31,7 @@ module.exports = {
 
                 // Verifica se o supervisor está atribuído ao posto
                 const supervisorPosto = await postoSupervisorModel.findOne({
-                    where: { id_usuario: supervisorId, id_posto }
+                    where: { id_usuario: userId, id_posto }
                 });
 
                 if (!supervisorPosto) {
@@ -43,17 +53,28 @@ module.exports = {
         }
     },
 
+
     async getAllPostosSegurancas(req, res) {
-        const supervisorId = req.userData.userId; // Obtém o ID do usuário supervisor a partir do token
+        const userId = req.userData.userId;
 
         try {
             // Verifica se o usuário é um supervisor cadastrado
             const supervisor = await postoSupervisorModel.findOne({
-                where: { id_usuario: supervisorId }
+                where: { id_usuario: userId }
             });
 
             if (!supervisor) {
-                return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores podem visualizar seguranças.' });
+                // Verifica se o usuário é "SuperAdmin" ou "Admin"
+                const usuario = await userModel.findByPk(userId);
+                if (!usuario) {
+                    return res.status(404).json({ error: 'Usuário não encontrado' });
+                }
+
+                const perfilId = usuario.id_perfil;
+
+                if (perfilId !== 3 && perfilId !== 4 && perfilId !== 6) {
+                    return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores, SuperAdmin ou Admin podem visualizar seguranças.' });
+                }
             }
 
             const postosSegurancas = await postoSegurancaModel.findAll();
