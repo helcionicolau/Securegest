@@ -38,6 +38,15 @@ module.exports = {
                     return res.status(403).json({ error: 'Acesso não autorizado. O supervisor não está atribuído a este posto.' });
                 }
 
+                // Verifica se o n_mec já existe na tabela postoSegurancaModel
+                const existeMec = await postoSegurancaModel.findOne({
+                    where: { n_mec }
+                });
+
+                if (existeMec) {
+                    return res.status(400).json({ error: `O n_mec ${n_mec} já está registrado.` });
+                }
+
                 // Criar um novo registro para cada par id_posto e n_mec
                 await postoSegurancaModel.create({
                     id_posto,
