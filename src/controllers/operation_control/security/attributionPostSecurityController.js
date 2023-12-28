@@ -3,11 +3,30 @@ const { postoSegurancaModel } = require('../../../models/index');
 module.exports = {
     async registerPostoSeguranca(req, res) {
         const data = req.body;
+        const supervisorId = req.userData.userId;
 
         try {
+            // Verifica se o usuário é um supervisor cadastrado
+            const supervisor = await postoSupervisorModel.findOne({
+                where: { id_usuario: supervisorId }
+            });
+
+            if (!supervisor) {
+                return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores podem registrar seguranças.' });
+            }
+
             // Iterar sobre cada objeto no array
             for (const record of data) {
                 const { id_posto, n_mec } = record;
+
+                // Verifica se o supervisor está atribuído ao posto
+                const supervisorPosto = await postoSupervisorModel.findOne({
+                    where: { id_usuario: supervisorId, id_posto }
+                });
+
+                if (!supervisorPosto) {
+                    return res.status(403).json({ error: 'Acesso não autorizado. O supervisor não está atribuído a este posto.' });
+                }
 
                 // Criar um novo registro para cada par id_posto e n_mec
                 await postoSegurancaModel.create({

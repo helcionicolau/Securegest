@@ -2,45 +2,30 @@ const { postoSupervisorModel } = require('../../../models/index');
 const { userModel, userProfileModel } = require('../../../models/index');
 
 module.exports = {
-    async registerPostoSeguranca(req, res) {
-        const data = req.body;
-        const supervisorId = req.userData.userId;
+    async registerPostoSupervisor(req, res) {
+        const { id_usuario, id_posto } = req.body;
 
         try {
-            // Verifica se o usuário é um supervisor cadastrado
-            const supervisor = await postoSupervisorModel.findOne({
-                where: { id_usuario: supervisorId }
+            const newSupervisorPosto = await postoSupervisorModel.create({
+                id_usuario,
+                id_posto,
+                data_registro: new Date(), // Adicionando a data de registro
             });
 
-            if (!supervisor) {
-                return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores podem registrar seguranças.' });
-            }
-
-            // Iterar sobre cada objeto no array
-            for (const record of data) {
-                const { id_posto, n_mec } = record;
-
-                // Verifica se o supervisor está atribuído ao posto
-                const supervisorPosto = await postoSupervisorModel.findOne({
-                    where: { id_usuario: supervisorId, id_posto }
-                });
-
-                if (!supervisorPosto) {
-                    return res.status(403).json({ error: 'Acesso não autorizado. O supervisor não está atribuído a este posto.' });
-                }
-
-                // Criar um novo registro para cada par id_posto e n_mec
-                await postoSegurancaModel.create({
-                    id_posto,
-                    n_mec,
-                    data_registro: new Date()
-                });
-            }
-
-            res.status(201).json({ message: 'Seguranças atribuídos com sucesso aos postos' });
+            res.status(201).json({ message: 'Posto atribuído com sucesso ao supervisor' });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Erro ao atribuir os seguranças aos postos' });
+            res.status(500).json({ error: 'Erro ao atribuir o posto ao supervisor' });
+        }
+    },
+
+    async getAllPostosSupervisores(req, res) {
+        try {
+            const postosSupervisor = await postoSupervisorModel.findAll();
+            res.json(postosSupervisor);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Erro ao buscar postos atribuídos aos supervisores' });
         }
     },
 
@@ -128,4 +113,5 @@ module.exports = {
     }
 };
 
+// Adicione outras operações relacionadas ao departamento aqui, se necessário
 // Created by António Baptista #(24/08/2023)
