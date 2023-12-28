@@ -1,4 +1,4 @@
-const { postoSegurancaModel } = require('../../../models/index');
+const { postoSegurancaModel, postoSupervisorModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSeguranca(req, res) {
