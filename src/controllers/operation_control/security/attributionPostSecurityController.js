@@ -37,16 +37,18 @@ module.exports = {
     },
 
     async getAllPostosSegurancas(req, res) {
-        const supervisorId = req.userData.userId; // Obtém o ID do usuário supervisor a partir do token
+        const userId = req.userData.userId; // Obtém o ID do usuário a partir do token
 
         try {
-            // Verifica se o usuário é um supervisor cadastrado
-            const supervisor = await postoSupervisorModel.findOne({
-                where: { id_usuario: supervisorId }
+            // Verificar se o usuário tem o perfil de Supervisor, SuperAdmin ou Admin
+            const allowedProfiles = ['Supervisor', 'SuperAdmin', 'Admin'];
+            const user = await userModel.findOne({
+                where: { id_usuario: userId },
+                include: [{ model: userProfileModel, attributes: ['nome'] }]
             });
 
-            if (!supervisor) {
-                return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores podem visualizar seguranças.' });
+            if (!user || !allowedProfiles.includes(user.user_profile.nome)) {
+                return res.status(403).json({ error: 'Acesso não autorizado. Perfis permitidos: Supervisor, SuperAdmin, Admin' });
             }
 
             const postosSegurancas = await postoSegurancaModel.findAll();
