@@ -30,7 +30,7 @@ module.exports = {
 
                 // Criar um novo registro para cada par id_posto e n_mec
                 await postoSegurancaModel.create({
-                    id_posto,   
+                    id_posto,
                     n_mec,
                     data_registro: new Date()
                 });
@@ -44,7 +44,18 @@ module.exports = {
     },
 
     async getAllPostosSegurancas(req, res) {
+        const supervisorId = req.userData.userId; // Obtém o ID do usuário supervisor a partir do token
+
         try {
+            // Verifica se o usuário é um supervisor cadastrado
+            const supervisor = await postoSupervisorModel.findOne({
+                where: { id_usuario: supervisorId }
+            });
+
+            if (!supervisor) {
+                return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores podem visualizar seguranças.' });
+            }
+
             const postosSegurancas = await postoSegurancaModel.findAll();
             res.json(postosSegurancas);
         } catch (error) {
