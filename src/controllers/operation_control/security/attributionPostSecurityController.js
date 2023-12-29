@@ -1,4 +1,4 @@
-const { postoSegurancaModel, postoSupervisorModel, userModel, userProfileModel, postModel } = require('../../../models/index');
+const { postoSegurancaModel, postoSupervisorModel, userModel, userProfileModel, postModel, employeesModel } = require('../../../models/index');
 
 module.exports = {
     async registerPostoSeguranca(req, res) {
@@ -106,6 +106,30 @@ module.exports = {
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Erro ao buscar seguranças atribuídos aos postos' });
+        }
+    },
+
+    async getAllSegurancaFuncionarios(req, res) {
+        try {
+            const segurancaProfile = await employeesModel.findOne({
+                where: { cargo: 'Seguranca' },
+                attributes: ['n_mec'],
+            });
+
+            if (!segurancaProfile) {
+                return res.status(404).json({ error: 'Segurança não encontrado' });
+            }
+
+            const segurancaFuncionarios = await employeesModel.findAll({
+                where: {
+                    id_perfil: segurancaProfile.id_perfil,
+                },
+            });
+
+            res.json(segurancaFuncionarios);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Erro ao buscar funcionários com cargo de Segurança' });
         }
     },
 
