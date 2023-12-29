@@ -122,7 +122,7 @@ module.exports = {
 
             const segurancaFuncionarios = await employeesModel.findAll({
                 where: {
-                    id_perfil: segurancaProfile.id_perfil,
+                    n_mec: segurancaProfile.n_mec,
                 },
             });
 
