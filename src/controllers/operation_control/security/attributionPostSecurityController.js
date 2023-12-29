@@ -111,20 +111,13 @@ module.exports = {
 
     async getAllSegurancaFuncionarios(req, res) {
         try {
-            const segurancaProfile = await employeesModel.findOne({
-                where: { cargo: 'Seguranca' },
-                attributes: ['n_mec'],
-            });
-
-            if (!segurancaProfile) {
-                return res.status(404).json({ error: 'Segurança não encontrado' });
-            }
-
             const segurancaFuncionarios = await employeesModel.findAll({
-                where: {
-                    n_mec: segurancaProfile.n_mec,
-                },
+                where: { cargo: 'Seguranca' },
             });
+
+            if (!segurancaFuncionarios || segurancaFuncionarios.length === 0) {
+                return res.status(404).json({ error: 'Nenhum funcionário com cargo de Segurança encontrado' });
+            }
 
             res.json(segurancaFuncionarios);
         } catch (error) {
