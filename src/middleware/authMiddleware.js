@@ -1,5 +1,16 @@
 const jwt = require('jsonwebtoken');
 
+// Função para verificar as permissões
+const checkPermissions = (allowedRoles) => (req, res, next) => {
+  const { id_perfil } = req.userData;
+
+  if (allowedRoles.includes(id_perfil)) {
+    next();
+  } else {
+    res.status(403).json({ error: 'Acesso não autorizado' });
+  }
+};
+
 module.exports = {
   authenticateUserMiddleware: (req, res, next) => {
     try {
@@ -27,23 +38,16 @@ module.exports = {
         scope: decodedToken.scope
       };
 
-      next();
+      // Chamada para verificar as permissões
+      checkPermissions([3, 4])(req, res, next);
     } catch (error) {
       console.error(error);
       return res.status(401).json({ error: 'Autenticação falhou' });
     }
-    checkPermissions([3, 4])(req, res, next);
   },
 
-  checkPermissions: (allowedRoles) => (req, res, next) => {
-    const { id_perfil } = req.userData;
-
-    if (allowedRoles.includes(id_perfil)) {
-      next();
-    } else {
-      res.status(403).json({ error: 'Acesso não autorizado' });
-    }
-  },
+  // Exporte a função de verificação de permissões para ser utilizada em outros lugares se necessário
+  checkPermissions,
 };
 
 // Created by António Baptista #(24/08/2023)
