@@ -1,35 +1,31 @@
 const { postoSupervisorModel } = require('../../../models/index');
 const { userModel, userProfileModel } = require('../../../models/index');
-const checkPermissions = require('../../../middleware/authMiddleware').checkPermissions;
 
 module.exports = {
     async registerPostoSupervisor(req, res) {
         const { id_usuario, id_posto } = req.body;
 
         try {
-            checkPermissions([3, 4])(req, res, async () => {
-                // Verifica se o usuário é "SuperAdmin" ou "Admin"
-                const usuario = await userModel.findByPk(req.userData.userId);
-                if (!usuario) {
-                    return res.status(404).json({ error: 'Usuário não encontrado' });
-                }
+            // Verifica se o usuário é "SuperAdmin" ou "Admin"
+            const usuario = await userModel.findByPk(req.userData.userId);
+            if (!usuario) {
+                return res.status(404).json({ error: 'Usuário não encontrado' });
+            }
 
-                const perfilId = usuario.id_perfil;
+            const perfilId = usuario.id_perfil;
 
-                if (perfilId !== 3 && perfilId !== 4) {
-                    return res.status(403).json({ error: 'Acesso não autorizado. Apenas SuperAdmin ou Admin podem atribuir postos a supervisores.' });
-                }
+            if (perfilId !== 3 && perfilId !== 4) {
+                return res.status(403).json({ error: 'Acesso não autorizado. Apenas SuperAdmin ou Admin podem atribuir postos a supervisores.' });
+            }
 
-                // Restante do código para registrar o supervisor
-                const newSupervisorPosto = await postoSupervisorModel.create({
-                    id_usuario,
-                    id_posto,
-                    data_registro: new Date(), // Adicionando a data de registro
-                });
-
-                res.status(201).json({ message: 'Posto atribuído com sucesso ao supervisor' });
-
+            // Restante do código para registrar o supervisor
+            const newSupervisorPosto = await postoSupervisorModel.create({
+                id_usuario,
+                id_posto,
+                data_registro: new Date(), // Adicionando a data de registro
             });
+
+            res.status(201).json({ message: 'Posto atribuído com sucesso ao supervisor' });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Erro ao atribuir o posto ao supervisor' });
