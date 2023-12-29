@@ -32,7 +32,18 @@ module.exports = {
       console.error(error);
       return res.status(401).json({ error: 'Autenticação falhou' });
     }
-  }
+    checkPermissions([3, 4])(req, res, next);
+  },
+
+  checkPermissions: (allowedRoles) => (req, res, next) => {
+    const { id_perfil } = req.userData;
+
+    if (allowedRoles.includes(id_perfil)) {
+      next();
+    } else {
+      res.status(403).json({ error: 'Acesso não autorizado' });
+    }
+  },
 };
 
 // Created by António Baptista #(24/08/2023)
