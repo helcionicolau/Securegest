@@ -101,27 +101,15 @@ module.exports = {
                 }
             } else {
                 // Se for um supervisor, verifica se o supervisor está atribuído ao posto específico
-                const usuario = await userModel.findByPk(userId);
-                if (!usuario) {
-                    return res.status(404).json({ error: 'Usuário não encontrado' });
+                if (!supervisor.id_posto) {
+                    return res.status(403).json({ error: 'Acesso não autorizado. Supervisor não atribuído a um posto específico.' });
                 }
 
-                const postoDoUsuario = usuario.id_posto;
+                // Busca todos os postos de segurança
+                const postosSegurancas = await postoSegurancaModel.findAll({
+                    where: { id_posto: supervisor.id_posto }
+                });
 
-                if (!postoDoUsuario || postoDoUsuario !== supervisor.id_posto) {
-                    return res.status(403).json({ error: 'Acesso não autorizado. Você não está atribuído a este posto.' });
-                }
-            }
-
-            // Busca todos os postos de segurança
-            const postosSegurancas = await postoSegurancaModel.findAll();
-
-            // Se o usuário for um supervisor, filtra os postos permitidos
-            if (supervisor) {
-                const postosPermitidos = postosSegurancas.filter(posto => supervisor.id_posto === posto.id_posto);
-                res.json(postosPermitidos);
-            } else {
-                // Se não for um supervisor, retorna todos os postos de segurança
                 res.json(postosSegurancas);
             }
         } catch (error) {
