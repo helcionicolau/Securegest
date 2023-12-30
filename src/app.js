@@ -12,7 +12,14 @@ db.conexaoautenticao();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  optionsSuccessStatus: 204,
+  credentials: true,
+}));
+
 
 app.use(
   express.json(), routes, express.urlencoded({ extended: false })
