@@ -100,12 +100,15 @@ module.exports = {
                     return res.status(403).json({ error: 'Acesso não autorizado. Apenas supervisores, SuperAdmin ou Admin podem visualizar seguranças.' });
                 }
             } else {
-                // Se for um supervisor, verifica se o supervisor está atribuído ao posto
-                const postoAtribuido = await postoSupervisorModel.findOne({
-                    where: { id_usuario: userId, id_posto: supervisor.id_posto }
-                });
+                // Se for um supervisor, verifica se o supervisor está atribuído ao posto específico
+                const usuario = await userModel.findByPk(userId);
+                if (!usuario) {
+                    return res.status(404).json({ error: 'Usuário não encontrado' });
+                }
 
-                if (!postoAtribuido) {
+                const postoDoUsuario = usuario.id_posto;
+
+                if (!postoDoUsuario || postoDoUsuario !== supervisor.id_posto) {
                     return res.status(403).json({ error: 'Acesso não autorizado. Você não está atribuído a este posto.' });
                 }
             }
@@ -115,7 +118,7 @@ module.exports = {
 
             // Se o usuário for um supervisor, filtra os postos permitidos
             if (supervisor) {
-                const postosPermitidos = postosSegurancas.filter(posto => supervisor.id_posto === postoSupervisorModel.id_posto);
+                const postosPermitidos = postosSegurancas.filter(posto => supervisor.id_posto === posto.id_posto);
                 res.json(postosPermitidos);
             } else {
                 // Se não for um supervisor, retorna todos os postos de segurança
