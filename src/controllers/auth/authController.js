@@ -4,7 +4,7 @@ const User = require('../../models/user/User');
 const Logout = require('../../models/auth/Auth');
 
 const JWT_KEY = process.env.JWT_KEY || "whoami";
-const TOKEN_EXPIRATION = '24h'; // Tempo de expiração de 24 horas
+const TOKEN_EXPIRATION = '1h'; // Tempo de expiração de 1 horas
 // const TOKEN_EXPIRATION = '180s'; // Tempo de expiração de 3 minutos
 
 const ERROR_INVALID_CREDENTIALS = 'Credenciais inválidas';
