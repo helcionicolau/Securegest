@@ -115,7 +115,7 @@ module.exports = {
 
             // Se o usuário for um supervisor, filtra os postos permitidos
             if (supervisor) {
-                const postosPermitidos = postosSegurancas.filter(posto => supervisor.id_posto === posto.id_posto);
+                const postosPermitidos = postosSegurancas.filter(posto => supervisor.id_posto === postoSupervisorModel.id_posto);
                 res.json(postosPermitidos);
             } else {
                 // Se não for um supervisor, retorna todos os postos de segurança
