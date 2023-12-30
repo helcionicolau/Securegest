@@ -25,20 +25,22 @@ app.use(
   express.json(), routes, express.urlencoded({ extended: false })
 );
 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 app.use((req, res, next) => {
+  console.log('Request received:', req.method, req.url);
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
   if (req.method === 'OPTIONS') {
+    console.log('Options request received');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
     return res.status(200).send({});
   }
 
   next();
 });
+
 
 
 app.use((req, res, next) => {
