@@ -108,6 +108,22 @@ module.exports = {
     }
   },
 
+  async getFuncionariosByN_MEC(req, res) {
+    const n_mecId = req.params.n_mecId;
+    try {
+      const funcionarios = await employeesModel.findAll({
+        where: {
+          n_mec: n_mecId,
+        },
+      });
+
+      res.json(funcionarios);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar funcionários por n_mec' });
+    }
+  },
+
   async updateFuncionario(req, res) {
     const funcionarioId = req.params.funcionarioId;
 
