@@ -13,14 +13,11 @@ const employeeVacationRoutes = require('./rh/employee_vacations/employeeVacation
 const clientRoutes = require('./business_diretion/clients/clientsRoute');
 const projectRoutes = require('./general_direction/projects/projectsRoute');
 const taskRoutes = require('./general_direction/tasks/tasksRoute');
-const employeeTaskRoutes = require('./general_direction/employee_tasks/employeeTasksRoute');
 const areaRoutes = require('./business_diretion/area/areasRoute');
 const logisticRoutes = require('./business_diretion/logistic/logisticsRoute');
 const postRoutes = require('./business_diretion/post/postsRoute');
 const providerRoutes = require('./business_diretion/provider/providersRoute');
 const zoneRoutes = require('./business_diretion/zone/zonesRoute');
-const postoSupervisorRoutes = require('./operation_control/supervisor/attributionPostSupervisorsRoute');
-const postoSecurityRoutes = require('./operation_control/security/attributionPostSecuritiesRoute');
 
 const router = express.Router();
 
@@ -38,14 +35,11 @@ router.use('/employeeVacations', employeeVacationRoutes);
 router.use('/clients', clientRoutes);
 router.use('/projects', projectRoutes);
 router.use('/tasks', taskRoutes);
-router.use('/employee_tasks', employeeTaskRoutes);
 router.use('/area', areaRoutes);
 router.use('/logistic', logisticRoutes);
 router.use('/post', postRoutes);
 router.use('/provider', providerRoutes);
 router.use('/zone', zoneRoutes);
-router.use('/post_supervisor', postoSupervisorRoutes);
-router.use('/post_security', postoSecurityRoutes);
 
 module.exports = router;
 

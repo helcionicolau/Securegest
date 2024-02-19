@@ -1,17 +1,12 @@
 const db = require("../../../utils/sequelize");
 const { DataTypes } = require("sequelize");
 
-module.exports = db.define('tarefas', {
-  id_tarefa: {
+module.exports = db.define('tarefa_departamento_funcionario', {
+    id_tdf: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
-    field: "id_tarefa"
-  },
-  nome: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    field: "nome"
+    field: "id_tdf"
   },
   descricao: {
     type: DataTypes.TEXT,
@@ -34,16 +29,16 @@ module.exports = db.define('tarefas', {
     type: DataTypes.STRING,
     field: "progresso"
   },
-  id_projeto: {
+  id_tarefa: {
     type: DataTypes.INTEGER,
-    field: "id_projeto"
+    field: "id_tarefa"
   },
-  id_departamento: {
+  id_funcionario: {
     type: DataTypes.INTEGER,
-    field: "id_departamento"
+    field: "id_funcionario"
   },
 }, {
-  tableName: "tarefas"
+  tableName: "tarefa_departamento_funcionario"
 });
    
 // Created by António Baptista #(24/08/2023)

@@ -1,15 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const postoController = require('../../../controllers/business_diretion/post/postController');
-const authMiddleware = require('../../../middleware/authMiddleware');
+const postoController = require('../../../controllers/business_diretion/post/postController.js');
+const authMiddleware = require('../../../middleware/authMiddleware.js');
 
-// Rotas para o CRUD de postos
-router.post('/register', authMiddleware.authenticateUserMiddleware, postoController.registerPosto);
+// Rotas para o CRUD de posto
+router.post('/', authMiddleware.authenticateUserMiddleware, postoController.registerPosto);
 router.get('/', authMiddleware.authenticateUserMiddleware, postoController.getAllPostos);
 router.get('/:postoId', authMiddleware.authenticateUserMiddleware, postoController.getPostoById);
+router.get('/posicao/:posicaoId', authMiddleware.authenticateUserMiddleware, postoController.getPostosByPosicaoId);
 router.put('/:postoId', authMiddleware.authenticateUserMiddleware, postoController.updatePosto);
 router.delete('/:postoId', authMiddleware.authenticateUserMiddleware, postoController.deletePosto);
 
 module.exports = router;
-
-// Created by António Baptista #(24/08/2023)

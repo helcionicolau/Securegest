@@ -1,5 +1,4 @@
 const authModel = require("./auth/Auth");
-const employee_tasksModel = require("./general_diretion/employee_tasks/employeeTask");
 const projectsModel = require("./general_diretion/projects/Project");
 const tasksModel = require("./general_diretion/tasks/Task");
 const clientsModel = require("./business_diretion/clients/Client");
@@ -16,10 +15,11 @@ const userProfileModel = require("./user/userProfile");
 const areaModel = require("./business_diretion/area/Area");
 const logisticModel = require("./business_diretion/logistic/Logistic");
 const postModel = require("./business_diretion/post/Post");
+const positionModel = require("./business_diretion/position/Position");
 const zoneModel = require("./business_diretion/zone/Zone");
 const providerModel = require("./business_diretion/provider/Provider");
-const postoSupervisorModel = require("./operation_control/supervisor/attributionPostSupervisor");
-const postoSegurancaModel = require("./operation_control/security/attributionPostSecurity"); 
+const operatorModel = require("./operation_control/operator/Operator");
+const taskDepartEmploModel = require("./general_diretion/tasks/taskDepartmentEmployee");
 
 
 authModel.hasMany(authModel, {
@@ -27,20 +27,19 @@ authModel.hasMany(authModel, {
     foreignKey: "id"
 });
 
-employee_tasksModel.hasMany(employee_tasksModel, {
-    construent: true,
-    foreignKey: "id_ft"
-});
-
 projectsModel.hasMany(projectsModel, {
     construent: true,
     foreignKey: "id_projeto"
 });
 
-
 tasksModel.hasMany(tasksModel, {
     construent: true,
     foreignKey: "id_tarefa"
+});
+
+taskDepartEmploModel.hasMany(taskDepartEmploModel, {
+    construent: true,
+    foreignKey: "id_tdf"
 });
 
 clientsModel.hasMany(clientsModel, {
@@ -113,6 +112,11 @@ postModel.hasMany(postModel, {
     foreignKey: "id_posto"
 });
 
+positionModel.hasMany(positionModel, {
+    construent: true,
+    foreignKey: "id_posicao"
+});
+
 zoneModel.hasMany(zoneModel, {
     construent: true,
     foreignKey: "id_zona"
@@ -123,21 +127,16 @@ providerModel.hasMany(providerModel, {
     foreignKey: "id_provedora"
 });
 
-postoSupervisorModel.hasMany(postoSupervisorModel, {
+operatorModel.hasMany(operatorModel, {
     construent: true,
-    foreignKey: "id_ps"
-});
-
-postoSegurancaModel.hasMany(postoSegurancaModel, {
-    construent: true,
-    foreignKey: "id_pss"
+    foreignKey: "id_operador"
 });
 
 module.exports = {
     authModel,
-    employee_tasksModel,
     projectsModel,
     tasksModel,
+    taskDepartEmploModel,
     clientsModel,
     departamentsModel,
     employee_leavesModel,
@@ -152,8 +151,8 @@ module.exports = {
     areaModel,
     logisticModel,
     postModel,
+    positionModel,
     zoneModel,
     providerModel,
-    postoSupervisorModel,
-    postoSegurancaModel
+    operatorModel
 }

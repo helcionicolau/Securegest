@@ -1,9 +1,8 @@
-const {tasksModel} = require('../../../models/index');
-const { Op } = require('sequelize');
+const { tasksModel } = require('../../../models/index');
 
 module.exports = {
   async registerTarefa(req, res) {
-    const { nome, descricao, data_inicio, data_fim_prevista, estado_tarefa, progresso, id_projeto, id_funcionario } = req.body;
+    const { nome, descricao, data_inicio, data_fim_prevista, estado_tarefa, progresso, id_projeto, id_departamento } = req.body;
 
     try {
       const newTarefa = await tasksModel.create({
@@ -14,7 +13,7 @@ module.exports = {
         estado_tarefa,
         progresso,
         id_projeto,
-        id_funcionario
+        id_departamento
       });
 
       res.status(201).json({ message: 'Tarefa registrada com sucesso!' });
@@ -34,37 +33,8 @@ module.exports = {
     }
   },
 
-  async getTotalTarefas(req, res) {
-    try {
-      const totalTarefas = await tasksModel.count();
-      res.json(totalTarefas);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar o número total de tarefas' });
-    }
-  },
-
-  async getTotalTarefasPorData(req, res) {
-    const { dataInicio, dataFim } = req.query;
-
-    try {
-      const totalTarefas = await tasksModel.count({
-        where: {
-          data_inicio: {
-            [Op.between]: [dataInicio, dataFim],
-          },
-        },
-      });
-
-      res.json(totalTarefas);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar o número total de tarefas por data' });
-    }
-  },
-
   async getTarefaById(req, res) {
-    const tarefaId = req.params.tarefaId; // ID da tarefa a ser buscada
+    const tarefaId = req.params.tarefaId;
 
     try {
       const tarefa = await tasksModel.findByPk(tarefaId);
@@ -78,9 +48,47 @@ module.exports = {
     }
   },
 
+  async getTarefasByDepartamentoId(req, res) {
+    const departamentoId = req.params.departamentoId;
+
+    try {
+      const tarefas = await tasksModel.findAll({
+        where: {
+          id_departamento: departamentoId
+        }
+      });
+      if (!tarefas || tarefas.length === 0) {
+        return res.status(404).json({ error: 'Tarefas não encontradas para o departamento fornecido' });
+      }
+      res.json(tarefas);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar tarefas por ID de departamento' });
+    }
+  },
+
+  async getTarefasByProjetoId(req, res) {
+    const projetoId = req.params.projetoId;
+
+    try {
+      const tarefas = await tasksModel.findAll({
+        where: {
+          id_projeto: projetoId
+        }
+      });
+      if (!tarefas || tarefas.length === 0) {
+        return res.status(404).json({ error: 'Tarefas não encontradas para o projeto fornecido' });
+      }
+      res.json(tarefas);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar tarefas por ID de projeto' });
+    }
+  },
+
   async updateTarefa(req, res) {
-    const tarefaId = req.params.tarefaId; // ID da tarefa a ser atualizada
-    const { nome, descricao, data_inicio, data_fim_prevista, estado_tarefa, progresso, id_projeto, id_funcionario } = req.body;
+    const tarefaId = req.params.tarefaId;
+    const { nome, descricao, data_inicio, data_fim_prevista, estado_tarefa, progresso, id_projeto, id_departamento } = req.body;
 
     try {
       const tarefa = await tasksModel.findByPk(tarefaId);
@@ -88,7 +96,6 @@ module.exports = {
         return res.status(404).json({ error: 'Tarefa não encontrada' });
       }
 
-      // Atualiza apenas os campos fornecidos na requisição
       Object.assign(tarefa, {
         nome,
         descricao,
@@ -97,7 +104,7 @@ module.exports = {
         estado_tarefa,
         progresso,
         id_projeto,
-        id_funcionario
+        id_departamento
       });
 
       await tarefa.save();
@@ -110,7 +117,7 @@ module.exports = {
   },
 
   async deleteTarefa(req, res) {
-    const tarefaId = req.params.tarefaId; // ID da tarefa a ser excluída
+    const tarefaId = req.params.tarefaId;
 
     try {
       const tarefa = await tasksModel.findByPk(tarefaId);
@@ -126,8 +133,4 @@ module.exports = {
       res.status(500).json({ error: 'Erro ao excluir tarefa' });
     }
   },
-
-  // Adicione outras operações relacionadas à tarefa aqui, conforme necessário
 };
-
-// Created by António Baptista #(24/08/2023)

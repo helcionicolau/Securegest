@@ -8,25 +8,25 @@ module.exports = db.define('logistica', {
     autoIncrement: true,
     field: "id_logistica"
   },
-  nome: {
+  material: {
     type: DataTypes.STRING,
     allowNull: false,
-    field: "nome"
+    field: "material"
   },
   descricao: {
     type: DataTypes.TEXT,
     allowNull: true,
     field: "descricao"
   },
-  referencia: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    field: "referencia"
-  },
   id_provedora: {
     type: DataTypes.INTEGER,
     allowNull: true,
     field: "id_provedora"
+  },
+  id_posicao: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    field: "id_posicao"
   }
 }, {
   tableName: "logistica"

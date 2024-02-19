@@ -1,20 +1,8 @@
-const {projectsModel} = require('../../../models/index');
-const { Op } = require('sequelize');
+const { projectsModel } = require('../../../models/index');
 
 module.exports = {
   async registerProjeto(req, res) {
-    const {
-      nome,
-      descricao,
-      sumario,
-      data_inicio,
-      data_fim_prevista,
-      estado,
-      tipo_projeto,
-      progresso,
-      id_cliente,
-      id_departamento
-    } = req.body;
+    const { nome, descricao, sumario, data_inicio, data_fim_prevista, estado, tipo_projeto, progresso, id_posicao } = req.body;
 
     try {
       const newProjeto = await projectsModel.create({
@@ -26,8 +14,7 @@ module.exports = {
         estado,
         tipo_projeto,
         progresso,
-        id_cliente,
-        id_departamento
+        id_posicao
       });
 
       res.status(201).json({ message: 'Projeto registrado com sucesso!' });
@@ -47,35 +34,6 @@ module.exports = {
     }
   },
 
-  async getTotalProjetos(req, res) {
-    try {
-      const totalProjetos = await projectsModel.count();
-      res.json(totalProjetos);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar o número total de projetos' });
-    }
-  },
-
-  async getTotalProjetosPorData(req, res) {
-    const { dataInicio, dataFim } = req.query;
-
-    try {
-      const totalProjetos = await projectsModel.count({
-        where: {
-          data_registro: {
-            [Op.between]: [dataInicio, dataFim],
-          },
-        },
-      });
-
-      res.json(totalProjetos);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar o número total de projetos por data' });
-    }
-  },
-
   async getProjetoById(req, res) {
     const projetoId = req.params.projetoId;
 
@@ -91,37 +49,28 @@ module.exports = {
     }
   },
 
-  async getProjetosByDepartamento(req, res) {
-    const id_departamento = req.params.id_departamento; // ID do departamento a ser filtrado
+  async getProjetosByPosicaoId(req, res) {
+    const posicaoId = req.params.posicaoId;
 
     try {
       const projetos = await projectsModel.findAll({
         where: {
-          id_departamento: id_departamento,
-        },
+          id_posicao: posicaoId
+        }
       });
-
+      if (!projetos || projetos.length === 0) {
+        return res.status(404).json({ error: 'Projetos não encontrados para a posição fornecida' });
+      }
       res.json(projetos);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar projetos por departamento' });
+      res.status(500).json({ error: 'Erro ao buscar projetos por ID de posição' });
     }
   },
 
   async updateProjeto(req, res) {
     const projetoId = req.params.projetoId;
-    const {
-      nome,
-      descricao,
-      sumario,
-      data_inicio,
-      data_fim_prevista,
-      estado,
-      tipo_projeto,
-      progresso,
-      id_cliente,
-      id_departamento
-    } = req.body;
+    const { nome, descricao, sumario, data_inicio, data_fim_prevista, estado, tipo_projeto, progresso, id_posicao } = req.body;
 
     try {
       const projeto = await projectsModel.findByPk(projetoId);
@@ -138,8 +87,7 @@ module.exports = {
         estado,
         tipo_projeto,
         progresso,
-        id_cliente,
-        id_departamento
+        id_posicao
       });
 
       await projeto.save();
@@ -169,5 +117,3 @@ module.exports = {
     }
   },
 };
-
-// Created by António Baptista #(24/08/2023)

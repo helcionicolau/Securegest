@@ -2,18 +2,13 @@ const { postModel } = require('../../../models/index');
 
 module.exports = {
   async registerPosto(req, res) {
-    const { nome, descricao, id_zona, id_cliente, id_logistica, n_operadores, provincia, municipio, latitude, longitude } = req.body;
+    const { descricao, id_posicao, id_operador, latitude, longitude } = req.body;
 
     try {
       const newPosto = await postModel.create({
-        nome,
         descricao,
-        id_zona,
-        id_cliente,
-        id_logistica,
-        n_operadores,
-        provincia,
-        municipio,
+        id_posicao,
+        id_operador,
         latitude,
         longitude
       });
@@ -49,10 +44,29 @@ module.exports = {
       res.status(500).json({ error: 'Erro ao buscar posto por ID' });
     }
   },
+  
+  async getPostosByPosicaoId(req, res) {
+    const posicaoId = req.params.posicaoId;
+
+    try {
+      const postos = await postModel.findAll({
+        where: {
+          id_posicao: posicaoId
+        }
+      });
+      if (!postos || postos.length === 0) {
+        return res.status(404).json({ error: 'Postos não encontrados para a posição fornecida' });
+      }
+      res.json(postos);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar postos por ID de posição' });
+    }
+  },
 
   async updatePosto(req, res) {
     const postoId = req.params.postoId;
-    const { nome, descricao, id_zona, id_cliente, id_logistica, n_operadores, provincia, municipio, latitude, longitude } = req.body;
+    const { descricao, id_posicao, id_operador, latitude, longitude } = req.body;
 
     try {
       const posto = await postModel.findByPk(postoId);
@@ -61,14 +75,9 @@ module.exports = {
       }
 
       Object.assign(posto, {
-        nome,
         descricao,
-        id_zona,
-        id_cliente,
-        id_logistica,
-        n_operadores,
-        provincia,
-        municipio,
+        id_posicao,
+        id_operador,
         latitude,
         longitude
       });

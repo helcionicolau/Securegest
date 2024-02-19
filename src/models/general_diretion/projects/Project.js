@@ -48,15 +48,10 @@ module.exports = db.define('projetos', {
     allowNull: true,
     field: "progresso"
   },
-  id_cliente: {
+  id_posicao: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    field: "id_cliente"
-  },
-  id_departamento: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    field: "id_departamento"
+    field: "id_posicao"
   }
 }, {
   tableName: "projetos"
