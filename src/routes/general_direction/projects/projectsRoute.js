@@ -4,7 +4,7 @@ const projetoController = require('../../../controllers/general_direction/projec
 const authMiddleware = require('../../../middleware/authMiddleware');
 
 // Rotas para o CRUD de projeto
-router.post('/', authMiddleware.authenticateUserMiddleware, projetoController.registerProjeto);
+router.post('/register', authMiddleware.authenticateUserMiddleware, projetoController.registerProjeto);
 router.get('/', authMiddleware.authenticateUserMiddleware, projetoController.getAllProjetos);
 router.get('/:projetoId', authMiddleware.authenticateUserMiddleware, projetoController.getProjetoById);
 router.get('/posicao/:posicaoId', authMiddleware.authenticateUserMiddleware, projetoController.getProjetosByPosicaoId);

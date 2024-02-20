@@ -4,7 +4,7 @@ const tarefaController = require('../../../controllers/general_direction/tasks/t
 const authMiddleware = require('../../../middleware/authMiddleware');
 
 // Rotas para o CRUD de tarefa
-router.post('/', authMiddleware.authenticateUserMiddleware, tarefaController.registerTarefa);
+router.post('/register', authMiddleware.authenticateUserMiddleware, tarefaController.registerTarefa);
 router.get('/', authMiddleware.authenticateUserMiddleware, tarefaController.getAllTarefas);
 router.get('/:tarefaId', authMiddleware.authenticateUserMiddleware, tarefaController.getTarefaById);
 router.get('/departamento/:departamentoId', authMiddleware.authenticateUserMiddleware, tarefaController.getTarefasByDepartamentoId);

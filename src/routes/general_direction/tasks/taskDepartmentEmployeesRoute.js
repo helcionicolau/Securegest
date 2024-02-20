@@ -4,7 +4,7 @@ const tarefaDepartamentoFuncionarioController = require('../../../controllers/ge
 const authMiddleware = require('../../../middleware/authMiddleware');
 
 // Rotas para o CRUD de tarefas do departamento do funcionário
-router.post('/', authMiddleware.authenticateUserMiddleware, tarefaDepartamentoFuncionarioController.registerTarefaDepartamentoFuncionario);
+router.post('/register', authMiddleware.authenticateUserMiddleware, tarefaDepartamentoFuncionarioController.registerTarefaDepartamentoFuncionario);
 router.get('/', authMiddleware.authenticateUserMiddleware, tarefaDepartamentoFuncionarioController.getAllTarefasDepartamentoFuncionario);
 router.get('/:tarefaDepartamentoFuncionarioId', authMiddleware.authenticateUserMiddleware, tarefaDepartamentoFuncionarioController.getTarefaDepartamentoFuncionarioById);
 router.get('/tarefa/:tarefaId', authMiddleware.authenticateUserMiddleware, tarefaDepartamentoFuncionarioController.getTarefasByTarefaId);

@@ -4,7 +4,7 @@ const postoController = require('../../../controllers/business_diretion/post/pos
 const authMiddleware = require('../../../middleware/authMiddleware.js');
 
 // Rotas para o CRUD de posto
-router.post('/', authMiddleware.authenticateUserMiddleware, postoController.registerPosto);
+router.post('/register', authMiddleware.authenticateUserMiddleware, postoController.registerPosto);
 router.get('/', authMiddleware.authenticateUserMiddleware, postoController.getAllPostos);
 router.get('/:postoId', authMiddleware.authenticateUserMiddleware, postoController.getPostoById);
 router.get('/posicao/:posicaoId', authMiddleware.authenticateUserMiddleware, postoController.getPostosByPosicaoId);

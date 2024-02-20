@@ -4,7 +4,7 @@ const positionController = require('../../../controllers/business_diretion/posit
 const authMiddleware = require('../../../middleware/authMiddleware');
 
 
-router.post('/', authMiddleware.authenticateUserMiddleware, positionController.registerPosicao);
+router.post('/register', authMiddleware.authenticateUserMiddleware, positionController.registerPosicao);
 router.get('/', authMiddleware.authenticateUserMiddleware, positionController.getAllPosicoes);
 router.get('/:posicaoId', authMiddleware.authenticateUserMiddleware, positionController.getPosicaoById);
 router.get('/cliente/:clientId', authMiddleware.authenticateUserMiddleware, positionController.getPosicoesByClientId);

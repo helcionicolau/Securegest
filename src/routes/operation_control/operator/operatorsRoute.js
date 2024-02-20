@@ -4,7 +4,7 @@ const operadorController = require('../../../controllers/operation_control/opera
 const authMiddleware = require('../../../middleware/authMiddleware');
 
 // Rotas para o CRUD de operador
-router.post('/', authMiddleware.authenticateUserMiddleware, operadorController.registerOperador);
+router.post('/register', authMiddleware.authenticateUserMiddleware, operadorController.registerOperador);
 router.get('/', authMiddleware.authenticateUserMiddleware, operadorController.getAllOperadores);
 router.get('/:operadorId', authMiddleware.authenticateUserMiddleware, operadorController.getOperadorById);
 router.get('/funcionario/:funcionarioId', authMiddleware.authenticateUserMiddleware, operadorController.getOperadoresByFuncionarioId);
