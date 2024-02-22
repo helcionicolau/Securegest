@@ -61,27 +61,6 @@ module.exports = {
     }
   },
 
-  async getOperadoresNaoAssociados(req, res) {
-    try {
-      // Encontre todos os operadores que não têm um registro correspondente na tabela de postos
-      const operadoresNaoAssociados = await operatorModel.findAll({
-        where: {
-          // Subconsulta para verificar se o operador não está associado a nenhum posto
-          id_operador: {
-            [operatorModel.sequelize.Op.notIn]: operatorModel.sequelize.literal(
-              `SELECT DISTINCT id_operador FROM operadores WHERE id_operador IS NOT NULL`
-            )
-          }
-        }
-      });
-
-      res.json(operadoresNaoAssociados);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar operadores não associados a postos' });
-    }
-  },
-
   async updateOperador(req, res) {
     const operadorId = req.params.operadorId;
     const { id_posto, id_funcionario } = req.body;
