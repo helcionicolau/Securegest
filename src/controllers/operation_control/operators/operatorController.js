@@ -69,7 +69,7 @@ module.exports = {
           // Subconsulta para verificar se o operador não está associado a nenhum posto
           id_operador: {
             [operatorModel.sequelize.Op.notIn]: operatorModel.sequelize.literal(
-              `SELECT DISTINCT id_operador FROM posto WHERE id_operador IS NOT NULL`
+              `SELECT DISTINCT id_operador FROM operadores WHERE id_operador IS NOT NULL`
             )
           }
         }
