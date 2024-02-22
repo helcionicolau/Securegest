@@ -8,6 +8,7 @@ router.post('/register', authMiddleware.authenticateUserMiddleware, postoControl
 router.get('/', authMiddleware.authenticateUserMiddleware, postoController.getAllPostos);
 router.get('/:postoId', authMiddleware.authenticateUserMiddleware, postoController.getPostoById);
 router.get('/posicao/:posicaoId', authMiddleware.authenticateUserMiddleware, postoController.getPostosByPosicaoId);
+router.get('/not-associated', authMiddleware.authenticateUserMiddleware, postoController.getOperadoresNaoAssociados);
 router.put('/:postoId', authMiddleware.authenticateUserMiddleware, postoController.updatePosto);
 router.delete('/:postoId', authMiddleware.authenticateUserMiddleware, postoController.deletePosto);
 

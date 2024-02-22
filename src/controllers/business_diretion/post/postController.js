@@ -1,4 +1,4 @@
-const { postModel } = require('../../../models/index');
+const { postModel, operatorModel } = require('../../../models/index');
 
 module.exports = {
   async registerPosto(req, res) {
@@ -61,6 +61,24 @@ module.exports = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar postos por ID de posição' });
+    }
+  },
+
+  async getOperadoresNaoAssociados(req, res) {
+    try {
+      const operadoresNaoAssociados = await operatorModel.findAll({
+        where: {
+          id_operador: {
+            [operatorModel.sequelize.Op.notIn]: postModel.sequelize.literal(
+              `SELECT id_operador FROM posto`
+            )
+          }
+        }
+      });
+      res.json(operadoresNaoAssociados);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar operadores não associados a postos' });
     }
   },
 
