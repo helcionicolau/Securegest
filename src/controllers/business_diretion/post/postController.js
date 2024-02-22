@@ -1,14 +1,14 @@
-const { postModel, operatorModel } = require('../../../models/index');
+const { postModel } = require('../../../models/index');
 
 module.exports = {
   async registerPosto(req, res) {
-    const { descricao, id_posicao, id_operador, latitude, longitude } = req.body;
+    const { descricao, id_posicao, id_funcionario, latitude, longitude } = req.body;
 
     try {
       const newPosto = await postModel.create({
         descricao,
         id_posicao,
-        id_operador,
+        id_funcionario,
         latitude,
         longitude
       });
@@ -64,24 +64,6 @@ module.exports = {
     }
   },
 
-  async getOperadoresNaoAssociados(req, res) {
-    try {
-      const operadoresNaoAssociados = await operatorModel.findAll({
-        where: {
-          id_operador: {
-            [operatorModel.sequelize.Op.notIn]: postModel.sequelize.literal(
-              `SELECT id_operador FROM posto`
-            )
-          }
-        }
-      });
-      res.json(operadoresNaoAssociados);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar operadores não associados a postos' });
-    }
-  },
-
   async updatePosto(req, res) {
     const postoId = req.params.postoId;
     const { descricao, id_posicao, id_operador, latitude, longitude } = req.body;
@@ -95,7 +77,7 @@ module.exports = {
       Object.assign(posto, {
         descricao,
         id_posicao,
-        id_operador,
+        id_funcionario,
         latitude,
         longitude
       });

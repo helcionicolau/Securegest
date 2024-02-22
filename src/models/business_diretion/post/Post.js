@@ -18,10 +18,10 @@ module.exports = db.define('posto', {
     allowNull: true,
     field: "id_posicao"
   },
-  id_operador: {
+  id_funcionario: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    field: "id_operador"
+    field: "id_funcionario"
   },
   latitude: {
     type: DataTypes.STRING,
