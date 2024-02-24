@@ -126,10 +126,9 @@ module.exports = {
 
   async getFuncionariosSeguranca(req, res) {
     try {
-      // Use a função findAll do Sequelize para obter todos os funcionários com o cargo "Segurança"
       const funcionariosSeguranca = await employeesModel.findAll({
         where: {
-          cargo: 'Seguranca',
+          cargo: "Seguranca",
         },
       });
   
