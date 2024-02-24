@@ -126,18 +126,21 @@ module.exports = {
 
   async getFuncionariosSeguranca(req, res) {
     try {
-      // Use a função findAll do Sequelize para obter todos os funcionários com o cargo "Seguranca"
-      const funcionariosSeguranca = await employeesModel.findAll({
-        where: {
-          cargo: 'Seguranca',
-        },
-      });
-  
-      // Verifica se foram encontrados funcionários
+      // Consulta SQL bruta para selecionar todos os funcionários com cargo 'Seguranca'
+      const query = `
+        SELECT * 
+        FROM funcionarios 
+        WHERE cargo = 'Seguranca';
+      `;
+
+      // Executar a consulta utilizando o método query do Sequelize
+      const funcionariosSeguranca = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
+
+      // Verificar se foram encontrados funcionários
       if (funcionariosSeguranca.length === 0) {
         return res.status(404).json({ error: 'Funcionários de segurança não encontrados' });
       }
-  
+
       res.json(funcionariosSeguranca);
     } catch (error) {
       console.error(error);
