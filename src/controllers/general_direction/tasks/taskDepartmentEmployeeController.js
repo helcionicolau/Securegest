@@ -1,4 +1,4 @@
-const { taskDepartEmploModel } = require('../../../models/index');
+const { taskDepartEmploModel, tasksModel, employeesModel } = require('../../../models/index');
 
 module.exports = {
   async registerTarefaDepartamentoFuncionario(req, res) {
@@ -82,6 +82,31 @@ module.exports = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar tarefas do departamento do funcionário por ID de funcionário' });
+    }
+  },
+
+  async getFuncionariosPorDepartamentoDaTarefa(req, res) {
+    const tarefaId = req.params.tarefaId;
+
+    try {
+      // Passo 1: Obter o id_departamento da tarefa
+      const tarefa = await tasksModel.findByPk(tarefaId);
+      if (!tarefa) {
+        return res.status(404).json({ error: 'Tarefa não encontrada' });
+      }
+      const idDepartamento = tarefa.id_departamento;
+
+      // Passo 2: Buscar todos os funcionários cujo departamento_id corresponde ao id_departamento da tarefa
+      const funcionarios = await employeesModel.findAll({
+        where: {
+          departamento_id: idDepartamento,
+        },
+      });
+
+      res.json(funcionarios);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar funcionários por departamento da tarefa' });
     }
   },
 
