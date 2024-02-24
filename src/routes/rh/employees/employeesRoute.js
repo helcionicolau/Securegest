@@ -11,10 +11,12 @@ router.get('/totalPorData', authMiddleware.authenticateUserMiddleware, funcionar
 router.get('/:funcionarioId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionarioById);
 router.put('/:funcionarioId', authMiddleware.authenticateUserMiddleware, funcionarioController.updateFuncionario);
 router.delete('/:funcionarioId', authMiddleware.authenticateUserMiddleware, funcionarioController.deleteFuncionario);
+router.get('/seguranca', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosSeguranca);
 
 // Adicione a nova rota para obter funcionários por departamento
 router.get('/byDepartamento/:departamentoId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosByDepartamento);
 router.get('/byNmec/:n_mecId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosByN_MEC);
+
 
 module.exports = router;
 

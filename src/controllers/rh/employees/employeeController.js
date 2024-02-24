@@ -124,6 +124,22 @@ module.exports = {
     }
   },
 
+  async getFuncionariosSeguranca(req, res) {
+    try {
+      // Use a função findAll do Sequelize para obter todos os funcionários com o cargo "Segurança"
+      const funcionariosSeguranca = await employeesModel.findAll({
+        where: {
+          cargo: 'Seguranca',
+        },
+      });
+  
+      res.json(funcionariosSeguranca);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar funcionários de Segurança' });
+    }
+  },
+
   async updateFuncionario(req, res) {
     const funcionarioId = req.params.funcionarioId;
 
