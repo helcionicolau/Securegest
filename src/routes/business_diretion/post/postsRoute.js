@@ -6,7 +6,7 @@ const authMiddleware = require('../../../middleware/authMiddleware.js');
 // Rotas para o CRUD de posto
 router.post('/register', authMiddleware.authenticateUserMiddleware, postoController.registerPosto);
 router.get('/', authMiddleware.authenticateUserMiddleware, postoController.getAllPostos);
-router.get('/segurancas', authMiddleware.authenticateUserMiddleware, postoController.getAllSegurancaNaoAdicionados);
+router.get('/segurancas', authMiddleware.authenticateUserMiddleware, postoController.getSegurancaNaoAdicionados);
 router.get('/:postoId', authMiddleware.authenticateUserMiddleware, postoController.getPostoById);
 router.get('/posicao/:posicaoId', authMiddleware.authenticateUserMiddleware, postoController.getPostosByPosicaoId);
 router.put('/:postoId', authMiddleware.authenticateUserMiddleware, postoController.updatePosto);
