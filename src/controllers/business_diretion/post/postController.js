@@ -1,4 +1,4 @@
-const { postModel } = require('../../../models/index');
+const { postModel, employeesModel } = require('../../../models/index');
 
 module.exports = {
   async registerPosto(req, res) {
@@ -61,6 +61,26 @@ module.exports = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar postos por ID de posição' });
+    }
+  },
+
+  async getAllSegurancaNaoAdicionados(req, res) {
+    try {
+      const segurancaNaoAdicionados = await employeesModel.findAll({
+        where: {
+          cargo: 'Seguranca',
+          id_funcionario: {
+            [Op.notIn]: sequelize.literal(
+              `SELECT id_funcionario FROM posto WHERE id_funcionario IS NOT NULL`
+            )
+          }
+        }
+      });
+
+      res.json(segurancaNaoAdicionados);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar funcionários de segurança não adicionados a nenhum posto' });
     }
   },
 
