@@ -143,7 +143,7 @@ module.exports = {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar funcionários de Segurança' });
     }
-  },  
+  },    
   
   async updateFuncionario(req, res) {
     const funcionarioId = req.params.funcionarioId;
