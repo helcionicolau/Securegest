@@ -133,6 +133,11 @@ module.exports = {
         },
       });
   
+      // Verifica se foram encontrados funcionários
+      if (funcionariosSeguranca.length === 0) {
+        return res.status(404).json({ error: 'Funcionários de segurança não encontrados' });
+      }
+  
       res.json(funcionariosSeguranca);
     } catch (error) {
       console.error(error);
