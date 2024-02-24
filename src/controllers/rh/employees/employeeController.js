@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const { employeesModel } = require('../../../models/index');
 const { Op } = require('sequelize');
-const { sequelize } = require('../../../utils/sequelize');
 
 module.exports = {
   async registerFuncionario(req, res) {
@@ -127,22 +126,16 @@ module.exports = {
 
   async getFuncionariosSeguranca(req, res) {
     try {
-      const query = `
-        SELECT * 
-        FROM funcionarios 
-        WHERE cargo = 'Seguranca';
-      `;
-
-      const funcionariosSeguranca = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
-
-      if (funcionariosSeguranca.length === 0) {
-        return res.status(404).json({ error: 'Seguranças não encontrados' });
-      }
-
-      res.json(funcionariosSeguranca);
+      const funcionarios = await employeesModel.findAll({
+        where: {
+          cargo: 'Seguranca'
+        }
+      });
+  
+      res.json(funcionarios);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar funcionários de Segurança' });
+      res.status(500).json({ error: 'Erro ao buscar funcionários de segurança' });
     }
   },    
   
