@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const { employeesModel } = require('../../../models/index');
 const { Op } = require('sequelize');
+const { sequelize } = require('../../../utils/sequelize');
 
 module.exports = {
   async registerFuncionario(req, res) {
@@ -126,19 +127,16 @@ module.exports = {
 
   async getFuncionariosSeguranca(req, res) {
     try {
-      // Consulta SQL bruta para selecionar todos os funcionários com cargo 'Seguranca'
       const query = `
         SELECT * 
         FROM funcionarios 
         WHERE cargo = 'Seguranca';
       `;
 
-      // Executar a consulta utilizando o método query do Sequelize
       const funcionariosSeguranca = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
 
-      // Verificar se foram encontrados funcionários
       if (funcionariosSeguranca.length === 0) {
-        return res.status(404).json({ error: 'Funcionários de segurança não encontrados' });
+        return res.status(404).json({ error: 'Seguranças não encontrados' });
       }
 
       res.json(funcionariosSeguranca);
