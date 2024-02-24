@@ -64,23 +64,33 @@ module.exports = {
     }
   },
 
-  async getAllSegurancaNaoAdicionados(req, res) {
+  async getSegurancaNaoAdicionados(req, res) {
     try {
-      const segurancaNaoAdicionados = await employeesModel.findAll({
+      // Passo 1: Buscar todos os funcionários com cargo 'Seguranca'
+      const segurancaFuncionarios = await employeesModel.findAll({
         where: {
           cargo: 'Seguranca',
-          id_funcionario: {
-            [Op.notIn]: sequelize.literal(
-              `SELECT id_funcionario FROM posto WHERE id_funcionario IS NOT NULL`
-            )
-          }
-        }
+        },
+      });
+
+      // Passo 2: Buscar todos os funcionários que já foram adicionados a algum posto
+      const funcionariosAdicionados = await postModel.findAll({
+        attributes: ['id_funcionario'], // Apenas queremos o id_funcionario
+        raw: true,
+      });
+
+      // Extrair apenas os IDs dos funcionários que já foram adicionados a algum posto
+      const funcionariosAdicionadosIds = funcionariosAdicionados.map(item => item.id_funcionario);
+
+      // Passo 3: Filtrar os funcionários de Seguranca que ainda não foram adicionados a nenhum posto
+      const segurancaNaoAdicionados = segurancaFuncionarios.filter(funcionario => {
+        return !funcionariosAdicionadosIds.includes(funcionario.id_funcionario);
       });
 
       res.json(segurancaNaoAdicionados);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar funcionários de segurança não adicionados a nenhum posto' });
+      res.status(500).json({ error: 'Erro ao buscar seguranças não adicionados a nenhum posto' });
     }
   },
 
