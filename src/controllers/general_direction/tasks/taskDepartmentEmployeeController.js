@@ -1,4 +1,4 @@
-const { taskDepartEmploModel, tasksModel, employeesModel } = require('../../../models/index');
+const { taskDepartEmploModel, tasksModel, employeesModel, userModel } = require('../../../models/index');
 
 module.exports = {
   async registerTarefaDepartamentoFuncionario(req, res) {
@@ -89,21 +89,44 @@ module.exports = {
     const tarefaId = req.params.tarefaId;
 
     try {
-      // Passo 1: Obter o id_departamento da tarefa
-      const tarefa = await tasksModel.findByPk(tarefaId);
-      if (!tarefa) {
-        return res.status(404).json({ error: 'Tarefa não encontrada' });
+      if (req.userData.id_perfil === 3 || req.userData.id_perfil === 4) {
+        // Se o usuário for de perfil 3 ou 4, permita o acesso diretamente
+        const funcionarios = await employeesModel.findAll();
+        return res.json(funcionarios);
+      } else if (req.userData.id_perfil === 6) {
+        // Se o usuário for de perfil 6, verifique se ele está no mesmo departamento dos funcionários
+        const tarefa = await tasksModel.findByPk(tarefaId);
+        if (!tarefa) {
+          return res.status(404).json({ error: 'Tarefa não encontrada' });
+        }
+
+        // Obtenha o id_departamento do usuário a partir do seu id_funcionario
+        const user = await userModel.findByPk(req.userData.userId);
+        if (!user) {
+          return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+        const idDepartamentoUsuario = user.id_departamento;
+
+        // Obtenha o id_departamento da tarefa
+        const idDepartamentoTarefa = tarefa.id_departamento;
+
+        // Verifique se o id_departamento do usuário corresponde ao id_departamento da tarefa
+        if (idDepartamentoUsuario === idDepartamentoTarefa) {
+          // Se forem iguais, permita o acesso aos funcionários
+          const funcionarios = await employeesModel.findAll({
+            where: {
+              departamento_id: idDepartamentoTarefa
+            },
+          });
+          return res.json(funcionarios);
+        } else {
+          // Se não forem iguais, negue o acesso
+          return res.status(403).json({ error: 'Acesso não autorizado' });
+        }
+      } else {
+        // Outros perfis não têm permissão para acessar este recurso
+        return res.status(403).json({ error: 'Acesso não autorizado' });
       }
-      const idDepartamento = tarefa.id_departamento;
-
-      // Passo 2: Buscar todos os funcionários cujo departamento_id corresponde ao id_departamento da tarefa
-      const funcionarios = await employeesModel.findAll({
-        where: {
-          departamento_id: idDepartamento,
-        },
-      });
-
-      res.json(funcionarios);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar funcionários por departamento da tarefa' });

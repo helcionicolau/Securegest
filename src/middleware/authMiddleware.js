@@ -15,11 +15,6 @@ module.exports = {
         return res.status(401).json({ error: 'Token expirado' });
       }
 
-      // Verificação de escopo (exemplo: apenas usuários autenticados)
-      if (!decodedToken.scope.includes('user')) {
-        return res.status(403).json({ error: 'Acesso não autorizado' });
-      }
-
       // Adicionar os dados decodificados à solicitação para uso posterior
       req.userData = {
         userId: decodedToken.userId,
