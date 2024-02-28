@@ -17,6 +17,11 @@ module.exports = db.define('perfis_usuario', {
         type: DataTypes.STRING,
         allowNull: true,
         field: "descricao"
+    },
+    id_departamento: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      field: "id_departamento"
     }
 }, {
     tableName: "perfis_usuario"
