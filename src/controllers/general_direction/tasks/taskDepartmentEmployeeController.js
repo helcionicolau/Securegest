@@ -1,4 +1,4 @@
-const { taskDepartEmploModel, tasksModel, employeesModel, userModel } = require('../../../models/index');
+const { taskDepartEmploModel, tasksModel, employeesModel, userModel, userProfileModel } = require('../../../models/index');
 
 module.exports = {
   async registerTarefaDepartamentoFuncionario(req, res) {
@@ -87,26 +87,43 @@ module.exports = {
 
   async getFuncionariosPorDepartamentoDaTarefa(req, res) {
     const tarefaId = req.params.tarefaId;
-
+  
     try {
       // Passo 1: Obter o id_departamento da tarefa
       const tarefa = await tasksModel.findByPk(tarefaId);
       if (!tarefa) {
         return res.status(404).json({ error: 'Tarefa não encontrada' });
       }
-      const idDepartamento = tarefa.id_departamento;
-
-      // Passo 2: Buscar todos os funcionários cujo departamento_id corresponde ao id_departamento da tarefa
-      const funcionarios = await employeesModel.findAll({
-        where: {
-          departamento_id: idDepartamento,
-        },
-      });
-
-      res.json(funcionarios);
+      const idDepartamentoTarefa = tarefa.id_departamento;
+  
+      // Passo 2: Verificar o perfil do usuário atual
+      const userId = req.userData.userId;
+      const userProfile = await userProfileModel.findByPk(userId);
+  
+      // Passo 3: Verificar se o usuário tem permissão para visualizar com base no perfil
+      if (userProfile) {
+        // Se o perfil do usuário for 3 ou 4, ele pode visualizar todos os funcionários
+        if (userProfile.id_perfil === 3 || userProfile.id_perfil === 4) {
+          const funcionarios = await employeesModel.findAll();
+          return res.json(funcionarios);
+        }
+        
+        // Se o id_departamento do usuário for igual ao da tarefa, ele pode visualizar
+        if (userProfile.id_departamento === idDepartamentoTarefa) {
+          const funcionarios = await employeesModel.findAll({
+            where: {
+              departamento_id: idDepartamentoTarefa
+            }
+          });
+          return res.json(funcionarios);
+        }
+      }
+  
+      // Se o perfil do usuário não for 3, 4 ou o departamento não corresponder, retornar uma resposta sem conteúdo
+      return res.status(403).json({ error: 'Acesso não autorizado' });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar funcionários por departamento da tarefa' });
+      return res.status(500).json({ error: 'Erro ao buscar funcionários por departamento da tarefa' });
     }
   },
 
