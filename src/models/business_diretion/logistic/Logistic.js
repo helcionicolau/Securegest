@@ -23,10 +23,10 @@ module.exports = db.define('logistica', {
     allowNull: true,
     field: "id_provedora"
   },
-  id_posicao: {
+  n_materiais: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    field: "id_posicao"
+    field: "n_materiais"
   }
 }, {
   tableName: "logistica"

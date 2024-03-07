@@ -2,14 +2,14 @@ const { logisticModel } = require('../../../models/index');
 
 module.exports = {
   async registerLogistica(req, res) {
-    const { material, descricao, id_provedora, id_posicao } = req.body;
+    const { material, descricao, id_provedora, n_materiais } = req.body;
 
     try {
       const newLogistica = await logisticModel.create({
         material,
         descricao,
         id_provedora,
-        id_posicao,
+        n_materiais,
       });
 
       res.status(201).json({ message: 'Logística registrada com sucesso!' });
@@ -58,7 +58,7 @@ module.exports = {
         material,
         descricao,
         id_provedora,
-        id_posicao,
+        n_materiais,
       });
 
       await logistica.save();
