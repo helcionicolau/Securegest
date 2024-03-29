@@ -6,7 +6,7 @@ const departamentsModel = require("./rh/departments/Department");
 const employee_leavesModel = require("./rh/employee_leaves/employeeLeave");
 const employee_vacationsModel = require("./rh/employee_vacations/employeeVacation");
 const employeesModel = require("./rh/employees/Employee");
-const roleModel = require("./rh/roles/Role");
+const rolesModel = require("./rh/roles/Role");
 const employee_departamentsModel = require("./rh/employees_departments/ED");
 const holidaysModel = require("./rh/holidays/Holiday");
 const leave_typesModel = require("./rh/leave_types/leaveType");
@@ -66,7 +66,7 @@ employeesModel.hasMany(employeesModel, {
     foreignKey: "id_funcionario"
 });
 
-employeesRoleModel.hasMany(roleModel, {
+rolesModel.hasMany(rolesModel, {
     construent: true,
     foreignKey: "id_cargo"
 });
@@ -136,7 +136,7 @@ module.exports = {
     employee_leavesModel,
     employee_vacationsModel,
     employeesModel,
-    roleModel,
+    rolesModel,
     employee_departamentsModel,
     holidaysModel,
     leave_typesModel,
