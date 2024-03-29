@@ -23,6 +23,11 @@ module.exports = db.define('usuarios', {
     allowNull: false,
     field: "senha"
   },
+  is_active: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: "is_active"
+  },
   telefone: {
     type: DataTypes.STRING,
     allowNull: true,
