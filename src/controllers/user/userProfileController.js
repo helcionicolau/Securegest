@@ -8,7 +8,7 @@ module.exports = {
 
             // Lista de campos permitidos
             const allowedFields = [
-                'nome', 'descricao', 'id_departamento'
+                'nome', 'descricao'
             ];
 
             allowedFields.forEach(field => {
@@ -63,7 +63,7 @@ module.exports = {
 
             // Lista de campos permitidos para atualização
             const allowedFields = [
-                'nome', 'descricao', 'id_departamento'
+                'nome', 'descricao'
             ];
 
             allowedFields.forEach(field => {
