@@ -38,11 +38,6 @@ module.exports = db.define('funcionarios', {
     allowNull: true,
     field: "nif"
   },
-  cargo: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    field: "cargo"
-  },
   data_contratacao: {
     type: DataTypes.DATE,
     allowNull: true,

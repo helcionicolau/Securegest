@@ -11,7 +11,7 @@ module.exports = {
       // Lista de campos permitidos
       const allowedFields = [
         'n_mec', 'nome', 'sexo', 'estado_civil', 'data_nascimento', 'data_contratacao',
-        'nif', 'cargo', 'departamento_id', 'carga_horaria_diaria'
+        'nif', 'departamento_id', 'carga_horaria_diaria'
       ];
 
       // Preencha o objeto de dados do funcionário apenas com os campos fornecidos
@@ -154,7 +154,7 @@ module.exports = {
       // Lista de campos permitidos para atualização
       const allowedFields = [
         'n_mec', 'nome', 'sexo', 'estado_civil', 'data_nascimento', 'data_contratacao',
-        'nif', 'cargo', 'departamento_id', 'carga_horaria_diaria'
+        'nif', 'departamento_id', 'carga_horaria_diaria'
       ];
 
       // Preencha o objeto de dados do funcionário apenas com os campos fornecidos
