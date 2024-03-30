@@ -1,4 +1,4 @@
-const { employeesRoleModel } = require('../../../models/index');
+const { rolesModel } = require('../../../models/index');
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
     const { nome, descricao } = req.body;
 
     try {
-      const newCargo = await employeesRoleModel.create({
+      const newCargo = await rolesModel.create({
         nome,
         descricao,
       });
@@ -20,7 +20,7 @@ module.exports = {
 
   async getAllCargos(req, res) {
     try {
-      const cargos = await employeesRoleModel.findAll();
+      const cargos = await rolesModel.findAll();
       res.json(cargos);
     } catch (error) {
       console.error(error);
@@ -32,7 +32,7 @@ module.exports = {
     const cargoId = req.params.cargoId;
 
     try {
-      const cargo = await employeesRoleModel.findByPk(cargoId);
+      const cargo = await rolesModel.findByPk(cargoId);
       if (!cargo) {
         return res.status(404).json({ error: 'Cargo não encontrado' });
       }
@@ -48,7 +48,7 @@ module.exports = {
     const { nome, descricao } = req.body;
 
     try {
-      const cargo = await employeesRoleModel.findByPk(cargoId);
+      const cargo = await rolesModel.findByPk(cargoId);
       if (!cargo) {
         return res.status(404).json({ error: 'Cargo não encontrado' });
       }
@@ -71,7 +71,7 @@ module.exports = {
     const cargoId = req.params.cargoId;
 
     try {
-      const cargo = await employeesRoleModel.findByPk(cargoId);
+      const cargo = await rolesModel.findByPk(cargoId);
       if (!cargo) {
         return res.status(404).json({ error: 'Cargo não encontrado' });
       }
