@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const cargosController = require('../../../controllers/rh/employees/roleController');
+const cargosController = require('../../../controllers/rh/roles/roleController');
 const authMiddleware = require('../../../middleware/authMiddleware');
 
 // Rotas para o CRUD de cargos
