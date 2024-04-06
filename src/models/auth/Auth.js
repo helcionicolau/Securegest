@@ -17,11 +17,25 @@ module.exports = db.define('logs_logout', {
         type: DataTypes.DATE,
         allowNull: true,
         field: "data_hora"
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      field: 'created_at'
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      field: 'updated_at'
     }
-}, {
+  }, {
     tableName: "logs_logout",
-    //timestamps: false // Se você não precisa de colunas de timestamp created_at e updated_at
-});
+    timestamps: true, // Habilita o uso dos timestamps automáticos
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
+  });
 
 
 // Created by António Baptista #(24/08/2023)
