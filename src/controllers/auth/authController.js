@@ -23,7 +23,7 @@ exports.loginUser = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: user.id_usuario, id_perfil: user.id_perfil, scope: 'user' },
+            { userId: user.id_usuario, scope: 'user' },
             JWT_KEY,
             { expiresIn: TOKEN_EXPIRATION }
         );        
