@@ -25,7 +25,7 @@ module.exports = db.define('usuarios', {
     field: "senha"
   },
   is_active: {
-    type: DataTypes.INTEGER, // Alterado para INTEGER
+    type: DataTypes.STRING,
     allowNull: false,
     field: "is_active"
   },
@@ -36,18 +36,22 @@ module.exports = db.define('usuarios', {
     field: "telefone"
   },
   created_at: {
-    type: DataTypes.TIMESTAMP,
-    allowNull: true,
-    field: "created_at"
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'created_at'
   },
   updated_at: {
-    type: DataTypes.TIMESTAMP,
-    allowNull: true,
-    field: "updated_at"
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'updated_at'
   }
 }, {
-  tableName: "usuarios"
+  tableName: "usuarios",
+  timestamps: true, // Habilita o uso dos timestamps automáticos
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
 });
-
 
 // Created by António Baptista #(24/08/2023)
