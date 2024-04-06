@@ -9,8 +9,6 @@ module.exports = {
       senha,
       is_active,
       telefone,
-      id_perfil,
-      id_funcionario,
     } = req.body;
 
     try {
@@ -21,8 +19,6 @@ module.exports = {
         senha: hashedPassword,
         is_active,
         telefone,
-        id_perfil,
-        id_funcionario,
       });
 
       res.status(201).json({ message: 'Usuário registrado com sucesso!' });
