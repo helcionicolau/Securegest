@@ -1,4 +1,4 @@
-const { userProfileModel } = require('../../models/index');
+const { profileModel } = require('../../models/index');
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
                 }
             });
 
-            const newPerfil = await userProfileModel.create(perfilData);
+            const newPerfil = await profileModel.create(perfilData);
             res.status(201).json({ message: 'Perfil registrado com sucesso!' });
         } catch (error) {
             console.error(error);
@@ -27,7 +27,7 @@ module.exports = {
 
     async getAllPerfis(req, res) {
         try {
-            const perfis = await userProfileModel.findAll();
+            const perfis = await profileModel.findAll();
             res.json(perfis);
         } catch (error) {
             console.error(error);
@@ -39,7 +39,7 @@ module.exports = {
         const perfilId = req.params.perfilId;
 
         try {
-            const perfil = await userProfileModel.findByPk(perfilId);
+            const perfil = await profileModel.findByPk(perfilId);
             if (!perfil) {
                 return res.status(404).json({ error: 'Perfil não encontrado' });
             }
@@ -54,7 +54,7 @@ module.exports = {
         const perfilId = req.params.perfilId;
 
         try {
-            const perfil = await userProfileModel.findByPk(perfilId);
+            const perfil = await profileModel.findByPk(perfilId);
             if (!perfil) {
                 return res.status(404).json({ error: 'Perfil não encontrado' });
             }
@@ -89,7 +89,7 @@ module.exports = {
         const perfilId = req.params.perfilId;
 
         try {
-            const perfil = await userProfileModel.findByPk(perfilId);
+            const perfil = await profileModel.findByPk(perfilId);
             if (!perfil) {
                 return res.status(404).json({ error: 'Perfil não encontrado' });
             }

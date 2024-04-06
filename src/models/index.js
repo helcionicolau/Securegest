@@ -12,7 +12,7 @@ const employee_departamentsModel = require("./rh/employees_departments/ED");
 const holidaysModel = require("./rh/holidays/Holiday");
 const leave_typesModel = require("./rh/leave_types/leaveType");
 const userModel = require("./user/User");
-const userProfileModel = require("./user/userProfile");
+const profileModel = require("./profile/profile");
 const areaModel = require("./business_diretion/area/Area");
 const logisticModel = require("./business_diretion/logistic/Logistic");
 const postModel = require("./business_diretion/post/Post");
@@ -20,6 +20,9 @@ const positionModel = require("./business_diretion/position/Position");
 const zoneModel = require("./business_diretion/zone/Zone");
 const providerModel = require("./business_diretion/provider/Provider");
 const taskDepartEmploModel = require("./general_diretion/tasks/taskDepartmentEmployee");
+const permissionModel = require("./permission/Permission");
+const profilePermissionModel = require("./profile_permission/profilePermission");
+const userProfileModel = require("./user_profile/userProfile");
 
 
 authModel.hasMany(authModel, {
@@ -97,7 +100,7 @@ userModel.hasMany(userModel, {
     foreignKey: "id_usuario"
 });
 
-userProfileModel.hasMany(userProfileModel, {
+profileModel.hasMany(profileModel, {
     construent: true,
     foreignKey: "id_perfil"
 });
@@ -132,6 +135,21 @@ providerModel.hasMany(providerModel, {
     foreignKey: "id_provedora"
 });
 
+permissionModel.hasMany(permissionModel, {
+    construent: true,
+    foreignKey: "id_permissao"
+});
+
+profilePermissionModel.hasMany(profilePermissionModel, {
+    construent: true,
+    foreignKey: "id_pp"
+});
+
+userProfileModel.hasMany(userProfileModel, {
+    construent: true,
+    foreignKey: "id_up"
+});
+
 module.exports = {
     authModel,
     projectsModel,
@@ -148,11 +166,14 @@ module.exports = {
     holidaysModel,
     leave_typesModel,
     userModel,
-    userProfileModel,
+    profileModel,
     areaModel,
     logisticModel,
     postModel,
     positionModel,
     zoneModel,
-    providerModel
+    providerModel,
+    permissionModel,
+    profilePermissionModel,
+    userProfileModel
 }

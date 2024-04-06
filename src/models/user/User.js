@@ -1,7 +1,8 @@
 const db = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
+const UserProfile = require("./userProfile");
 
-module.exports = db.define('usuarios', {
+const Usuario = db.define('usuarios', {
   id_usuario: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -47,11 +48,9 @@ module.exports = db.define('usuarios', {
     defaultValue: DataTypes.NOW,
     field: 'updated_at'
   }
-}, {
-  tableName: "usuarios",
-  timestamps: true, // Habilita o uso dos timestamps automáticos
-  createdAt: 'created_at',
-  updatedAt: 'updated_at'
 });
 
-// Created by António Baptista #(24/08/2023)
+// Relacionamento entre Usuario e UserProfile
+Usuario.hasMany(UserProfile, { foreignKey: 'id_usuario' });
+
+module.exports = Usuario;
