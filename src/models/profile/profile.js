@@ -1,8 +1,7 @@
 const db = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
-const ProfilePermission = require("../profile_permission/profilePermission");
 
-const Perfil = db.define('perfis', {
+module.exports = db.define('perfis', {
   id_perfil: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -29,9 +28,9 @@ const Perfil = db.define('perfis', {
     defaultValue: DataTypes.NOW,
     field: 'updated_at'
   }
+}, {
+  tableName: "perfis",
+  timestamps: true, // Habilita o uso dos timestamps automáticos
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
 });
-
-// Relacionamento entre Perfil e ProfilePermission
-Perfil.belongsToMany(ProfilePermission, { through: 'perfis_permissoes', foreignKey: 'perfil_id' });
-
-module.exports = Perfil;
