@@ -1,10 +1,11 @@
 const db = require("../../utils/sequelize");
-
 const { DataTypes } = require("sequelize");
 
 module.exports = db.define('usuarios', {
   id_usuario: {
-    type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true,
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
     field: "id_usuario"
   },
   nome_usuario: {
@@ -24,7 +25,7 @@ module.exports = db.define('usuarios', {
     field: "senha"
   },
   is_active: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER, // Alterado para INTEGER
     allowNull: false,
     field: "is_active"
   },
@@ -34,19 +35,19 @@ module.exports = db.define('usuarios', {
     unique: true,
     field: "telefone"
   },
-  id_perfil: {
-    type: DataTypes.INTEGER,
+  created_at: {
+    type: DataTypes.TIMESTAMP,
     allowNull: true,
-    field: "id_perfil"
-  }
-  ,
-  id_funcionario: {
-    type: DataTypes.INTEGER,
+    field: "created_at"
+  },
+  updated_at: {
+    type: DataTypes.TIMESTAMP,
     allowNull: true,
-    field: "id_funcionario"
+    field: "updated_at"
   }
 }, {
   tableName: "usuarios"
 });
+
 
 // Created by António Baptista #(24/08/2023)
