@@ -9,5 +9,4 @@ router.post('/logout', authMiddleware.authenticateUserMiddleware, authController
 
 module.exports = router;
 
-
 // Created by António Baptista #(24/08/2023)
