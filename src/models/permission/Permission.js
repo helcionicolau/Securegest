@@ -1,6 +1,6 @@
 const db = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
-const ProfilePermission = require("./profile_permission");
+const ProfilePermission = require("../profile_permission/profilePermission");
 
 const Permissao = db.define('permissoes', {
   id_permissao: {
