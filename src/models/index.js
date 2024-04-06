@@ -177,3 +177,10 @@ module.exports = {
     profilePermissionModel,
     userProfileModel
 }
+
+
+userModel.belongsToMany(profileModel, { through: userProfileModel });
+profileModel.belongsToMany(userModel, { through: userProfileModel });
+
+profileModel.belongsToMany(permissionModel, { through: profilePermissionModel });
+permissionModel.belongsToMany(profileModel, { through: profilePermissionModel });
