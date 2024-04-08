@@ -1,7 +1,7 @@
 const db = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
 
-module.exports = db.define('usuarios', {
+module.exports = db.define('users', {
   id_usuario: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -48,7 +48,7 @@ module.exports = db.define('usuarios', {
     field: 'updated_at'
   }
 }, {
-  tableName: "usuarios",
+  tableName: "users",
   timestamps: true, // Habilita o uso dos timestamps automáticos
   createdAt: 'created_at',
   updatedAt: 'updated_at'
