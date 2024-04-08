@@ -25,8 +25,9 @@ module.exports = db.define('users', {
     field: "senha"
   },
   isactive: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT,
     allowNull: false,
+    defaultValue: 0,
     field: "isactive"
   },
   role_id: {
