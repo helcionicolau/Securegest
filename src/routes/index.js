@@ -29,7 +29,7 @@ const router = express.Router();
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/employees', employeeRoutes);
-router.use('/roles', rhroleRoutes);
+router.use('/rhroles', rhroleRoutes);
 router.use('/employee_roles', employeeRoleRoutes);
 router.use('/departments', departmentRoutes);
 router.use('/employees_departments', edRoutes);
