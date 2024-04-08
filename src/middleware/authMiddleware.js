@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { userModel, rolesModel } = require('../models');
+const { userModel, roleModel } = require('../models');
 
 module.exports = {
   authenticateUserMiddleware: async (req, res, next) => {
@@ -49,7 +49,7 @@ async function getRoleNameFromToken(userId) {
     const roleId = user.role_id;
 
     // Consultar a tabela de funções (roles) para obter o nome da função
-    const role = await rolesModel.findByPk(roleId);
+    const role = await roleModel.findByPk(roleId);
     if (!role) {
       throw new Error('Função (Role) não encontrada');
     }
