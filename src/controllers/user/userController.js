@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { userModel } = require('../../models/index');
+const { userModel } = require('../../models');
 
 module.exports = {
   async registerUser(req, res) {
@@ -9,6 +9,7 @@ module.exports = {
       senha,
       is_active,
       telefone,
+      role_id,
     } = req.body;
 
     try {
@@ -19,6 +20,7 @@ module.exports = {
         senha: hashedPassword,
         is_active,
         telefone,
+        role_id,
       });
 
       res.status(201).json({ message: 'Usuário registrado com sucesso!' });

@@ -1,25 +1,23 @@
 const db = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
 
-module.exports = db.define('permissoes', {
-  id_permissao: {
-    type: DataTypes.INTEGER,
+module.exports = db.define('menus', {
+  id_menu: {
+    type: DataTypes.BIGINT,
     primaryKey: true,
     autoIncrement: true,
-    field: "id_permissao"
+    allowNull: false,
+    field: "id_menu"
   },
   nome: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: true,
+    field: "nome"
   },
   descricao: {
     type: DataTypes.TEXT,
-    allowNull: true
-  },
-  nivel: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 1
+    allowNull: true,
+    field: "descricao"
   },
   created_at: {
     type: DataTypes.DATE,
@@ -34,7 +32,7 @@ module.exports = db.define('permissoes', {
     field: 'updated_at'
   }
 }, {
-  tableName: "permissoes",
+  tableName: "menus",
   timestamps: true, // Habilita o uso dos timestamps automáticos
   createdAt: 'created_at',
   updatedAt: 'updated_at'

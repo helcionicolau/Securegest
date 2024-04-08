@@ -20,6 +20,9 @@ const positionModel = require("./business_diretion/position/Position");
 const zoneModel = require("./business_diretion/zone/Zone");
 const providerModel = require("./business_diretion/provider/Provider");
 const taskDepartEmploModel = require("./general_diretion/tasks/taskDepartmentEmployee");
+const roleModel = require("./roles/Role");
+const menuModel = require("./menus/Menu");
+const roleAccessModel = require("./roleaccess/Roleaccess");
 
 
 authModel.hasMany(authModel, {
@@ -132,6 +135,21 @@ providerModel.hasMany(providerModel, {
     foreignKey: "id_provedora"
 });
 
+roleModel.hasMany(roleModel, {
+    construent: true,
+    foreignKey: "id_role"
+});
+
+menuModel.hasMany(menuModel, {
+    construent: true,
+    foreignKey: "id_menu"
+});
+
+roleAccessModel.hasMany(roleAccessModel, {
+    construent: true,
+    foreignKey: "id_rm"
+});
+
 module.exports = {
     authModel,
     projectsModel,
@@ -154,5 +172,8 @@ module.exports = {
     postModel,
     positionModel,
     zoneModel,
-    providerModel
+    providerModel,
+    roleModel,
+    menuModel,
+    roleAccessModel
 }
