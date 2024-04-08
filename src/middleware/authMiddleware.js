@@ -54,9 +54,12 @@ async function getRoleNameFromToken(userId) {
       throw new Error('Função (Role) não encontrada');
     }
 
+    console.log('Nome da função (role) do usuário:', role.nome); // Log para imprimir o nome do papel (role)
+    
     return role.nome; // Retorna o nome da função (role)
   } catch (error) {
     console.error('Erro ao obter o nome da função (role) do token:', error);
     return null;
   }
 }
+
