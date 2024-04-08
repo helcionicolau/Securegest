@@ -20,19 +20,19 @@ module.exports = db.define('role_access', {
     field: "menu_id"
   },
   haveedit: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: false,
     field: "haveedit"
   },
   haveadd: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: false,
     field: "haveadd"
   },
   havedelete: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: false,
     field: "havedelete"
