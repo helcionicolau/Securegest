@@ -20,9 +20,6 @@ const positionModel = require("./business_diretion/position/Position");
 const zoneModel = require("./business_diretion/zone/Zone");
 const providerModel = require("./business_diretion/provider/Provider");
 const taskDepartEmploModel = require("./general_diretion/tasks/taskDepartmentEmployee");
-const permissionModel = require("./permission/Permission");
-const profilePermissionModel = require("./profile_permission/profilePermission");
-const userProfileModel = require("./user_profile/userProfile");
 
 
 authModel.hasMany(authModel, {
@@ -135,21 +132,6 @@ providerModel.hasMany(providerModel, {
     foreignKey: "id_provedora"
 });
 
-permissionModel.hasMany(permissionModel, {
-    construent: true,
-    foreignKey: "id_permissao"
-});
-
-profilePermissionModel.hasMany(profilePermissionModel, {
-    construent: true,
-    foreignKey: "id_pp"
-});
-
-userProfileModel.hasMany(userProfileModel, {
-    construent: true,
-    foreignKey: "id_up"
-});
-
 module.exports = {
     authModel,
     projectsModel,
@@ -172,8 +154,5 @@ module.exports = {
     postModel,
     positionModel,
     zoneModel,
-    providerModel,
-    permissionModel,
-    profilePermissionModel,
-    userProfileModel
+    providerModel
 }

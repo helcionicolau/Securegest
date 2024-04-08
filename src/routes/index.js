@@ -21,9 +21,6 @@ const postRoutes = require('./business_diretion/post/postsRoute');
 const providerRoutes = require('./business_diretion/provider/providersRoute');
 const zoneRoutes = require('./business_diretion/zone/zonesRoute');
 const positionRoutes = require('./business_diretion/position/positionsRoute');
-const permissionRoutes = require('./permission/permissionsRoute');
-const userProfileRoutes = require('./user_profile/userProfilesRoute');
-const profilePermissionRoutes = require('./profile_permission/profilePermissionsRoute');
 
 const router = express.Router();
 
@@ -49,9 +46,6 @@ router.use('/provider', providerRoutes);
 router.use('/zone', zoneRoutes);
 router.use('/employee_task', taskDepartmantEmployeeRoutes);
 router.use('/position', positionRoutes);
-router.use('/permissions', permissionRoutes);
-router.use('/user_profiles', userProfileRoutes);
-router.use('/profile_permissions', profilePermissionRoutes);
 
 module.exports = router;
 
