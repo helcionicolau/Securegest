@@ -160,7 +160,6 @@ module.exports = {
     holidaysModel,
     leave_typesModel,
     userModel,
-    profileModel,
     areaModel,
     logisticModel,
     postModel,
