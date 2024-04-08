@@ -1,4 +1,4 @@
-const authModel = require("./auth/Auth");
+const logoutModel = require("./logout/Logout");
 const projectsModel = require("./general_diretion/projects/Project");
 const tasksModel = require("./general_diretion/tasks/Task");
 const clientsModel = require("./business_diretion/clients/Client");
@@ -24,7 +24,7 @@ const menuModel = require("./menus/Menu");
 const roleAccessModel = require("./roleaccess/Roleaccess");
 
 
-authModel.hasMany(authModel, {
+logoutModel.hasMany(logoutModel, {
     constraint: true,
     foreignKey: "id"
 });
@@ -145,7 +145,7 @@ roleAccessModel.hasMany(roleAccessModel, {
 });
 
 module.exports = {
-    authModel,
+    logoutModel,
     projectsModel,
     tasksModel,
     taskDepartEmploModel,
