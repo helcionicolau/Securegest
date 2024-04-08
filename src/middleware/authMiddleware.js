@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
+const { userModel, rolesModel } = require('../models');
 
 module.exports = {
-  authenticateUserMiddleware: (req, res, next) => {
+  authenticateUserMiddleware: async (req, res, next) => {
     try {
       const token = req.headers.authorization.split(' ')[1];
       if (!token) {
@@ -15,15 +16,17 @@ module.exports = {
         return res.status(401).json({ error: 'Token expirado' });
       }
 
-      // Verificação de escopo (exemplo: apenas usuários autenticados)
-      if (!decodedToken.scope.includes('user')) {
-        return res.status(403).json({ error: 'Acesso não autorizado' });
+      // Obter o nome da função (role) do usuário a partir do token JWT
+      const roleName = await getRoleNameFromToken(decodedToken.userId);
+      if (!roleName) {
+        return res.status(401).json({ error: 'Nome da função (role) não encontrado no token' });
       }
 
       // Adicionar os dados decodificados à solicitação para uso posterior
       req.userData = {
         userId: decodedToken.userId,
-        scope: decodedToken.scope
+        scope: decodedToken.scope,
+        roleName: roleName // Adicione o nome da função (role) à solicitação
       };
 
       next();
@@ -33,3 +36,27 @@ module.exports = {
     }
   }
 };
+
+// Função para obter o nome da função (role) do usuário a partir do ID do usuário
+async function getRoleNameFromToken(userId) {
+  try {
+    // Consultar o usuário para obter o role_id
+    const user = await userModel.findByPk(userId);
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
+    const roleId = user.role_id;
+
+    // Consultar a tabela de funções (roles) para obter o nome da função
+    const role = await rolesModel.findByPk(roleId);
+    if (!role) {
+      throw new Error('Função (Role) não encontrada');
+    }
+
+    return role.nome; // Retorna o nome da função (role)
+  } catch (error) {
+    console.error('Erro ao obter o nome da função (role) do token:', error);
+    return null;
+  }
+}
