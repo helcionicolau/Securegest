@@ -4,7 +4,7 @@ const roleController = require('../../controllers/roles/roleController');
 const authMiddleware = require('../../middleware/authMiddleware');
 
 // Rotas para o CRUD de roles
-router.post('/register', roleController.createRole);
+router.post('/register', roleController.createRole, authMiddleware.authenticateUserMiddleware);
 router.get('/', authMiddleware.authenticateUserMiddleware, roleController.getAllRoles);
 router.get('/:roleId', authMiddleware.authenticateUserMiddleware, roleController.getRoleById);
 router.put('/:roleId', authMiddleware.authenticateUserMiddleware, roleController.updateRole);
