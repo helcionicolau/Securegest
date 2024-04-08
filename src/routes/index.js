@@ -1,6 +1,5 @@
 const express = require('express');
 const userRoutes = require('./users/usersRoute');
-const profileRoutes = require('./profile/profilesRoute');
 const authRoutes = require('./auths/authsRoute');
 const employeeRoutes = require('./rh/employees/employeesRoute');
 const roleRoutes = require('./rh/roles/rolesRoute');
@@ -29,7 +28,6 @@ const router = express.Router();
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
-router.use('/profiles', profileRoutes);
 router.use('/employees', employeeRoutes);
 router.use('/roles', roleRoutes);
 router.use('/employee_roles', employeeRoleRoutes);
