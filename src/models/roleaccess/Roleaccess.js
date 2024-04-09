@@ -1,7 +1,5 @@
 const { DataTypes } = require("sequelize");
 const db = require("../../utils/sequelize");
-const Role = require("../roles/Role");
-const Menu = require("../menus/Menu");
 
 const RoleAccess = db.define('role_access', {
   id_rm: {
@@ -57,12 +55,5 @@ const RoleAccess = db.define('role_access', {
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
-
-// No modelo Role
-Role.belongsToMany(Menu, { through: RoleAccess, foreignKey: 'role_id', as: 'role_accesses' });
-
-// No modelo Menu
-Menu.belongsToMany(Role, { through: RoleAccess, foreignKey: 'menu_id', as: 'role_accesses' });
-
 
 module.exports = RoleAccess;

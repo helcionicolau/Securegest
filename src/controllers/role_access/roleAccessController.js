@@ -23,8 +23,8 @@ module.exports = {
     try {
       const roleAccesses = await roleAccessModel.findAll({
         include: [
-          { model: roleModel, as: 'role_accesses', attributes: ['id_role', 'nome'] }, // Usar 'role_accesses' como alias para o modelo Role
-          { model: menuModel, as: 'role_accesses', attributes: ['id_menu', 'nome'] } // Usar 'role_accesses' como alias para o modelo Menu
+          { model: roleModel, attributes: ['id_role', 'nome'] },
+          { model: menuModel, attributes: ['id_menu', 'nome'] }
         ],
       });
       res.json(roleAccesses);
