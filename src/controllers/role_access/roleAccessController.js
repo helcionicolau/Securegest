@@ -20,21 +20,26 @@ module.exports = {
     }
   },
 
-  async getAllRoleAccess( req, res ) {
+  async getAllRoleAccess(req, res) {
     try {
-      const roleAccesses = await db.query( `
-      SELECT role_access.id_rm, role_access.haveedit, role_access.haveadd, role_access.havedelete,
-      role.nome AS role_nome,
-      menu.nome AS menu_nome
-      FROM role_access
-      INNER JOIN roles AS role ON role_access.role_id = role.id_role
-      INNER JOIN menus AS menu ON role_access.menu_id = menu.id_menu
-      `);
-
-      res.json( roleAccesses );
-    } catch ( error ) {
-      console.error( error );
-      res.status( 500 ).json( { error: 'Erro ao buscar acessos de papel' } );
+      const roleAccesses = await roleAccessModel.findAll({
+        include: [
+          {
+            model: roleModel,
+            as: 'role',
+            attributes: ['nome'], // Specify desired attributes from roles table
+          },
+          {
+            model: menuModel,
+            as: 'menu',
+            attributes: ['nome'], // Specify desired attributes from menus table
+          },
+        ],
+      });
+      res.json(roleAccesses);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar acessos de papel' });
     }
   },
 
