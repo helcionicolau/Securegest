@@ -4,7 +4,7 @@ const Role = require( "../roles/Role" );
 const Menu = require( "../menus/Menu" )
 
 module.exports = db.define( 'role_access', {
-  id_pam: {
+  id_rm: {
     type: DataTypes.BIGINT,
     primaryKey: true,
     autoIncrement: true,
