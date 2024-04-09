@@ -1,7 +1,7 @@
 const db = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
 
-Menu = db.define('menus', {
+module.exports = db.define('menus', {
   id_menu: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -37,6 +37,3 @@ Menu = db.define('menus', {
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
-
-
-module.exports = Menu;
