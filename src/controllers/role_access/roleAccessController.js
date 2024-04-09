@@ -1,4 +1,5 @@
 const { roleAccessModel, roleModel, menuModel } = require('../../models');
+const db = require("../../utils/sequelize");
 
 module.exports = {
   async createRoleAccess(req, res) {
@@ -21,7 +22,7 @@ module.exports = {
 
   async getAllRoleAccess(req, res) {
     try {
-      const roleAccesses = await sequelize.query(`
+      const roleAccesses = await db.query(`
         SELECT role_access.id_rm, role_access.haveedit, role_access.haveadd, role_access.havedelete,
                role.id_role, role.nome AS role_nome,
                menu.id_menu, menu.nome AS menu_nome
