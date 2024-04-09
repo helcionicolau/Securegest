@@ -116,7 +116,7 @@ const Menu = sequelize.define('menus', {
 });
 
 
-Role.belongsToMany(Menu, { through: RoleAccess,foreignKey: 'role_id' }); 
+Role.belongsToMany(Menu, { through: RoleAccess, foreignKey: 'role_id' }); 
 Menu.belongsToMany(Role, { through: RoleAccess, foreignKey: 'menu_id' });
 
 module.exports = {
