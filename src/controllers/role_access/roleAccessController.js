@@ -1,4 +1,4 @@
-const { roleAccessModel } = require('../../models');
+const { roleAccessModel, roleModel, menuModel } = require('../../models');
 
 module.exports = {
   async createRoleAccess(req, res) {
@@ -21,13 +21,18 @@ module.exports = {
 
   async getAllRoleAccess(req, res) {
     try {
-      const roleAccesses = await roleAccessModel.findAll();
+      const roleAccesses = await roleAccessModel.findAll({
+        include: [
+          { model: menuModel, as: 'menus', attributes: ['id_menu', 'name'] },
+          { model: roleModel, as: 'roles', attributes: ['id_role', 'name'] }
+        ],
+      });
       res.json(roleAccesses);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar acessos de papel' });
     }
-  },
+  },  
 
   async getRoleAccessById(req, res) {
     const roleAccessId = req.params.roleAccessId;
