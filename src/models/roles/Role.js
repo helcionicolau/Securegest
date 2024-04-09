@@ -1,7 +1,7 @@
-const db = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
+const db = require("../../utils/sequelize");
 
-module.exports = db.define('roles', {
+const Role = db.define('roles', {
   id_role: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -33,7 +33,9 @@ module.exports = db.define('roles', {
   }
 }, {
   tableName: "roles",
-  timestamps: true, // Habilita o uso dos timestamps automáticos
+  timestamps: true,
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
+
+module.exports = Role;

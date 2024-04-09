@@ -1,9 +1,9 @@
-const db = require( "../../utils/sequelize" );
-const { DataTypes } = require( "sequelize" );
-const Role = require( "../roles/Role" );
-const Menu = require( "../menus/Menu" );
+const { DataTypes } = require("sequelize");
+const db = require("../../utils/sequelize");
+const Role = require("../roles/Role");
+const Menu = require("../menus/Menu");
 
-RoleAccess = db.define( 'role_access', {
+const RoleAccess = db.define('role_access', {
   id_rm: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -53,14 +53,13 @@ RoleAccess = db.define( 'role_access', {
   }
 }, {
   tableName: "role_access",
-  timestamps: true, // Habilita o uso dos timestamps automáticos
+  timestamps: true,
   createdAt: 'created_at',
   updatedAt: 'updated_at'
-} );
+});
+
+// Define os relacionamentos Many-to-Many
+Role.belongsToMany(Menu, { through: RoleAccess, foreignKey: 'role_id' });
+Menu.belongsToMany(Role, { through: RoleAccess, foreignKey: 'menu_id' });
 
 module.exports = RoleAccess;
-
-// Define a relação com as tabelas Menu e Role.
-Role.belongsToMany(Menu, { through: RoleAccess });
-Menu.belongsToMany(Role, { through: RoleAccess });
-
