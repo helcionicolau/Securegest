@@ -1,0 +1,40 @@
+// arquivo: schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://331882_sec:kjdhi%%##$@mysql-securegestdb.alwaysdata.net/securegestdb_master"
+}
+
+model Role {
+  id_role    Int          @id @default(autoincrement())
+  nome       String
+  descricao  String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  RoleAccess RoleAccess[]
+}
+
+model Menu {
+  id_menu    Int          @id @default(autoincrement())
+  nome       String
+  descricao  String?
+  RoleAccess RoleAccess[]
+}
+
+model RoleAccess {
+  id_rm      Int      @id @default(autoincrement())
+  role_id    Int
+  menu_id    Int
+  haveedit   Boolean  @default(false)
+  haveadd    Boolean  @default(false)
+  havedelete Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  role Role @relation(fields: [role_id], references: [id_role])
+  menu Menu @relation(fields: [menu_id], references: [id_menu])
+}
