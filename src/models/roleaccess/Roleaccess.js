@@ -1,7 +1,5 @@
 const { DataTypes } = require("sequelize");
 const db = require("../../utils/sequelize");
-const Role = require("../roles/Role");
-const Menu = require("../menus/Menu");
 
 const RoleAccess = db.define('role_access', {
   id_rm: {
@@ -59,6 +57,3 @@ const RoleAccess = db.define('role_access', {
 });
 
 module.exports = RoleAccess;
-
-Role.belongsToMany(Menu, { through: RoleAccess });
-Menu.belongsToMany(Role, { through: RoleAccess });
