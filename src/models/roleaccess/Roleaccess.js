@@ -1,9 +1,9 @@
 const db = require( "../../utils/sequelize" );
 const { DataTypes } = require( "sequelize" );
 const Role = require( "../roles/Role" );
-const Menu = require( "../menus/Menu" )
+const Menu = require( "../menus/Menu" );
 
-module.exports = db.define( 'role_access', {
+RoleAccess = db.define( 'role_access', {
   id_rm: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -57,6 +57,8 @@ module.exports = db.define( 'role_access', {
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 } );
+
+module.exports = RoleAccess;
 
 // Define a relação com as tabelas Menu e Role.
 RoleAccess.belongsToMany( Menu, { through: 'role_access' } );
