@@ -24,8 +24,8 @@ module.exports = {
     try {
       const roleAccesses = await db.query(`
         SELECT role_access.id_rm, role_access.haveedit, role_access.haveadd, role_access.havedelete,
-               role.id_role, role.nome AS role_nome,
-               menu.id_menu, menu.nome AS menu_nome
+        role_access.role_id, role.nome AS role_nome,
+        role_access.menu_id, menu.nome AS menu_nome
         FROM role_access
         INNER JOIN roles AS role ON role_access.role_id = role.id_role
         INNER JOIN menus AS menu ON role_access.menu_id = menu.id_menu
