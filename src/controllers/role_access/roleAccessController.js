@@ -21,12 +21,15 @@ module.exports = {
 
   async getAllRoleAccess(req, res) {
     try {
-      const roleAccesses = await roleAccessModel.findAll({
-        include: [
-          { model: roleModel, attributes: ['id_role', 'nome'] },
-          { model: menuModel, attributes: ['id_menu', 'nome'] }
-        ],
-      });
+      const roleAccesses = await sequelize.query(`
+        SELECT role_access.id_rm, role_access.haveedit, role_access.haveadd, role_access.havedelete,
+               role.id_role, role.nome AS role_nome,
+               menu.id_menu, menu.nome AS menu_nome
+        FROM role_access
+        INNER JOIN roles AS role ON role_access.role_id = role.id_role
+        INNER JOIN menus AS menu ON role_access.menu_id = menu.id_menu
+      `);
+
       res.json(roleAccesses);
     } catch (error) {
       console.error(error);
