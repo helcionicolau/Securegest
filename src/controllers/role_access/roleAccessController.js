@@ -1,4 +1,4 @@
-const { roleAccessModel, roleModel, menuModel } = require( '../../models' );
+const roleAccessModel = require( '../../models/roleaccess/Roleaccess' );
 const db = require( "../../utils/sequelize" );
 
 module.exports = {
