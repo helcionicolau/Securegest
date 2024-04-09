@@ -24,7 +24,7 @@ module.exports = {
       const roleAccesses = await roleAccessModel.findAll({
         include: [
           { model: menuModel, as: 'menus', attributes: ['id_menu', 'nome'] },
-          { model: roleModel, as: 'roles', attributes: ['id_role', 'nome'] }
+          { model: roleModel, as: 'roles', attributes: ['id_role', 'nome'] },
         ],
       });
       res.json(roleAccesses);
@@ -32,7 +32,7 @@ module.exports = {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar acessos de papel' });
     }
-  },  
+  },   
 
   async getRoleAccessById(req, res) {
     const roleAccessId = req.params.roleAccessId;
