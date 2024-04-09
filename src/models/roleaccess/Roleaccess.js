@@ -61,9 +61,6 @@ RoleAccess = db.define( 'role_access', {
 module.exports = RoleAccess;
 
 // Define a relação com as tabelas Menu e Role.
-RoleAccess.belongsToMany( Menu, { through: 'role_access' } );
-Menu.belongsToMany( RoleAccess, { through: 'role_access' } );
-
-RoleAccess.belongsToMany( Role, { through: 'role_access' } );
-Role.belongsToMany( RoleAccess, { through: 'role_access' } );
+Role.belongsToMany(Menu, { through: RoleAccess });
+Menu.belongsToMany(Role, { through: RoleAccess });
 

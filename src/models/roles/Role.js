@@ -1,7 +1,8 @@
 const db = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
+const Role = require( "../rh/roles/Role" );
 
-module.exports = db.define('roles', {
+Role = db.define('roles', {
   id_role: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -37,3 +38,6 @@ module.exports = db.define('roles', {
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
+
+
+module.exports = Role;
