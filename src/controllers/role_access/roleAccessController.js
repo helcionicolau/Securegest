@@ -1,4 +1,4 @@
-const roleAccessModel = require( '../../models/roleaccess/Roleaccess' );
+const { RoleAccess, Role, Menu } = require( '../../models/roleaccess/Roleaccess' );
 const db = require( "../../utils/sequelize" );
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
     const { role_id, menu_id, haveedit, haveadd, havedelete } = req.body;
 
     try {
-      const newRoleAccess = await roleAccessModel.create( {
+      const newRoleAccess = await RoleAccess.create( {
         role_id,
         menu_id,
         haveedit,
@@ -22,17 +22,15 @@ module.exports = {
 
   async getAllRoleAccess(req, res) {
     try {
-      const roleAccesses = await roleAccessModel.findAll({
+      const roleAccesses = await RoleAccess.findAll({
         include: [
           {
-            model: roleModel,
-            as: 'role',
-            attributes: ['nome'], // Specify desired attributes from roles table
+            model: Role,
+            attributes: ['nome'],
           },
           {
-            model: menuModel,
-            as: 'menu',
-            attributes: ['nome'], // Specify desired attributes from menus table
+            model: Menu,
+            attributes: ['nome'],
           },
         ],
       });
@@ -47,7 +45,7 @@ module.exports = {
     const roleAccessId = req.params.roleAccessId;
 
     try {
-      const roleAccess = await roleAccessModel.findByPk( roleAccessId );
+      const roleAccess = await RoleAccess.findByPk( roleAccessId );
       if ( !roleAccess ) {
         return res.status( 404 ).json( { error: 'Acesso de papel não encontrado' } );
       }
@@ -62,7 +60,7 @@ module.exports = {
     const roleAccessId = req.params.roleAccessId;
 
     try {
-      const roleAccess = await roleAccessModel.findByPk( roleAccessId );
+      const roleAccess = await RoleAccess.findByPk( roleAccessId );
       if ( !roleAccess ) {
         return res.status( 404 ).json( { error: 'Acesso de papel não encontrado' } );
       }
@@ -87,7 +85,7 @@ module.exports = {
     const roleAccessId = req.params.roleAccessId;
 
     try {
-      const roleAccess = await roleAccessModel.findByPk( roleAccessId );
+      const roleAccess = await RoleAccess.findByPk( roleAccessId );
       if ( !roleAccess ) {
         return res.status( 404 ).json( { error: 'Acesso de papel não encontrado' } );
       }
