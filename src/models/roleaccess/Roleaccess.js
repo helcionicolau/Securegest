@@ -12,12 +12,14 @@ const RoleAccess = sequelize.define('role_access', {
   role_id: {
     type: DataTypes.BIGINT,
     allowNull: false,
-    field: "role_id"
+    field: "role_id",
+    references: {model: Role}
   },
   menu_id: {
     type: DataTypes.BIGINT,
     allowNull: false,
-    field: "menu_id"
+    field: "menu_id",
+    references: {model: Menu}
   },
   haveedit: {
     type: DataTypes.TINYINT,
