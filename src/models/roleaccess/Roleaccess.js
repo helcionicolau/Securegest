@@ -58,8 +58,11 @@ const RoleAccess = db.define('role_access', {
   updatedAt: 'updated_at'
 });
 
-// Define os relacionamentos Many-to-Many
-Role.belongsToMany(Menu, { through: RoleAccess, foreignKey: 'role_id' });
-Menu.belongsToMany(Role, { through: RoleAccess, foreignKey: 'menu_id' });
+// No modelo Role
+Role.belongsToMany(Menu, { through: RoleAccess, foreignKey: 'role_id', as: 'role_accesses' });
+
+// No modelo Menu
+Menu.belongsToMany(Role, { through: RoleAccess, foreignKey: 'menu_id', as: 'role_accesses' });
+
 
 module.exports = RoleAccess;
