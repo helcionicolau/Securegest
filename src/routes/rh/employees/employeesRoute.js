@@ -6,16 +6,13 @@ const authMiddleware = require('../../../middleware/authMiddleware');
 // Rotas para o CRUD de funcionários
 router.post('/register', authMiddleware.authenticateUserMiddleware, funcionarioController.registerFuncionario);
 router.get('/', authMiddleware.authenticateUserMiddleware, funcionarioController.getAllFuncionarios);
-router.get('/todos_segurancas', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosSeguranca);
-router.get('/total', authMiddleware.authenticateUserMiddleware, funcionarioController.getTotalFuncionarios);
-router.get('/totalPorData', authMiddleware.authenticateUserMiddleware, funcionarioController.getTotalFuncionariosPorData);
 router.get('/:funcionarioId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionarioById);
 router.put('/:funcionarioId', authMiddleware.authenticateUserMiddleware, funcionarioController.updateFuncionario);
 router.delete('/:funcionarioId', authMiddleware.authenticateUserMiddleware, funcionarioController.deleteFuncionario);
 
 // Adicione a nova rota para obter funcionários por departamento
-router.get('/byDepartamento/:departamentoId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosByDepartamento);
-router.get('/byNmec/:n_mecId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosByN_MEC);
+router.get('/departamento/:departamentoId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosByDepartamentoId);
+router.get('/cargo/:cargoId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosByCargo);
 
 
 module.exports = router;

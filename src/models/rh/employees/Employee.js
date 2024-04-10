@@ -1,15 +1,15 @@
-const db = require("../../../utils/sequelize");
-const { DataTypes } = require("sequelize");
+const sequelize = require("../../../utils/sequelize");
+const Departamento = require("../departments/Department");
 
-module.exports = db.define('funcionarios', {
+const Funcionario = sequelize.define('funcionario', {
   id_funcionario: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     autoIncrement: true,
     field: "id_funcionario"
   },
   n_mec: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: true,
     field: "n_mec"
   },
@@ -29,7 +29,7 @@ module.exports = db.define('funcionarios', {
     field: "estado_civil"
   },
   data_nascimento: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: true,
     field: "data_nascimento"
   },
@@ -39,39 +39,60 @@ module.exports = db.define('funcionarios', {
     field: "nif"
   },
   data_contratacao: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: true,
     field: "data_contratacao"
   },
+  data_registro: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'data_registro'
+  },
+  data_atualizacao: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'data_atualizacao'
+  },
   salario: {
-    type: DataTypes.DECIMAL(10, 2),
+    type: DataTypes.DOUBLE,
     allowNull: true,
     field: "salario"
   },
   departamento_id: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    field: "departamento_id"
-  },
-  data_registro: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: true,
-    field: "data_registro"
-  },
-  data_atualizacao: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: true,
-    field: "data_atualizacao"
+    field: "departamento_id",
+    references: {
+      model: Departamento,
+      key: 'id_departamento'
+    }
   },
   carga_horaria_diaria: {
     type: DataTypes.TIME,
     allowNull: true,
     field: "carga_horaria_diaria"
   },
+  created_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'created_at'
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'updated_at'
+  }
 }, {
-  tableName: "funcionarios"
+  tableName: "funcionarios",
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
 });
 
-// Created by António Baptista #(24/08/2023)
+Funcionario.belongsTo(Departamento, { foreignKey: 'departamento_id', as: 'departamento' });
+
+module.exports = Funcionario;

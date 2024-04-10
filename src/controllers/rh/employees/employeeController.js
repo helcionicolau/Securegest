@@ -1,31 +1,33 @@
-const bcrypt = require('bcrypt');
-const { employeesModel } = require('../../../models/index');
-const { Op } = require('sequelize');
+const { employeesModel, departamentsModel } = require('../../../models/index');
 
 module.exports = {
   async registerFuncionario(req, res) {
+    const {
+      n_mec,
+      nome,
+      sexo,
+      estado_civil,
+      data_nascimento,
+      nif,
+      data_contratacao,
+      salario,
+      departamento_id,
+      carga_horaria_diaria
+    } = req.body;
+
     try {
-      // Inicialize um objeto vazio para armazenar os dados do funcionário
-      const funcionarioData = {};
-
-      // Lista de campos permitidos
-      const allowedFields = [
-        'n_mec', 'nome', 'sexo', 'estado_civil', 'data_nascimento', 'data_contratacao',
-        'nif', 'departamento_id', 'carga_horaria_diaria'
-      ];
-
-      // Preencha o objeto de dados do funcionário apenas com os campos fornecidos
-      allowedFields.forEach(field => {
-        if (req.body[field] !== undefined) {
-          funcionarioData[field] = req.body[field];
-        }
+      const newFuncionario = await employeesModel.create({
+        n_mec,
+        nome,
+        sexo,
+        estado_civil,
+        data_nascimento,
+        nif,
+        data_contratacao,
+        salario,
+        departamento_id,
+        carga_horaria_diaria,
       });
-
-      // Adicione a data de registro
-      funcionarioData.data_registro = new Date();
-
-      // Use a função create do Sequelize para criar um novo funcionário com os dados fornecidos
-      const newFuncionario = await employeesModel.create(funcionarioData);
 
       res.status(201).json({ message: 'Funcionário registrado com sucesso!' });
     } catch (error) {
@@ -36,7 +38,10 @@ module.exports = {
 
   async getAllFuncionarios(req, res) {
     try {
-      const funcionarios = await employeesModel.findAll();
+      const funcionarios = await employeesModel.findAll({
+        include: [{ model: departamentsModel, as: 'departamento' }]
+      });
+
       res.json(funcionarios);
     } catch (error) {
       console.error(error);
@@ -44,46 +49,17 @@ module.exports = {
     }
   },
 
-  async getTotalFuncionarios(req, res) {
-    try {
-      // Obtém o número total de funcionários usando a função count do Sequelize
-      const totalFuncionarios = await employeesModel.count();
-
-      res.json(totalFuncionarios);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar o número total de funcionários' });
-    }
-  },
-
-  async getTotalFuncionariosPorData(req, res) {
-    const { dataInicio, dataFim } = req.query;
-
-    try {
-      // Use a função count do Sequelize para obter o número total de funcionários com base nas datas fornecidas
-      const totalFuncionarios = await employeesModel.count({
-        where: {
-          data_registro: {
-            [Op.between]: [dataInicio, dataFim],
-          },
-        },
-      });
-
-      res.json(totalFuncionarios);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar o número total de funcionários por data' });
-    }
-  },
-
   async getFuncionarioById(req, res) {
-    const funcionarioId = req.params.funcionarioId; // ID do funcionário a ser buscado
+    const funcionarioId = req.params.funcionarioId;
 
     try {
-      const funcionario = await employeesModel.findByPk(funcionarioId);
+      const funcionario = await employeesModel.findByPk(funcionarioId, {
+        include: [{ model: departamentsModel, as: 'departamento' }]
+      });
       if (!funcionario) {
         return res.status(404).json({ error: 'Funcionário não encontrado' });
       }
+
       res.json(funcionario);
     } catch (error) {
       console.error(error);
@@ -91,56 +67,41 @@ module.exports = {
     }
   },
 
-  async getFuncionariosByDepartamento(req, res) {
-    const departamentoId = req.params.departamentoId; // ID do departamento a ser filtrado
+  async getFuncionariosByCargo(req, res) {
+    const { cargo } = req.params;
+
     try {
-      // Use a função findAll do Sequelize para obter todos os funcionários com o departamento_id correspondente
       const funcionarios = await employeesModel.findAll({
-        where: {
-          departamento_id: departamentoId,
-        },
+        where: { cargo },
+        include: [{ model: departamentsModel, as: 'departamento' }]
       });
 
       res.json(funcionarios);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar funcionários por departamento' });
+      res.status(500).json({ error: 'Erro ao buscar funcionários pelo cargo' });
     }
   },
 
-  async getFuncionariosByN_MEC(req, res) {
-    const n_mecId = req.params.n_mecId;
+  async getFuncionariosByDepartamentoId(req, res) {
+    const { departamentoId } = req.params;
+
     try {
       const funcionarios = await employeesModel.findAll({
-        where: {
-          n_mec: n_mecId,
-        },
+        where: { departamento_id: departamentoId },
+        include: [{ model: departamentsModel, as: 'departamento' }]
       });
 
       res.json(funcionarios);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar funcionários por n_mec' });
+      res.status(500).json({ error: 'Erro ao buscar funcionários pelo departamento ID' });
     }
   },
 
-  async getFuncionariosSeguranca(req, res) {
-    try {
-      const funcionarios = await employeesModel.findAll({
-        where: {
-          cargo: 'Seguranca'
-        }
-      });
-  
-      res.json(funcionarios);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar funcionários de segurança' });
-    }
-  },    
-  
   async updateFuncionario(req, res) {
     const funcionarioId = req.params.funcionarioId;
+    const updateFields = req.body;
 
     try {
       const funcionario = await employeesModel.findByPk(funcionarioId);
@@ -148,29 +109,13 @@ module.exports = {
         return res.status(404).json({ error: 'Funcionário não encontrado' });
       }
 
-      // Inicialize um objeto vazio para armazenar os dados do funcionário
-      const funcionarioData = {};
-
-      // Lista de campos permitidos para atualização
-      const allowedFields = [
-        'n_mec', 'nome', 'sexo', 'estado_civil', 'data_nascimento', 'data_contratacao',
-        'nif', 'departamento_id', 'carga_horaria_diaria'
-      ];
-
-      // Preencha o objeto de dados do funcionário apenas com os campos fornecidos
-      allowedFields.forEach(field => {
-        if (req.body[field] !== undefined) {
-          funcionarioData[field] = req.body[field];
+      // Atualiza apenas os campos fornecidos na requisição
+      Object.keys(updateFields).forEach((field) => {
+        if (updateFields[field] !== undefined) {
+          funcionario[field] = updateFields[field];
         }
       });
 
-      // Adicione a data de atualização
-      funcionarioData.data_atualizacao = new Date();
-
-      // Atualiza apenas os campos fornecidos na requisição
-      Object.assign(funcionario, funcionarioData);
-
-      // Salva as alterações no banco de dados
       await funcionario.save();
 
       res.json({ message: 'Funcionário atualizado com sucesso' });
@@ -181,7 +126,7 @@ module.exports = {
   },
 
   async deleteFuncionario(req, res) {
-    const funcionarioId = req.params.funcionarioId; // ID do funcionário a ser excluído
+    const funcionarioId = req.params.funcionarioId;
 
     try {
       const funcionario = await employeesModel.findByPk(funcionarioId);
@@ -197,8 +142,4 @@ module.exports = {
       res.status(500).json({ error: 'Erro ao excluir funcionário' });
     }
   },
-
-  // Adicione outras operações relacionadas ao funcionário aqui, como atualização de perfil e uploads de imagem
 };
-
-// Created by António Baptista #(24/08/2023)
