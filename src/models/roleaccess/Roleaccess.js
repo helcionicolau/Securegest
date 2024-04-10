@@ -68,7 +68,7 @@ const RoleAccess = sequelize.define('role_access', {
   updatedAt: 'updated_at'
 });
 
-RoleAccess.belongsTo(Role, { foreignKey: 'role_id', as: 'role' });
-RoleAccess.belongsTo(Menu, { foreignKey: 'menu_id', as: 'menu' });
+RoleAccess.belongsToMany(Role, { foreignKey: 'role_id', as: 'role' });
+RoleAccess.belongsToMany(Menu, { foreignKey: 'menu_id', as: 'menu' });
 
 module.exports = RoleAccess;

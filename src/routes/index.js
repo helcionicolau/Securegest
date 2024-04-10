@@ -25,6 +25,7 @@ const menusRoutes = require('./menus/menusRoute');
 const roleAccessRoutes = require('./role_access/roleAccessRoute');
 const provinceRoutes = require('./provinces/provinceRoute');
 const countyRoutes = require('./counties/countyRoute');
+const projectDepartmentRoutes = require('./general_direction/projects_departments/project_departmentRoute');
 
 const router = express.Router();
 
@@ -54,6 +55,7 @@ router.use('/menus', menusRoutes);
 router.use('/role_access', roleAccessRoutes);
 router.use('/provinces', provinceRoutes);
 router.use('/counties', countyRoutes);
+router.use('/projects_departments', projectDepartmentRoutes);
 
 module.exports = router;
 
