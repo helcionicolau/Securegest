@@ -1,7 +1,7 @@
 const { zoneModel, areaModel } = require('../../../models/index');
 
 module.exports = {
-  async registerZona(req, res) {
+  async createZona(req, res) {
     const { nome, descricao, id_area } = req.body;
 
     try {
@@ -21,22 +21,20 @@ module.exports = {
   async getAllZonas(req, res) {
     try {
       const zonas = await zoneModel.findAll({
-        include: [{
-          model: areaModel,
-          as: 'area'
-        }]
+        include: [{ model: areaModel, as: 'area' }]
       });
 
-      // Mapeie os resultados para incluir os campos da tabela relacionada Area
+      // Mapeie os resultados para incluir os detalhes da área
       const mappedZonas = zonas.map(zona => ({
         id_zona: zona.id_zona,
         nome: zona.nome,
         descricao: zona.descricao,
         id_area: zona.id_area,
-        area_nome: zona.area ? zona.area.nome : null,
-        area_descricao: zona.area ? zona.area.descricao : null,
-        created_at: zona.created_at,
-        updated_at: zona.updated_at
+        area: zona.area ? {
+          id_area: zona.area.id_area,
+          nome: zona.area.nome,
+          descricao: zona.area.descricao,
+        } : null,
       }));
 
       res.json(mappedZonas);
@@ -50,25 +48,22 @@ module.exports = {
     const zonaId = req.params.zonaId;
 
     try {
-      const zona = await zoneModel.findByPk(zonaId, {
-        include: [{
-          model: Area,
-          as: 'area'
-        }]
-      });
+      const zona = await zoneModel.findByPk(zonaId, { include: [{ model: areaModel, as: 'area' }] });
       if (!zona) {
         return res.status(404).json({ error: 'Zona não encontrada' });
       }
-
+      
+      // Mapeie os resultados para incluir os detalhes da área
       const mappedZona = {
         id_zona: zona.id_zona,
         nome: zona.nome,
         descricao: zona.descricao,
         id_area: zona.id_area,
-        area_nome: zona.area ? zona.area.nome : null,
-        area_descricao: zona.area ? zona.area.descricao : null,
-        created_at: zona.created_at,
-        updated_at: zona.updated_at
+        area: zona.area ? {
+          id_area: zona.area.id_area,
+          nome: zona.area.nome,
+          descricao: zona.area.descricao,
+        } : null,
       };
 
       res.json(mappedZona);
@@ -88,10 +83,11 @@ module.exports = {
         return res.status(404).json({ error: 'Zona não encontrada' });
       }
 
-      Object.assign(zona, {
-        nome,
-        descricao,
-        id_area,
+      // Atualiza apenas os campos fornecidos na requisição
+      Object.keys(req.body).forEach((field) => {
+        if (req.body[field] !== undefined) {
+          zona[field] = req.body[field];
+        }
       });
 
       await zona.save();

@@ -24,7 +24,7 @@ const Zona = db.define('zona', {
     allowNull: false,
     field: "id_area",
     references: {
-      model: 'area',
+      model: Area,
       key: 'id_area'
     }
   },
