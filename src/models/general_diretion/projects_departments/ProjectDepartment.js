@@ -11,11 +11,6 @@ const ProjetoDepartamento = sequelize.define('projetos_departamentos', {
     allowNull: false,
     field: "id_pd"
   },
-  nome: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
-    field: "nome"
-  },
   descricao: {
     type: DataTypes.TEXT,
     allowNull: true,

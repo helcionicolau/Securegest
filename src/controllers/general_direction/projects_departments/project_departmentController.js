@@ -3,7 +3,6 @@ const { projectDepartmentModel, projectsModel, departamentsModel } = require('..
 module.exports = {
   async createProjetoDepartamento(req, res) {
     const {
-      nome,
       descricao,
       id_projeto,
       id_departamento,
@@ -11,7 +10,6 @@ module.exports = {
 
     try {
       const novoProjetoDepartamento = await projectDepartmentModel.create({
-        nome,
         descricao,
         id_projeto,
         id_departamento,
