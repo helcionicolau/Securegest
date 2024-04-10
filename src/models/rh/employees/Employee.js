@@ -45,11 +45,6 @@ const Funcionario = sequelize.define('funcionarios', {
     allowNull: true,
     field: "data_contratacao"
   },
-  salario: {
-    type: DataTypes.DOUBLE,
-    allowNull: true,
-    field: "salario"
-  },
   departamento_id: {
     type: DataTypes.INTEGER,
     allowNull: true,
