@@ -23,6 +23,8 @@ const positionRoutes = require('./business_diretion/position/positionsRoute');
 const rolesRoutes = require('./roles/rolesRoute');
 const menusRoutes = require('./menus/menusRoute');
 const roleAccessRoutes = require('./role_access/roleAccessRoute');
+const provinceRoutes = require('./provinces/provinceRoute');
+const countyRoutes = require('./counties/countyRoute');
 
 const router = express.Router();
 
@@ -50,6 +52,8 @@ router.use('/position', positionRoutes);
 router.use('/roles', rolesRoutes);
 router.use('/menus', menusRoutes);
 router.use('/role_access', roleAccessRoutes);
+router.use('/provinces', provinceRoutes);
+router.use('/counties', countyRoutes);
 
 module.exports = router;
 

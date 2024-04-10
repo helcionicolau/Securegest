@@ -22,6 +22,8 @@ const taskDepartEmploModel = require("./general_diretion/tasks/taskDepartmentEmp
 const roleModel = require("./roles/Role");
 const menuModel = require("./menus/Menu");
 const roleAccessModel = require("./roleaccess/Roleaccess");
+const provinceModel = require("./provinces/Province");
+const countyModel = require("./counties/County");
 
 module.exports = {
     logoutModel,
@@ -47,5 +49,7 @@ module.exports = {
     providerModel,
     roleModel,
     menuModel,
-    roleAccessModel
+    roleAccessModel,
+    provinceModel,
+    countyModel
 }
