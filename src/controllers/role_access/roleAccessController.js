@@ -1,5 +1,4 @@
 const { roleAccessModel, roleModel, menuModel } = require('../../models');
-const db = require("../../utils/sequelize");
 
 module.exports = {
   async createRoleAccess(req, res) {
@@ -22,14 +21,12 @@ module.exports = {
 
   async getAllRoleAccess(req, res) {
     try {
-      const roleAccesses = await db.query(`
-      SELECT role_access.id_rm, role_access.haveedit, role_access.haveadd, role_access.havedelete,
-      role.nome AS role_nome,
-      menu.nome AS menu_nome
-      FROM role_access
-      INNER JOIN roles AS role ON role_access.role_id = role.id_role
-      INNER JOIN menus AS menu ON role_access.menu_id = menu.id_menu
-      `);
+      const roleAccesses = await roleAccessModel.findAll({
+        include: [
+          { model: roleModel, as: 'role' },
+          { model: menuModel, as: 'menu' }
+        ]
+      });
       res.json(roleAccesses);
     } catch (error) {
       console.error(error);
@@ -41,7 +38,12 @@ module.exports = {
     const roleAccessId = req.params.roleAccessId;
 
     try {
-      const roleAccess = await roleAccessModel.findByPk(roleAccessId);
+      const roleAccess = await roleAccessModel.findByPk(roleAccessId, {
+        include: [
+          { model: roleModel, as: 'role' },
+          { model: menuModel, as: 'menu' }
+        ]
+      });
       if (!roleAccess) {
         return res.status(404).json({ error: 'Acesso de papel não encontrado' });
       }
