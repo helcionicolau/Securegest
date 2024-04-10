@@ -1,7 +1,7 @@
 // models/Posicao.js
 
 const { DataTypes } = require("sequelize");
-const sequelize = require("../../utils/sequelize");
+const sequelize = require("../../../utils/sequelize");
 const Zona = require("../zone/Zone");
 const Cliente = require("../clients/Client");
 const Municipio = require("../../counties/County");
