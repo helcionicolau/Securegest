@@ -1,7 +1,8 @@
 const db = require("../../../utils/sequelize");
 const { DataTypes } = require("sequelize");
+const Area = require("../area/Area");
 
-module.exports = db.define('zona', {
+const Zona = db.define('zona', {
   id_zona: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -20,9 +21,32 @@ module.exports = db.define('zona', {
   },
   id_area: {
     type: DataTypes.INTEGER,
-    allowNull: true,
-    field: "id_area"
+    allowNull: false,
+    field: "id_area",
+    references: {
+      model: 'area',
+      key: 'id_area'
+    }
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'created_at'
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'updated_at'
   }
 }, {
-  tableName: "zona"
+  tableName: "zona",
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
 });
+
+Zona.belongsTo(Area, { foreignKey: 'id_area', as: 'area' });
+
+module.exports = Zona;

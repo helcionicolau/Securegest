@@ -1,4 +1,4 @@
-const { zoneModel } = require('../../../models/index');
+const { zoneModel, areaModel } = require('../../../models/index');
 
 module.exports = {
   async registerZona(req, res) {
@@ -20,8 +20,26 @@ module.exports = {
 
   async getAllZonas(req, res) {
     try {
-      const zonas = await zoneModel.findAll();
-      res.json(zonas);
+      const zonas = await zoneModel.findAll({
+        include: [{
+          model: areaModel,
+          as: 'area'
+        }]
+      });
+
+      // Mapeie os resultados para incluir os campos da tabela relacionada Area
+      const mappedZonas = zonas.map(zona => ({
+        id_zona: zona.id_zona,
+        nome: zona.nome,
+        descricao: zona.descricao,
+        id_area: zona.id_area,
+        area_nome: zona.area ? zona.area.nome : null,
+        area_descricao: zona.area ? zona.area.descricao : null,
+        created_at: zona.created_at,
+        updated_at: zona.updated_at
+      }));
+
+      res.json(mappedZonas);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar zonas' });
@@ -32,11 +50,28 @@ module.exports = {
     const zonaId = req.params.zonaId;
 
     try {
-      const zona = await zoneModel.findByPk(zonaId);
+      const zona = await zoneModel.findByPk(zonaId, {
+        include: [{
+          model: Area,
+          as: 'area'
+        }]
+      });
       if (!zona) {
         return res.status(404).json({ error: 'Zona não encontrada' });
       }
-      res.json(zona);
+
+      const mappedZona = {
+        id_zona: zona.id_zona,
+        nome: zona.nome,
+        descricao: zona.descricao,
+        id_area: zona.id_area,
+        area_nome: zona.area ? zona.area.nome : null,
+        area_descricao: zona.area ? zona.area.descricao : null,
+        created_at: zona.created_at,
+        updated_at: zona.updated_at
+      };
+
+      res.json(mappedZona);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar zona por ID' });
