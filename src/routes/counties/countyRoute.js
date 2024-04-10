@@ -9,5 +9,6 @@ const authMiddleware = require('../../middleware/authMiddleware');
 router.get('/', authMiddleware.authenticateUserMiddleware, municipioController.getAllMunicipios);
 router.get('/:municipioId', authMiddleware.authenticateUserMiddleware, municipioController.getMunicipioById);
 router.get('/name/:municipioName', authMiddleware.authenticateUserMiddleware, municipioController.getMunicipioByName);
+router.get('/provincia/:provinciaId', authMiddleware.authenticateUserMiddleware, municipioController.getMunicipioByProvinciaId);
 
 module.exports = router;

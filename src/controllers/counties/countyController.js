@@ -48,5 +48,22 @@ module.exports = {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar município por nome' });
     }
-  }
+  },
+
+  async getMunicipioByProvinciaId(req, res) {
+    const provinciaId = req.params.provinciaId;
+
+    try {
+      // Consulte os municípios filtrando pelo ID da província
+      const municipios = await countyModel.findAll({
+        where: { provincia_id: provinciaId },
+        include: [{ model: provinceModel, as: 'provincia' }]
+      });
+
+      res.json(municipios);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar municípios por ID de província' });
+    }
+  },
 };
