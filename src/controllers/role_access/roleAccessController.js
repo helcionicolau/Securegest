@@ -27,12 +27,26 @@ module.exports = {
           { model: menuModel, as: 'menu' }
         ]
       });
-      res.json(roleAccesses);
+  
+      // Mapeie os resultados para incluir os nomes das tabelas role e menu
+      const mappedRoleAccesses = roleAccesses.map(roleAccess => ({
+        id_rm: roleAccess.id_rm,
+        role_id: roleAccess.role_id,
+        role_nome: roleAccess.role ? roleAccess.role.nome : null,
+        menu_id: roleAccess.menu_id,
+        menu_nome: roleAccess.menu ? roleAccess.menu.nome : null,
+        haveedit: roleAccess.haveedit,
+        haveadd: roleAccess.haveadd,
+        havedelete: roleAccess.havedelete
+      }));
+  
+      res.json(mappedRoleAccesses);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar acessos de papel' });
     }
-  },   
+  }
+  ,   
 
   async getRoleAccessById(req, res) {
     const roleAccessId = req.params.roleAccessId;
