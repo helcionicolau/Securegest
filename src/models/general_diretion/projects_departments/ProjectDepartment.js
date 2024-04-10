@@ -59,7 +59,7 @@ const ProjetoDepartamento = sequelize.define('projetos_departamentos', {
 });
 
 // Define many-to-many relationship between Projeto and Departamento through ProjetoDepartamento
-ProjetoDepartamento.belongsToMany(Projeto, { through: 'projetos_departamentos', foreignKey: 'id_projeto' });
-ProjetoDepartamento.belongsToMany(Departamento, { through: 'projetos_departamentos', foreignKey: 'id_departamento' });
+ProjetoDepartamento.belongsTo(Projeto, { foreignKey: 'id_projeto', as: 'projeto' });
+ProjetoDepartamento.belongsTo(Departamento, { foreignKey: 'id_departamento', as: 'departamento' });
 
 module.exports = ProjetoDepartamento;
