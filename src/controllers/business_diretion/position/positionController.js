@@ -1,18 +1,10 @@
-const { positionModel } = require('../../../models/index');
+// controllers/PosicaoController.js
+
+const { positionModel, zoneModel, clientsModel, countyModel } = require('../../../models');
 
 module.exports = {
   async registerPosicao(req, res) {
-    const {
-      nome,
-      descricao,
-      id_zona,
-      id_cliente,
-      n_postos,
-      provincia,
-      municipio,
-      latitude,
-      longitude
-    } = req.body;
+    const { nome, descricao, id_zona, id_cliente, n_postos, id_municipio, latitude, longitude } = req.body;
 
     try {
       const newPosicao = await positionModel.create({
@@ -21,22 +13,28 @@ module.exports = {
         id_zona,
         id_cliente,
         n_postos,
-        provincia,
-        municipio,
+        id_municipio,
         latitude,
         longitude
       });
 
-      res.status(201).json({ message: 'Posição registrada com sucesso!' });
+      res.status(201).json({ message: 'Posição criada com sucesso!' });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Erro ao registrar posição' });
+      res.status(500).json({ error: 'Erro ao criar posição' });
     }
   },
 
   async getAllPosicoes(req, res) {
     try {
-      const posicoes = await positionModel.findAll();
+      const posicoes = await positionModel.findAll({
+        include: [
+          { model: zoneModel, as: 'zona' },
+          { model: clientsModel, as: 'cliente' },
+          { model: countyModel, as: 'municipio' }
+        ]
+      });
+
       res.json(posicoes);
     } catch (error) {
       console.error(error);
@@ -48,7 +46,13 @@ module.exports = {
     const posicaoId = req.params.posicaoId;
 
     try {
-      const posicao = await positionModel.findByPk(posicaoId);
+      const posicao = await positionModel.findByPk(posicaoId, {
+        include: [
+          { model: zoneModel, as: 'zona' },
+          { model: clientsModel, as: 'cliente' },
+          { model: countyModel, as: 'municipio' }
+        ]
+      });
       if (!posicao) {
         return res.status(404).json({ error: 'Posição não encontrada' });
       }
@@ -59,38 +63,8 @@ module.exports = {
     }
   },
 
-  async getPosicoesByClientId(req, res) {
-    const clientId = req.params.clientId;
-
-    try {
-      const posicoes = await Posicao.findAll({
-        where: {
-          id_cliente: clientId
-        }
-      });
-      if (!posicoes || posicoes.length === 0) {
-        return res.status(404).json({ error: 'Posições não encontradas para o cliente fornecido' });
-      }
-      res.json(posicoes);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar posições por ID de cliente' });
-    }
-  },
-
   async updatePosicao(req, res) {
     const posicaoId = req.params.posicaoId;
-    const {
-      nome,
-      descricao,
-      id_zona,
-      id_cliente,
-      n_postos,
-      provincia,
-      municipio,
-      latitude,
-      longitude
-    } = req.body;
 
     try {
       const posicao = await positionModel.findByPk(posicaoId);
@@ -98,16 +72,11 @@ module.exports = {
         return res.status(404).json({ error: 'Posição não encontrada' });
       }
 
-      Object.assign(posicao, {
-        nome,
-        descricao,
-        id_zona,
-        id_cliente,
-        n_postos,
-        provincia,
-        municipio,
-        latitude,
-        longitude
+      // Atualiza apenas os campos fornecidos na requisição
+      Object.keys(req.body).forEach((field) => {
+        if (req.body[field] !== undefined) {
+          posicao[field] = req.body[field];
+        }
       });
 
       await posicao.save();
@@ -135,5 +104,5 @@ module.exports = {
       console.error(error);
       res.status(500).json({ error: 'Erro ao excluir posição' });
     }
-  },
+  }
 };
