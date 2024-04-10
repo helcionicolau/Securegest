@@ -1,7 +1,7 @@
 const sequelize = require("../../../utils/sequelize");
 const Departamento = require("../departments/Department");
 
-const Funcionario = sequelize.define('funcionario', {
+const Funcionario = sequelize.define('funcionarios', {
   id_funcionario: {
     type: DataTypes.BIGINT,
     primaryKey: true,
