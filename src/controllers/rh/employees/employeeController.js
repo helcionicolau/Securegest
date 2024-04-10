@@ -10,7 +10,6 @@ module.exports = {
       data_nascimento,
       nif,
       data_contratacao,
-      salario,
       departamento_id,
       carga_horaria_diaria
     } = req.body;
@@ -24,7 +23,6 @@ module.exports = {
         data_nascimento,
         nif,
         data_contratacao,
-        salario,
         departamento_id,
         carga_horaria_diaria,
       });
