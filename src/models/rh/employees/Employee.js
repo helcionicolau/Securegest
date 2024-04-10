@@ -40,6 +40,11 @@ const Funcionario = sequelize.define('funcionarios', {
     allowNull: true,
     field: "nif"
   },
+  cargo: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: "cargo"
+  },
   data_contratacao: {
     type: DataTypes.DATEONLY,
     allowNull: true,

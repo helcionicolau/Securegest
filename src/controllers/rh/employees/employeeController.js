@@ -9,6 +9,7 @@ module.exports = {
       estado_civil,
       data_nascimento,
       nif,
+      cargo,
       data_contratacao,
       departamento_id,
       carga_horaria_diaria
@@ -22,6 +23,7 @@ module.exports = {
         estado_civil,
         data_nascimento,
         nif,
+        cargo,
         data_contratacao,
         departamento_id,
         carga_horaria_diaria,
