@@ -1,4 +1,5 @@
 const sequelize = require("../../../utils/sequelize");
+const { DataTypes } = require("sequelize");
 const Departamento = require("../departments/Department");
 
 const Funcionario = sequelize.define('funcionarios', {
@@ -6,6 +7,7 @@ const Funcionario = sequelize.define('funcionarios', {
     type: DataTypes.BIGINT,
     primaryKey: true,
     autoIncrement: true,
+    allowNull: false,
     field: "id_funcionario"
   },
   n_mec: {
@@ -42,18 +44,6 @@ const Funcionario = sequelize.define('funcionarios', {
     type: DataTypes.DATEONLY,
     allowNull: true,
     field: "data_contratacao"
-  },
-  data_registro: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW,
-    field: 'data_registro'
-  },
-  data_atualizacao: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW,
-    field: 'data_atualizacao'
   },
   salario: {
     type: DataTypes.DOUBLE,
