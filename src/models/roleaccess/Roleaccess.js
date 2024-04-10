@@ -1,5 +1,9 @@
-const { Sequelize, DataTypes } = require("sequelize");
+// models/RoleAccess.js
+
+const { DataTypes } = require("sequelize");
 const sequelize = require("../../utils/sequelize");
+const Role = require("../roles/Role");
+const Menu = require("../menus/Menu");
 
 const RoleAccess = sequelize.define('role_access', {
   id_rm: {
@@ -10,29 +14,37 @@ const RoleAccess = sequelize.define('role_access', {
     field: "id_rm"
   },
   role_id: {
-    type: DataTypes.BIGINT,
+    type: DataTypes.INTEGER,
     allowNull: false,
-    field: "role_id"
+    field: "role_id",
+    references: {
+      model: Role,
+      key: 'id_role'
+    }
   },
   menu_id: {
-    type: DataTypes.BIGINT,
+    type: DataTypes.INTEGER,
     allowNull: false,
-    field: "menu_id"
+    field: "menu_id",
+    references: {
+      model: Menu,
+      key: 'id_menu'
+    }
   },
   haveedit: {
-    type: DataTypes.TINYINT,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
     field: "haveedit"
   },
   haveadd: {
-    type: DataTypes.TINYINT,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
     field: "haveadd"
   },
   havedelete: {
-    type: DataTypes.TINYINT,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
     field: "havedelete"
@@ -56,3 +68,7 @@ const RoleAccess = sequelize.define('role_access', {
   updatedAt: 'updated_at'
 });
 
+RoleAccess.belongsTo(Role, { foreignKey: 'role_id', as: 'role' });
+RoleAccess.belongsTo(Menu, { foreignKey: 'menu_id', as: 'menu' });
+
+module.exports = RoleAccess;

@@ -1,7 +1,9 @@
-const { DataTypes } = require("sequelize");
-const db = require("../../utils/sequelize");
+// models/Role.js
 
-const Role = db.define('roles', {
+const { DataTypes } = require("sequelize");
+const sequelize = require("../../utils/sequelize");
+
+const Role = sequelize.define('roles', {
   id_role: {
     type: DataTypes.BIGINT,
     primaryKey: true,

@@ -20,117 +20,8 @@ const zoneModel = require("./business_diretion/zone/Zone");
 const providerModel = require("./business_diretion/provider/Provider");
 const taskDepartEmploModel = require("./general_diretion/tasks/taskDepartmentEmployee");
 const roleModel = require("./roles/Role");
-
-
-logoutModel.hasMany(logoutModel, {
-    constraint: true,
-    foreignKey: "id"
-});
-
-projectsModel.hasMany(projectsModel, {
-    construent: true,
-    foreignKey: "id_projeto"
-});
-
-tasksModel.hasMany(tasksModel, {
-    construent: true,
-    foreignKey: "id_tarefa"
-});
-
-taskDepartEmploModel.hasMany(taskDepartEmploModel, {
-    construent: true,
-    foreignKey: "id_tdf"
-});
-
-clientsModel.hasMany(clientsModel, {
-    construent: true,
-    foreignKey: "id_cliente"
-});
-
-departamentsModel.hasMany(departamentsModel, {
-    construent: true,
-    foreignKey: "id_departamento"
-});
-
-employee_leavesModel.hasMany(employee_leavesModel, {
-    construent: true,
-    foreignKey: "id"
-});
-
-employee_vacationsModel.hasMany(employee_vacationsModel, {
-    construent: true,
-    foreignKey: "id_feria"
-});
-
-employeesModel.hasMany(employeesModel, {
-    construent: true,
-    foreignKey: "id_funcionario"
-});
-
-rolesModel.hasMany(rolesModel, {
-    construent: true,
-    foreignKey: "id_cargo"
-});
-
-employeeRolesModel.hasMany(employeeRolesModel, {
-    construent: true,
-    foreignKey: "id_fc"
-});
-
-employee_departamentsModel.hasMany(employee_departamentsModel, {
-    construent: true,
-    foreignKey: "id"
-});
-
-holidaysModel.hasMany(holidaysModel, {
-    construent: true,
-    foreignKey: "id_feriado"
-});
-
-leave_typesModel.hasMany(leave_typesModel, {
-    construent: true,
-    foreignKey: "id_tipo"
-});
-
-userModel.hasMany(userModel, {
-    construent: true,
-    foreignKey: "id_usuario"
-});
-
-areaModel.hasMany(areaModel, {
-    construent: true,
-    foreignKey: "id_area"
-});
-
-logisticModel.hasMany(logisticModel, {
-    construent: true,
-    foreignKey: "id_logistica"
-});
-
-postModel.hasMany(postModel, {
-    construent: true,
-    foreignKey: "id_posto"
-});
-
-positionModel.hasMany(positionModel, {
-    construent: true,
-    foreignKey: "id_posicao"
-});
-
-zoneModel.hasMany(zoneModel, {
-    construent: true,
-    foreignKey: "id_zona"
-});
-
-providerModel.hasMany(providerModel, {
-    construent: true,
-    foreignKey: "id_provedora"
-});
-
-roleModel.hasMany(roleModel, {
-    construent: true,
-    foreignKey: "id_role"
-});
+const menuModel = require("./menus/Menu");
+const roleAccessModel = require("./roleaccess/Roleaccess");
 
 module.exports = {
     logoutModel,
@@ -154,5 +45,7 @@ module.exports = {
     positionModel,
     zoneModel,
     providerModel,
-    roleModel
+    roleModel,
+    menuModel,
+    roleAccessModel
 }
