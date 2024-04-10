@@ -1,7 +1,7 @@
 const { zoneModel, areaModel } = require('../../../models/index');
 
 module.exports = {
-  async createZona(req, res) {
+  async registerZona(req, res) {
     const { nome, descricao, id_area } = req.body;
 
     try {
