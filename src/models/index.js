@@ -28,7 +28,6 @@ const employeeTaskModel = require("./general_diretion/employee_tasks/EmployeeTas
 module.exports = {
     logoutModel,
     projectsModel,
-    tasksModel,
     clientsModel,
     departamentsModel,
     employee_leavesModel,
