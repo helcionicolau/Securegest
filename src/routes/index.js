@@ -53,7 +53,7 @@ router.use('/role_access', roleAccessRoutes);
 router.use('/provinces', provinceRoutes);
 router.use('/counties', countyRoutes);
 router.use('/projects_departments', projectDepartmentRoutes);
-router.use('/employee_task', employeeTaskRoutes);
+router.use('/employees_tasks', employeeTaskRoutes);
 
 module.exports = router;
 
