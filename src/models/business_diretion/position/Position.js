@@ -1,12 +1,13 @@
 // models/Posicao.js
 
-const { DataTypes } = require("sequelize");
-const sequelize = require("../../../utils/sequelize");
-const Zona = require("../zone/Zone");
-const Cliente = require("../clients/Client");
-const Municipio = require("../../counties/County");
+const { DataTypes } = require( "sequelize" );
+const sequelize = require( "../../../utils/sequelize" );
+const Zona = require( "../zone/Zone" );
+const Cliente = require( "../clients/Client" );
+const Municipio = require( "../../counties/County" );
+const Funcionario = require( "../../rh/employees/Employee" );
 
-const Posicao = sequelize.define('posicao', {
+const Posicao = sequelize.define( 'posicao', {
   id_posicao: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -56,6 +57,15 @@ const Posicao = sequelize.define('posicao', {
       key: 'id_municipio'
     }
   },
+  id_funcionario: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+    field: "id_funcionario",
+    references: {
+      model: Funcionario,
+      key: 'id_funcionario'
+    }
+  },
   latitude: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -83,10 +93,11 @@ const Posicao = sequelize.define('posicao', {
   timestamps: true,
   createdAt: 'created_at',
   updatedAt: 'updated_at'
-});
+} );
 
-Posicao.belongsTo(Zona, { foreignKey: 'id_zona', as: 'zona' });
-Posicao.belongsTo(Cliente, { foreignKey: 'id_cliente', as: 'cliente' });
-Posicao.belongsTo(Municipio, { foreignKey: 'id_municipio', as: 'municipio' });
+Posicao.belongsTo( Zona, { foreignKey: 'id_zona', as: 'zona' } );
+Posicao.belongsTo( Cliente, { foreignKey: 'id_cliente', as: 'cliente' } );
+Posicao.belongsTo( Municipio, { foreignKey: 'id_municipio', as: 'municipio' } );
+Posicao.belongsTo( Funcionario, { foreignKey: 'id_funcionario', as: 'funcionario' } );
 
 module.exports = Posicao;
