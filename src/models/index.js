@@ -1,6 +1,5 @@
 const logoutModel = require("./logout/Logout");
 const projectsModel = require("./general_diretion/projects/Project");
-const tasksModel = require("./general_diretion/tasks/Task");
 const clientsModel = require("./business_diretion/clients/Client");
 const departamentsModel = require("./rh/departments/Department");
 const employee_leavesModel = require("./rh/employee_leaves/employeeLeave");
