@@ -69,19 +69,24 @@ module.exports = {
 
   async getFuncionariosByCargo(req, res) {
     const { cargo } = req.params;
-
+  
     try {
       const funcionarios = await employeesModel.findAll({
         where: { cargo: cargo },
         include: [{ model: departamentsModel, as: 'departamento' }]
       });
-
+  
+      if (!funcionarios || funcionarios.length === 0) {
+        return res.status(404).json({ message: 'Não há funcionários com o cargo especificado' });
+      }
+  
       res.json(funcionarios);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar funcionários pelo cargo' });
     }
-  },
+  }
+  ,
 
   async getFuncionariosByDepartamentoId(req, res) {
     const { departamentoId } = req.params;

@@ -12,7 +12,9 @@ router.delete('/:funcionarioId', authMiddleware.authenticateUserMiddleware, func
 
 // Adicione a nova rota para obter funcionários por departamento
 router.get('/departamento/:departamentoId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosByDepartamentoId);
-router.get('/cargo/:cargoNome', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosByCargo);
+
+// Nova rota para obter funcionários por cargo
+router.get('/cargo/:cargo', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionariosByCargo);
 
 
 module.exports = router;
