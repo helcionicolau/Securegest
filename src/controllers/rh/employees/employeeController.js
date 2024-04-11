@@ -72,7 +72,7 @@ module.exports = {
 
     try {
       const funcionarios = await employeesModel.findAll({
-        where: { cargo },
+        where: { cargo: cargo },
         include: [{ model: departamentsModel, as: 'departamento' }]
       });
 
