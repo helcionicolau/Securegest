@@ -18,7 +18,6 @@ const postModel = require("./business_diretion/post/Post");
 const positionModel = require("./business_diretion/position/Position");
 const zoneModel = require("./business_diretion/zone/Zone");
 const providerModel = require("./business_diretion/provider/Provider");
-const taskDepartEmploModel = require("./general_diretion/tasks/taskDepartmentEmployee");
 const roleModel = require("./roles/Role");
 const menuModel = require("./menus/Menu");
 const roleAccessModel = require("./roleaccess/Roleaccess");
@@ -31,7 +30,6 @@ module.exports = {
     logoutModel,
     projectsModel,
     tasksModel,
-    taskDepartEmploModel,
     clientsModel,
     departamentsModel,
     employee_leavesModel,
