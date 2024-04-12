@@ -1,8 +1,8 @@
-const sequelize = require("../../../utils/sequelize");
-const { DataTypes } = require("sequelize");
+const sequelize = require( "../../../utils/sequelize" );
+const { DataTypes } = require( "sequelize" );
 const Posicao = require( "../../business_diretion/position/Position" );
 
-const Posto = sequelize.define('posto', {
+const Posto = sequelize.define( 'posto', {
   id_posto: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -32,13 +32,26 @@ const Posto = sequelize.define('posto', {
     type: DataTypes.STRING,
     allowNull: true,
     field: "longitude"
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'created_at'
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+    field: 'updated_at'
   }
 }, {
   tableName: "posto",
   timestamps: true,
   createdAt: 'created_at',
   updatedAt: 'updated_at'
-});
+} );
+
 
 Posto.belongsTo( Posicao, { foreignKey: 'id_posicao', as: 'posicao' } );
 

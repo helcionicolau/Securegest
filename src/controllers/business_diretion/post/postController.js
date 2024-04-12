@@ -51,6 +51,26 @@ module.exports = {
     }
   },
 
+  async getPostosByPosicaoId(req, res) {
+    const posicaoId = req.params.posicaoId;
+
+    try {
+      const postos = await postModel.findAll({
+        where: { id_posicao: posicaoId },
+        include: [{ model: positionModel, as: 'posicao' }],
+      });
+
+      if (!postos.length) {
+        return res.status(404).json({ error: 'Nenhum posto encontrado para a posição informada' });
+      }
+
+      res.json(postos);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar postos por ID da posição' });
+    }
+  },
+
   async updatePosto(req, res) {
     const postoId = req.params.postoId;
     const updateFields = req.body;
