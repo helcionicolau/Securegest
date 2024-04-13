@@ -24,6 +24,7 @@ const provinceModel = require("./provinces/Province");
 const countyModel = require("./counties/County");
 const projectDepartmentModel = require("../models/general_diretion/projects_departments/ProjectDepartment");
 const employeeTaskModel = require("./general_diretion/employee_tasks/EmployeeTask");
+const employeePostModel = require("./business_diretion/post_security/PostSecurity");
 
 module.exports = {
     logoutModel,
@@ -51,5 +52,6 @@ module.exports = {
     provinceModel,
     countyModel,
     projectDepartmentModel,
-    employeeTaskModel
+    employeeTaskModel,
+    employeePostModel
 }
