@@ -46,7 +46,6 @@ async function getRoleNameFromToken(userId) {
       throw new Error('Usuário não encontrado');
     }
 
-    const userId = user.id_usuario;
     const roleId = user.role_id;
 
     // Consultar a tabela de funções (roles) para obter o nome da função
@@ -55,7 +54,6 @@ async function getRoleNameFromToken(userId) {
       throw new Error('Função (Role) não encontrada');
     }
 
-    console.log('ID do usuário:', userId.userId);
     console.log('Nome da função (role) do usuário:', role.nome); // Log para imprimir o nome do papel (role)
     
     return role.nome; // Retorna o nome da função (role)
