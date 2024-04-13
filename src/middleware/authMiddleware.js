@@ -29,6 +29,8 @@ module.exports = {
         roleName: roleName // Adicione o nome da função (role) à solicitação
       };
 
+      console.log('ID do usuário:', userData.userId);
+
       next();
     } catch (error) {
       console.error(error);
