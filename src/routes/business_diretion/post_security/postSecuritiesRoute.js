@@ -13,6 +13,6 @@ router.delete('/:postoSegurancaId', authMiddleware.authenticateUserMiddleware, p
 
 // Routes for searching by Post ID and Funcionario ID
 router.get('/posto/:postoId', authMiddleware.authenticateUserMiddleware, postoSegurancaController.getPostoSegurancaByPostoId);
-router.get('/funcionario/:funcionarioId', authMiddleware.authenticateUserMiddleware, postoSegurancaController.getPostoSegurancaByFuncionarioId);
+router.get('/seguranca/:funcionarioId', authMiddleware.authenticateUserMiddleware, postoSegurancaController.getPostoSegurancaByFuncionarioId);
 
 module.exports = router;
