@@ -14,11 +14,14 @@ module.exports = {
         return res.status(401).json({ error: 'Token não fornecido' });
       }
 
+      // Chave secreta
+      const secretKey = process.env.JWT_KEY || 'kndio289y32niw0h10';
+
       // Debug: Log do token e chave secreta
       console.log('Token:', token);
-      console.log('JWT Key:', process.env.JWT_KEY || "kndio289y32niw0h10");
+      console.log('JWT Key:', secretKey);
 
-      const decodedToken = jwt.verify(token, "kndio289y32niw0h10");
+      const decodedToken = jwt.verify(token, secretKey);
 
       // Verificação de validade do token
       if (decodedToken.exp <= Math.floor(Date.now() / 1000)) {
