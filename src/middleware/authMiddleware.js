@@ -4,10 +4,19 @@ const { userModel, roleModel } = require('../models');
 module.exports = {
   authenticateUserMiddleware: async (req, res, next) => {
     try {
-      const token = req.headers.authorization.split(' ')[1];
+      const authorizationHeader = req.headers.authorization;
+      if (!authorizationHeader) {
+        return res.status(401).json({ error: 'Token não fornecido' });
+      }
+
+      const token = authorizationHeader.split(' ')[1];
       if (!token) {
         return res.status(401).json({ error: 'Token não fornecido' });
       }
+
+      // Debug: Log do token e chave secreta
+      console.log('Token:', token);
+      console.log('JWT Key:', process.env.JWT_KEY || "whoami");
 
       const decodedToken = jwt.verify(token, process.env.JWT_KEY || "whoami");
 
@@ -62,4 +71,3 @@ async function getRoleNameFromToken(userId) {
     return null;
   }
 }
-
