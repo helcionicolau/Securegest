@@ -18,8 +18,8 @@ module.exports = {
       const secretKey = process.env.JWT_KEY || 'kndio289y32niw0h10';
 
       // Debug: Log do token e chave secreta
-      console.log('Token:', token);
-      console.log('JWT Key:', secretKey);
+      /*console.log('Token:', token);*/
+      /*console.log('JWT Key:', secretKey);*/
 
       const decodedToken = jwt.verify(token, secretKey);
 
