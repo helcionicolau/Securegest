@@ -18,7 +18,7 @@ module.exports = {
       console.log('Token:', token);
       console.log('JWT Key:', process.env.JWT_KEY || "whoami");
 
-      const decodedToken = jwt.verify(token, process.env.JWT_KEY || "whoami");
+      const decodedToken = jwt.verify(token, "kndio289y32niw0h10");
 
       // Verificação de validade do token
       if (decodedToken.exp <= Math.floor(Date.now() / 1000)) {
