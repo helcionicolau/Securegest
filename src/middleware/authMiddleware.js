@@ -16,7 +16,7 @@ module.exports = {
 
       // Debug: Log do token e chave secreta
       console.log('Token:', token);
-      console.log('JWT Key:', process.env.JWT_KEY || "whoami");
+      console.log('JWT Key:', process.env.JWT_KEY || "kndio289y32niw0h10");
 
       const decodedToken = jwt.verify(token, "kndio289y32niw0h10");
 

@@ -5,7 +5,7 @@
         "MYSQL_DATABASE": "securegestdb_master",
         "MYSQL_HOST": "mysql-securegestdb.alwaysdata.net",
         "MYSQL_PORT": 3306,
-        "JWT_KEY": "whoami"
+        "JWT_KEY": "kndio289y32niw0h10"
     }
 }
 
