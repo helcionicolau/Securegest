@@ -20,7 +20,7 @@ module.exports = {
       // Debug: Log do token e chave secreta
       /*console.log('Token:', token);*/
       /*console.log('JWT Key:', secretKey);*/
-
+      
       const decodedToken = jwt.verify(token, secretKey);
 
       // Verificação de validade do token
