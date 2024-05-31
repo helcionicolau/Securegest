@@ -12,7 +12,6 @@ const holidaysModel = require("./rh/holidays/Holiday");
 const leave_typesModel = require("./rh/leave_types/leaveType");
 const userModel = require("./user/User");
 const areaModel = require("./business_diretion/area/Area");
-const logisticModel = require("./business_diretion/logistic/Logistic");
 const postModel = require("./business_diretion/post/Post");
 const positionModel = require("./business_diretion/position/Position");
 const zoneModel = require("./business_diretion/zone/Zone");
@@ -42,7 +41,6 @@ module.exports = {
     leave_typesModel,
     userModel,
     areaModel,
-    logisticModel,
     postModel,
     positionModel,
     zoneModel,

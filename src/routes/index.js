@@ -13,7 +13,6 @@ const employeeVacationRoutes = require('./rh/employee_vacations/employeeVacation
 const clientRoutes = require('./business_diretion/clients/clientsRoute');
 const projectRoutes = require('./general_direction/projects/projectsRoute');
 const areaRoutes = require('./business_diretion/area/areasRoute');
-const logisticRoutes = require('./business_diretion/logistic/logisticsRoute');
 const postRoutes = require('./business_diretion/post/postsRoute');
 const providerRoutes = require('./business_diretion/provider/providersRoute');
 const zoneRoutes = require('./business_diretion/zone/zonesRoute');
@@ -44,7 +43,6 @@ router.use('/employeeVacations', employeeVacationRoutes);
 router.use('/clients', clientRoutes);
 router.use('/projects', projectRoutes);
 router.use('/area', areaRoutes);
-router.use('/logistic', logisticRoutes);
 router.use('/post', postRoutes);
 router.use('/provider', providerRoutes);
 router.use('/zone', zoneRoutes);
