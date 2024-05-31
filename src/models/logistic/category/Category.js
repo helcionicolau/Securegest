@@ -21,11 +21,13 @@ const CategoriaMaterialLogistica = sequelize.define('categoria_material_logistic
   },
   created_at: {
     type: DataTypes.DATE,
-    field: 'created_at'
+    field: 'created_at',
+    defaultValue: DataTypes.NOW,
   },
   updated_at: {
     type: DataTypes.DATE,
-    field: 'updated_at'
+    field: 'updated_at',
+    defaultValue: DataTypes.NOW,
   }
 }, {
   tableName: "categoria_material_logistica",
