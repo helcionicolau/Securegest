@@ -2,7 +2,7 @@ const sequelize = require("../../../utils/sequelize");
 const { DataTypes } = require("sequelize");
 
 const CategoriaMaterialLogistica = sequelize.define('categoria_material_logistica', {
-  id_ps: {
+  id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
     autoIncrement: true,
