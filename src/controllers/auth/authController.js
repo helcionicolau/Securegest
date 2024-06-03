@@ -4,7 +4,7 @@ const User = require('../../models/user/User');
 const Logout = require('../../models/logout/Logout');
 
 const JWT_KEY = process.env.JWT_KEY || "hoih989t7r8fb66rev65ec56eoc760/908y7te342312";
-const TOKEN_EXPIRATION = '1h'; // Tempo de expiração de 1 horas
+const TOKEN_EXPIRATION = '24h'; // Tempo de expiração de 24 horas
 // const TOKEN_EXPIRATION = '180s'; // Tempo de expiração de 3 minutos
 
 const ERROR_INVALID_CREDENTIALS = 'Credenciais inválidas';
