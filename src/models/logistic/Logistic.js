@@ -1,4 +1,4 @@
-const sequelize = require("../../../utils/sequelize");
+const sequelize = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
 const CategoriaMaterialLogistica = require("./category/Category");
 const Provedora = require("../business_diretion/provider/Provider");
