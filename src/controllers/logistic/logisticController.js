@@ -55,6 +55,40 @@ module.exports = {
     }
   },
 
+  async getEquipmentLogisticsCount(req, res) {
+    try {
+      const count = await logisticModel.count({
+        where: {
+          'categoria.nome': 'Equipamento Operacional',
+        },
+        include: [
+          { model: categoryLogisticModel, as: 'categoria' },
+        ],
+      });
+      res.json({ totalEquipamentoOperacional: count });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar contagem de Equipamento Operacional' });
+    }
+  },
+
+  async getArmamentLogisticsCount(req, res) {
+    try {
+      const count = await logisticModel.count({
+        where: {
+          'categoria.nome': 'Armamento',
+        },
+        include: [
+          { model: categoryLogisticModel, as: 'categoria' },
+        ],
+      });
+      res.json({ totalArmamento: count });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar contagem de Armamento' });
+    }
+  },
+
   async updateLogistica(req, res) {
     const logisticaId = req.params.logisticaId;
 
