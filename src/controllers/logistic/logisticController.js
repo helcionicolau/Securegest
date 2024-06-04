@@ -1,4 +1,4 @@
-const { logisticModel, categoryLogisticModel, providerModel } = require('../../models/index'); // Assuming your models directory
+const { logisticModel, categoryLogisticModel, providerModel } = require('../../models');
 
 module.exports = {
   async createLogistica(req, res) {

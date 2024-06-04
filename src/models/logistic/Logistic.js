@@ -64,8 +64,7 @@ const Logistica = sequelize.define('logistica', {
   tableName: "logistica",
 });
 
-// Associations (optional)
-Logistica.belongsTo(Categoria, { foreignKey: "id_categoria" });
-Logistica.belongsTo(Provedora, { foreignKey: "id_provedora" });
+Logistica.belongsTo( Categoria, { foreignKey: 'id_categoria', as: 'categoria' } );
+Logistica.belongsTo( Provedora, { foreignKey: 'id_provedora', as: 'provedora' } );
 
 module.exports = Logistica;
