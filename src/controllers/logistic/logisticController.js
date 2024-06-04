@@ -58,11 +58,14 @@ module.exports = {
   async getEquipmentLogisticsCount(req, res) {
     try {
       const count = await logisticModel.count({
-        where: {
-          'categoria.nome': 'Equipamento Operacional',
-        },
         include: [
-          { model: categoryLogisticModel, as: 'categoria' },
+          {
+            model: categoryLogisticModel,
+            as: 'categoria',
+            where: {
+              nome: 'Equipamento Operacional',
+            },
+          },
         ],
       });
       res.json({ totalEquipamentoOperacional: count });
@@ -75,11 +78,14 @@ module.exports = {
   async getArmamentLogisticsCount(req, res) {
     try {
       const count = await logisticModel.count({
-        where: {
-          'categoria.nome': 'Armamento',
-        },
         include: [
-          { model: categoryLogisticModel, as: 'categoria' },
+          {
+            model: categoryLogisticModel,
+            as: 'categoria',
+            where: {
+              nome: 'Armamento',
+            },
+          },
         ],
       });
       res.json({ totalArmamento: count });
