@@ -1,6 +1,6 @@
 const sequelize = require("../../utils/sequelize");
 const { DataTypes } = require("sequelize");
-const CategoriaMaterialLogistica = require("./category/Category");
+const Categoria = require("./category/Category");
 const Provedora = require("../business_diretion/provider/Provider");
 
 
@@ -36,7 +36,7 @@ const Logistica = sequelize.define('logistica', {
     type: DataTypes.BIGINT,
     allowNull: false,
     references: {
-      model: CategoriaMaterialLogistica,
+      model: Categoria,
       key: 'id'
     },
     field: "id_categoria"
@@ -65,7 +65,7 @@ const Logistica = sequelize.define('logistica', {
 });
 
 // Associations (optional)
-Logistica.belongsTo(CategoriaMaterialLogistica, { foreignKey: "id_categoria" });
+Logistica.belongsTo(Categoria, { foreignKey: "id_categoria" });
 Logistica.belongsTo(Provedora, { foreignKey: "id_provedora" });
 
 module.exports = Logistica;
