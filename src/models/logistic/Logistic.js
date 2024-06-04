@@ -33,7 +33,7 @@ const Logistica = sequelize.define('logistica', {
     field: "data_aquisicao"
   },
   id_categoria: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: CategoriaMaterialLogistica,
