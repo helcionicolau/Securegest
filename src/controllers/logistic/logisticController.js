@@ -55,29 +55,44 @@ module.exports = {
     }
   },
 
-  async getLogisticsCountByCategory(req, res) {
+  async getEquipmentLogisticsCount(req, res) {
     try {
-      const countEquipamentos = await logisticModel.count({
-        where: {
-          // Equipamento Operacional
-          id_categoria: 1 
-        }
+      const count = await logisticModel.count({
+        include: [
+          {
+            model: categoryLogisticModel,
+            as: 'categoria',
+            where: {
+              nome: 'Equipamento Operacional',
+            },
+          },
+        ],
       });
-  
-      const countArmamentos = await logisticModel.count({
-        where: {
-          // Armamento
-          id_categoria: 2
-        }
-      });
-  
-      res.json({
-        totalEquipamentos: countEquipamentos,
-        totalArmamentos: countArmamentos
-      });
+      res.json({ totalEquipamentoOperacional: count });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Erro ao buscar contagem de registros de logística' });
+      res.status(500).json({ error: 'Erro ao buscar contagem de Equipamento Operacional' });
+    }
+  }
+  ,
+
+  async getArmamentLogisticsCount(req, res) {
+    try {
+      const count = await logisticModel.count({
+        include: [
+          {
+            model: categoryLogisticModel,
+            as: 'categoria',
+            where: {
+              nome: 'Armamento',
+            },
+          },
+        ],
+      });
+      res.json({ totalArmamento: count });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar contagem de Armamento' });
     }
   },
 
