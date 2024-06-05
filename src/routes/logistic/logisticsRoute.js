@@ -11,6 +11,6 @@ router.get('/:logisticaId', authMiddleware.authenticateUserMiddleware, logistica
 router.put('/:logisticaId', authMiddleware.authenticateUserMiddleware, logisticaController.updateLogistica);
 router.delete('/:logisticaId', authMiddleware.authenticateUserMiddleware, logisticaController.deleteLogistica);
 
-router.get('/count-by-category', logisticaController.getLogisticsCountByCategory);
+router.get('/count-by-category', authMiddleware.authenticateUserMiddleware, logisticaController.getLogisticsCountByCategory);
 
 module.exports = router;
