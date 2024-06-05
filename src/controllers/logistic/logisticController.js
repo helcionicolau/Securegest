@@ -73,8 +73,7 @@ module.exports = {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar contagem de Equipamento Operacional' });
     }
-  }
-  ,
+  },
 
   async getArmamentLogisticsCount(req, res) {
     try {
