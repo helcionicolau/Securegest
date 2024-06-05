@@ -63,7 +63,7 @@ module.exports = {
             model: categoryLogisticModel,
             as: 'categoria',
             where: {
-              nome: 'Equipamento Operacional',
+              id_categoria: 1,
             },
           },
         ],
@@ -83,7 +83,7 @@ module.exports = {
             model: categoryLogisticModel,
             as: 'categoria',
             where: {
-              nome: 'Armamento',
+              id_categoria: 2,
             },
           },
         ],
