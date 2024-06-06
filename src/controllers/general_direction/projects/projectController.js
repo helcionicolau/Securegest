@@ -5,7 +5,6 @@ module.exports = {
     const {
       descricao,
       sumario,
-      estado,
       tipo_projeto,
       id_posicao,
     } = req.body;
@@ -14,7 +13,6 @@ module.exports = {
       const novoProjeto = await projectsModel.create( {
         descricao,
         sumario,
-        estado,
         tipo_projeto,
         id_posicao,
       } );
@@ -54,22 +52,6 @@ module.exports = {
     } catch ( error ) {
       console.error( error );
       res.status( 500 ).json( { error: 'Erro ao buscar projeto por ID' } );
-    }
-  },
-
-  async getProjetosByEstado( req, res ) {
-    const { estado } = req.params;
-
-    try {
-      const projetos = await projectsModel.findAll( {
-        where: { estado },
-        include: [{ model: positionModel, as: 'posicao' }],
-      } );
-
-      res.json( projetos );
-    } catch ( error ) {
-      console.error( error );
-      res.status( 500 ).json( { error: 'Erro ao buscar projetos por estado' } );
     }
   },
 

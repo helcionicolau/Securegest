@@ -20,11 +20,6 @@ const Projeto = sequelize.define('projetos', {
     allowNull: true,
     field: "sumario"
   },
-  estado: {
-    type: DataTypes.ENUM('Pedido','Em Progresso','Feito'),
-    allowNull: false,
-    field: "estado"
-  },
   tipo_projeto: {
     type: DataTypes.ENUM('Interno','Externo'),
     allowNull: false,
