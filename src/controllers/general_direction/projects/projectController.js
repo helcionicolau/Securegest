@@ -6,6 +6,7 @@ module.exports = {
       descricao,
       sumario,
       tipo_projeto,
+      data_inicio,
       id_posicao,
     } = req.body;
 
@@ -14,6 +15,7 @@ module.exports = {
         descricao,
         sumario,
         tipo_projeto,
+        data_inicio,
         id_posicao,
       } );
 

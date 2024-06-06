@@ -25,6 +25,11 @@ const Projeto = sequelize.define('projetos', {
     allowNull: false,
     field: "tipo_projeto"
   },
+  data_inicio: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    field: 'data_inicio'
+  },
   id_posicao: {
     type: DataTypes.INTEGER,
     allowNull: true,
