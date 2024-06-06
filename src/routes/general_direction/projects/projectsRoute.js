@@ -10,9 +10,6 @@ router.get('/:projetoId', authMiddleware.authenticateUserMiddleware, projetoCont
 router.put('/:projetoId', authMiddleware.authenticateUserMiddleware, projetoController.updateProjeto);
 router.delete('/:projetoId', authMiddleware.authenticateUserMiddleware, projetoController.deleteProjeto);
 
-// Rota para buscar projetos por estado
-router.get('/estado/:estado', authMiddleware.authenticateUserMiddleware, projetoController.getProjetosByEstado);
-
 // Rota para buscar projetos por ID da posição
 router.get('/posicao/:posicaoId', authMiddleware.authenticateUserMiddleware, projetoController.getProjetosByPosicaoId);
 
