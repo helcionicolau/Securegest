@@ -10,11 +10,6 @@ const Projeto = sequelize.define('projetos', {
     allowNull: false,
     field: "id_projeto"
   },
-  nome: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
-    field: "nome"
-  },
   descricao: {
     type: DataTypes.TEXT,
     allowNull: true,
@@ -25,16 +20,6 @@ const Projeto = sequelize.define('projetos', {
     allowNull: true,
     field: "sumario"
   },
-  data_inicio: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
-    field: "data_inicio"
-  },
-  data_fim_prevista: {
-    type: DataTypes.DATEONLY,
-    allowNull: true,
-    field: "data_fim_prevista"
-  },
   estado: {
     type: DataTypes.ENUM('Pedido','Em Progresso','Feito'),
     allowNull: false,
@@ -44,11 +29,6 @@ const Projeto = sequelize.define('projetos', {
     type: DataTypes.ENUM('Interno','Externo'),
     allowNull: false,
     field: "tipo_projeto"
-  },
-  progresso: {
-    type: DataTypes.STRING(25),
-    allowNull: true,
-    field: "progresso"
   },
   id_posicao: {
     type: DataTypes.INTEGER,

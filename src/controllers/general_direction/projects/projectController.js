@@ -3,27 +3,19 @@ const { projectsModel, positionModel } = require( '../../../models/index' );
 module.exports = {
   async createProjeto( req, res ) {
     const {
-      nome,
       descricao,
       sumario,
-      data_inicio,
-      data_fim_prevista,
       estado,
       tipo_projeto,
-      progresso,
       id_posicao,
     } = req.body;
 
     try {
       const novoProjeto = await projectsModel.create( {
-        nome,
         descricao,
         sumario,
-        data_inicio,
-        data_fim_prevista,
         estado,
         tipo_projeto,
-        progresso,
         id_posicao,
       } );
 
