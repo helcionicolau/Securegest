@@ -6,6 +6,7 @@ module.exports = {
       descricao,
       id_projeto,
       id_departamento,
+      data_final_prevista
     } = req.body;
 
     try {
@@ -13,6 +14,7 @@ module.exports = {
         descricao,
         id_projeto,
         id_departamento,
+        data_final_prevista
       });
 
       res.status(201).json({ message: 'Associação entre projeto e departamento criada com sucesso!' });
