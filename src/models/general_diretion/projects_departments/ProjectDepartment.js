@@ -34,6 +34,11 @@ const ProjetoDepartamento = sequelize.define('projetos_departamentos', {
       key: 'id_departamento'
     }
   },
+  data_inicio: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    field: 'data_inicio'
+  },
   data_final_prevista: {
     type: DataTypes.DATE,
     allowNull: true,
