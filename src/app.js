@@ -5,6 +5,9 @@ const dontenv = require("dotenv");
 const morgan = require('morgan');
 const routes = require('./routes');
 const db = require("./utils/sequelize");
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
 const app = express();
 
 db.conexaoautenticao();
@@ -19,7 +22,6 @@ app.use(cors({
   optionsSuccessStatus: 204,
   credentials: true,
 }));
-
 
 app.use(
   express.json(), routes, express.urlencoded({ extended: false })
@@ -41,8 +43,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Rota não encontrada' });
 });
@@ -54,9 +54,26 @@ app.use((err, req, res, next) => {
 
 dontenv.config();
 const port = process.env.PORT || 8080;
+
+// Swagger configuration
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Securegest',
+      version: '1.0.0',
+      description: 'Securegest API',
+    },
+  },
+  apis: ['./routes/index*.js'],
+};
+const specs = swaggerJsdoc(options);
+
+// Rota para a documentação do Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 app.listen(port, () => {
   console.log(`Servidor rodando em http://mysql-securegestdb.alwaysdata.net:${port}\n// Created by António Baptista #(24/08/2023)`);
 })
-
 
 // Created by António Baptista #(24/08/2023)
