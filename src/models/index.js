@@ -26,6 +26,7 @@ const employeeTaskModel = require("./general_diretion/employee_tasks/EmployeeTas
 const employeePostModel = require("./business_diretion/post_security/PostSecurity");
 const categoryLogisticModel = require("./logistic/category/Category");
 const logisticModel = require("./logistic/Logistic");
+const attributeLogisticModel = require("./logistic/attributeLogistic");
 
 module.exports = {
     logoutModel,
@@ -55,5 +56,6 @@ module.exports = {
     employeeTaskModel,
     employeePostModel,
     categoryLogisticModel,
-    logisticModel
+    logisticModel,
+    attributeLogisticModel
 }

@@ -27,6 +27,7 @@ const employeeTaskRoutes = require('./general_direction/projects_tasks/project_t
 const employeePostRoutes = require('.//business_diretion/post_security/postSecuritiesRoute');
 const categoryLogisticRoutes = require('./logistic/category/categoriesRoute');
 const logisticRoutes = require('./logistic/logisticsRoute');
+const attributeLogisticRoutes = require('./logistic/attributeLogisticsRoute');
 
 const router = express.Router();
 
@@ -58,6 +59,7 @@ router.use('/employees_tasks', employeeTaskRoutes);
 router.use('/post_employees', employeePostRoutes);
 router.use('/logistic_category', categoryLogisticRoutes);
 router.use('/logistic', logisticRoutes);
+router.use('/attribute_logistic', attributeLogisticRoutes);
 
 module.exports = router;
 
