@@ -1,13 +1,14 @@
-const { attributeLogisticModel, logisticModel, postModel, employeesModel } = require('../../models');
+const { attributeLogisticModel, logisticModel, postModel, employeesModel, groupLogisticModel } = require('../../models');
 
 module.exports = {
 
   async createAttributeLogistic(req, res) {
-    const { id_logistica, id_posto, id_funcionario } = req.body;
+    const { id_logistica, id_conjunto, id_posto, id_funcionario } = req.body;
 
     try {
       const novaAtribuicao = await attributeLogisticModel.create({
         id_logistica,
+        id_conjunto,
         id_posto,
         id_funcionario,
       });
@@ -23,6 +24,7 @@ module.exports = {
       const atribuicoes = await attributeLogisticModel.findAll({
         include: [
           { model: logisticModel, as: 'logistica' },
+          { model: groupLogisticModel, as: 'conjunto' },
           { model: postModel, as: 'posto' },
           { model: employeesModel, as: 'funcionario' },
         ],
@@ -41,6 +43,7 @@ module.exports = {
       const atribuicao = await attributeLogisticModel.findByPk(atribuicaoId, {
         include: [
           { model: logisticModel, as: 'logistica' },
+          { model: groupLogisticModel, as: 'conjunto' },
           { model: postModel, as: 'posto' },
           { model: employeesModel, as: 'funcionario' },
         ],
@@ -63,6 +66,7 @@ module.exports = {
         where: { id_posto: postId },
         include: [
           { model: logisticModel, as: 'logistica' },
+          { model: groupLogisticModel, as: 'conjunto' },
           { model: postModel, as: 'posto' },
           { model: employeesModel, as: 'funcionario' },
         ],
@@ -84,9 +88,10 @@ module.exports = {
       const atribuicoes = await attributeLogisticModel.findAll({
         where: { id_funcionario: employeeId },
         include: [
-            { model: logisticModel, as: 'logistica' },
-            { model: postModel, as: 'posto' },
-            { model: employeesModel, as: 'funcionario' },
+          { model: logisticModel, as: 'logistica' },
+          { model: groupLogisticModel, as: 'conjunto' },
+          { model: postModel, as: 'posto' },
+          { model: employeesModel, as: 'funcionario' },
         ],
       });
       if (!atribuicoes.length) {
@@ -106,9 +111,10 @@ module.exports = {
       const atribuicoes = await attributeLogisticModel.findAll({
         where: { id_logistica: logisticId },
         include: [
-            { model: logisticModel, as: 'logistica' },
-            { model: postModel, as: 'posto' },
-            { model: employeesModel, as: 'funcionario' },
+          { model: logisticModel, as: 'logistica' },
+          { model: groupLogisticModel, as: 'conjunto' },
+          { model: postModel, as: 'posto' },
+          { model: employeesModel, as: 'funcionario' },
         ],
       });
       if (!atribuicoes.length) {
@@ -118,6 +124,29 @@ module.exports = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar registros de atribuição de logística por ID da logística' });
+    }
+  },
+
+  async getAttributeLogisticsByGroupId(req, res) {
+    const groupId = req.params.groupId;
+
+    try {
+      const atribuicoes = await attributeLogisticModel.findAll({
+        where: { id_conjunto: groupId },
+        include: [
+          { model: logisticModel, as: 'logistica' },
+          { model: groupLogisticModel, as: 'conjunto' },
+          { model: postModel, as: 'posto' },
+          { model: employeesModel, as: 'funcionario' },
+        ],
+      });
+      if (!atribuicoes.length) {
+        return res.status(404).json({ error: 'Nenhum registro de atribuição de logística encontrado para o grupo' });
+      }
+      res.json(atribuicoes);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar registros de atribuição de logística por ID do conjunto' });
     }
   },
 

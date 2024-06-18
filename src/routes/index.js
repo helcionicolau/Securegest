@@ -28,6 +28,7 @@ const employeePostRoutes = require('.//business_diretion/post_security/postSecur
 const categoryLogisticRoutes = require('./logistic/category/categoriesRoute');
 const logisticRoutes = require('./logistic/logisticsRoute');
 const attributeLogisticRoutes = require('./logistic/attributeLogisticsRoute');
+const groupRoutes = require('./logistic/groupsRoute');
 
 const router = express.Router();
 
@@ -60,6 +61,7 @@ router.use('/post_employees', employeePostRoutes);
 router.use('/logistic_category', categoryLogisticRoutes);
 router.use('/logistic', logisticRoutes);
 router.use('/attribute_logistic', attributeLogisticRoutes);
+router.use('/group_logistic', groupRoutes);
 
 module.exports = router;
 

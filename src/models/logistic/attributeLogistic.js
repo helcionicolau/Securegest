@@ -4,6 +4,7 @@ const sequelize = require("../../utils/sequelize");
 const Logistica = require("./Logistic"); 
 const Posto = require("../business_diretion/post/Post");
 const Funcionario = require("../rh/employees/Employee");
+const Conjunto = require("./Group");
 
 const AtribuirLogistica = sequelize.define("atribuir_logistica", {
     id_al: {
@@ -20,6 +21,16 @@ const AtribuirLogistica = sequelize.define("atribuir_logistica", {
       references: {
         model: Logistica,
         key: "id",
+      },
+    },
+    
+    id_conjunto: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+      field: "id_conjunto",
+      references: {
+        model: Conjunto,
+        key: "id_cml",
       },
     },
     id_posto: {
@@ -56,6 +67,7 @@ const AtribuirLogistica = sequelize.define("atribuir_logistica", {
   });
 
 AtribuirLogistica.belongsTo(Logistica, { foreignKey: "id_logistica", as: "logistica" });
+AtribuirLogistica.belongsTo(Conjunto, { foreignKey: "id_conjunto", as: "conjunto" });
 AtribuirLogistica.belongsTo(Posto, { foreignKey: "id_posto", as: "posto" });
 AtribuirLogistica.belongsTo(Funcionario, { foreignKey: "id_funcionario", as: "funcionario" });
 

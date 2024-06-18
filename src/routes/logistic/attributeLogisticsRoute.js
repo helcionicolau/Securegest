@@ -13,5 +13,6 @@ router.delete('/:atribuicaoId', authMiddleware.authenticateUserMiddleware, attri
 router.get('/posto/:postId', authMiddleware.authenticateUserMiddleware, attributeLogisticController.getAttributeLogisticsByPostId);
 router.get('/funcionario/:employeeId', authMiddleware.authenticateUserMiddleware, attributeLogisticController.getAttributeLogisticsByEmployeeId);
 router.get('/logistica/:logisticId', authMiddleware.authenticateUserMiddleware, attributeLogisticController.getAttributeLogisticsByLogisticId);
+router.get('/conjunto/:groupId', authMiddleware.authenticateUserMiddleware, attributeLogisticController.getAttributeLogisticsByGroupId);
 
 module.exports = router;
