@@ -11,7 +11,7 @@ module.exports = {
         id_posto,
         id_funcionario,
       });
-      res.status(201).json({ novaAtribuicao });
+      res.status( 201 ).json( { message: 'Atribuição de Material criada com sucesso!' } );
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao criar registro de atribuição de logística' });
