@@ -10,6 +10,7 @@ router.get('/', authMiddleware.authenticateUserMiddleware, logisticaController.g
 router.get('/equipment-count', authMiddleware.authenticateUserMiddleware, logisticaController.getEquipmentLogisticsCount);
 router.get('/armament-count', authMiddleware.authenticateUserMiddleware, logisticaController.getArmamentLogisticsCount);
 router.get('/:logisticaId', authMiddleware.authenticateUserMiddleware, logisticaController.getLogisticaById);
+router.get('/:categoriaId', authMiddleware.authenticateUserMiddleware, logisticaController.getLogisticsByCategoriaId);
 router.put('/:logisticaId', authMiddleware.authenticateUserMiddleware, logisticaController.updateLogistica);
 router.delete('/:logisticaId', authMiddleware.authenticateUserMiddleware, logisticaController.deleteLogistica);
 

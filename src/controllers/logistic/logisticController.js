@@ -55,6 +55,27 @@ module.exports = {
     }
   },
 
+  async getLogisticsByCategoriaId(req, res) {
+    const categoriaId = req.params.categoriaId;
+
+    try {
+      const logisticas = await logisticModel.findAll({
+        where: { id_categoria: categoriaId },
+        include: [
+          { model: categoryLogisticModel, as: 'categoria' },
+          { model: providerModel, as: 'provedora' },
+        ],
+      });
+      if (!logisticas.length) {
+        return res.status(404).json({ error: 'Nenhum registro de logística encontrado para a categoria' });
+      }
+      res.json(logisticas);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao buscar registros da logística por ID da categoria' });
+    }
+  },
+
   async getEquipmentLogisticsCount(req, res) {
     try {
       const count = await logisticModel.count({
