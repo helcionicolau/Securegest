@@ -15,6 +15,7 @@ const areaModel = require("./business_diretion/area/Area");
 const postModel = require("./business_diretion/post/Post");
 const positionModel = require("./business_diretion/position/Position");
 const zoneModel = require("./business_diretion/zone/Zone");
+const sectorModel = require("./business_diretion/sector/Sector");
 const providerModel = require("./business_diretion/provider/Provider");
 const roleModel = require("./roles/Role");
 const menuModel = require("./menus/Menu");
@@ -47,6 +48,7 @@ module.exports = {
     postModel,
     positionModel,
     zoneModel,
+    sectorModel,
     providerModel,
     roleModel,
     menuModel,
