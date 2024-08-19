@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sectorController = require('../../../controllers/business_diretion/sector/sectorController');
+const authMiddleware = require('../../../middleware/authMiddleware');
 
 // Rotas para o CRUD de setores
 router.post('/register', authMiddleware.authenticateUserMiddleware, sectorController.registerSector);
