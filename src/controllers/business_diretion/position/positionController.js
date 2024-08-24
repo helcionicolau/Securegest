@@ -1,12 +1,13 @@
 // controllers/PosicaoController.js
 
-const { positionModel, zoneModel, clientsModel, countyModel, employeesModel } = require( '../../../models' );
+const { positionModel, zoneModel, clientsModel, countyModel } = require( '../../../models' );
 
 module.exports = {
   async registerPosicao( req, res ) {
     const {
-      nome, descricao, id_zona, id_cliente, n_postos, id_municipio,
-      id_funcionario, latitude, longitude
+      nome, descricao, id_zona, id_cliente, 
+      n_postos, id_municipio,
+      latitude, longitude
     } = req.body;
 
     try {
@@ -17,7 +18,6 @@ module.exports = {
         id_cliente,
         n_postos,
         id_municipio,
-        id_funcionario,
         latitude,
         longitude
       } );
@@ -35,8 +35,7 @@ module.exports = {
         include: [
           { model: zoneModel, as: 'zona' },
           { model: clientsModel, as: 'cliente' },
-          { model: countyModel, as: 'municipio' },
-          { model: employeesModel, as: 'funcionario' }
+          { model: countyModel, as: 'municipio' }
         ]
       } );
 
@@ -55,8 +54,7 @@ module.exports = {
         include: [
           { model: zoneModel, as: 'zona' },
           { model: clientsModel, as: 'cliente' },
-          { model: countyModel, as: 'municipio' },
-          { model: employeesModel, as: 'funcionario' }
+          { model: countyModel, as: 'municipio' }
         ]
       } );
       if ( !posicao ) {
