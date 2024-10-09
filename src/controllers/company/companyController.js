@@ -1,4 +1,4 @@
-const { companyModel } = require('../../../models/index');
+const { companyModel } = require('../../models/index');
 
 module.exports = {
   async createEmpresa(req, res) {
