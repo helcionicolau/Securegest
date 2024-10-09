@@ -31,6 +31,7 @@ const logisticRoutes = require('./logistic/logisticsRoute');
 const attributeLogisticRoutes = require('./logistic/attributeLogisticsRoute');
 const groupRoutes = require('./logistic/groupsRoute');
 const dnRequestRoutes = require('./business_diretion/dn_request/dnRequestsRoute');
+const companyRoutes = require('./company/companiesRoute');
 
 const router = express.Router();
 
@@ -66,6 +67,7 @@ router.use('/logistic', logisticRoutes);
 router.use('/attribute_logistic', attributeLogisticRoutes);
 router.use('/group_logistic', groupRoutes);
 router.use('/dn_request', dnRequestRoutes);
+router.use('/companies', companyRoutes);
 
 module.exports = router;
 

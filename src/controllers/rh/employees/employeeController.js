@@ -1,4 +1,4 @@
-const { employeesModel, departamentsModel, countyModel } = require('../../../models/index');
+const { employeesModel, departamentsModel, countyModel, companyModel } = require('../../../models/index');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
@@ -16,11 +16,20 @@ const createDirectoryIfNotExists = (dirPath) => {
 
 // Configuração do Multer para o upload da foto
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const empresa = req.body.empresa || 'Protector';
-    const dir = path.join(UPLOAD_BASE_PATH, empresa.toLowerCase(), 'perfil');
-    createDirectoryIfNotExists(dir); // Cria diretórios da empresa/perfil se não existirem
-    cb(null, dir);
+  destination: async (req, file, cb) => {
+    const empresaId = req.body.empresa_id; // Pegando o ID da empresa do corpo da requisição
+
+    try {
+      const empresa = await companyModel.findByPk(empresaId);
+      if (!empresa) {
+        return cb(new Error('Empresa não encontrada'));
+      }
+      const dir = path.join(UPLOAD_BASE_PATH, empresa.nome.toLowerCase(), 'perfil'); // Usando o nome da empresa
+      createDirectoryIfNotExists(dir); // Cria diretórios da empresa/perfil se não existirem
+      cb(null, dir);
+    } catch (error) {
+      cb(new Error('Erro ao buscar empresa: ' + error.message));
+    }
   },
   filename: (req, file, cb) => {
     const n_mec = req.body.n_mec;
@@ -49,7 +58,7 @@ module.exports = {
       telefone,
       senha,
       isactive,
-      empresa,
+      empresa_id,
     } = req.body;
 
     try {
@@ -73,7 +82,7 @@ module.exports = {
         senha: hashedPassword, // Armazena a senha criptografada
         isactive,
         photo_path,
-        empresa,
+        empresa_id,
       });
 
       res.status(201).json({ message: 'Funcionário registrado com sucesso!', funcionario: newFuncionario });
@@ -89,7 +98,8 @@ module.exports = {
       const funcionarios = await employeesModel.findAll({
         include: [
           { model: departamentsModel, as: 'departamento' },
-          { model: countyModel, as: 'municipio' }
+          { model: countyModel, as: 'municipio' },
+          { model: companyModel, as: 'empresa' }
         ]
       });
 
@@ -108,7 +118,8 @@ module.exports = {
       const funcionario = await employeesModel.findByPk(funcionarioId, {
         include: [
           { model: departamentsModel, as: 'departamento' },
-          { model: countyModel, as: 'municipio' }
+          { model: countyModel, as: 'municipio' },
+          { model: companyModel, as: 'empresa' }
         ]
       });
       if (!funcionario) {
@@ -131,7 +142,8 @@ module.exports = {
         where: { cargo },
         include: [
           { model: departamentsModel, as: 'departamento' },
-          { model: countyModel, as: 'municipio' }
+          { model: countyModel, as: 'municipio' },
+          { model: companyModel, as: 'empresa' }
         ]
       });
 
@@ -155,7 +167,8 @@ module.exports = {
         where: { departamento_id: departamentoId },
         include: [
           { model: departamentsModel, as: 'departamento' },
-          { model: countyModel, as: 'municipio' }
+          { model: countyModel, as: 'municipio' },
+          { model: companyModel, as: 'empresa' }
         ]
       });
 

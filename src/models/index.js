@@ -30,6 +30,7 @@ const logisticModel = require("./logistic/Logistic");
 const attributeLogisticModel = require("./logistic/attributeLogistic");
 const groupLogisticModel = require("./logistic/Group");
 const dnLevantamentoModel = require("./business_diretion/dn_request/DnRequest");
+const companyModel = require("./company/Company");
 
 module.exports = {
     logoutModel,
@@ -63,5 +64,6 @@ module.exports = {
     logisticModel,
     attributeLogisticModel,
     groupLogisticModel,
-    dnLevantamentoModel
+    dnLevantamentoModel,
+    companyModel
 }

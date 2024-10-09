@@ -2,6 +2,7 @@ const sequelize = require("../../../utils/sequelize");
 const { DataTypes } = require("sequelize");
 const Departamento = require("../departments/Department");
 const Municipio = require("../../counties/County");
+const Empresa = require("../../company/Company");
 
 const Funcionario = sequelize.define('funcionarios', {
   id_funcionario: {
@@ -91,11 +92,14 @@ const Funcionario = sequelize.define('funcionarios', {
     defaultValue: 0,
     field: "photo_path"
   },
-  empresa: {
-    type: DataTypes.ENUM('Protector'),
+  empresa_id: {
+    type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue: 'Protector',
-    field: 'empresa'
+    field: 'empresa_id',
+    references: {
+      model: Empresa,
+      key: 'id_empresa'
+    }
   },
   created_at: {
     type: DataTypes.DATE,
@@ -118,5 +122,6 @@ const Funcionario = sequelize.define('funcionarios', {
 
 Funcionario.belongsTo(Departamento, { foreignKey: 'departamento_id', as: 'departamento' });
 Funcionario.belongsTo(Municipio, { foreignKey: 'municipio_id', as: 'municipio' });
+Funcionario.belongsTo(Empresa, { foreignKey: 'empresa_id', as: 'empresa' });
 
 module.exports = Funcionario;
