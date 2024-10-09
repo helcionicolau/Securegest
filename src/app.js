@@ -58,7 +58,7 @@ const port = process.env.PORT || 8080;
 // Swagger configuration
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: '1.0.0',
     info: {
       title: 'Securegest',
       version: '1.0.0',

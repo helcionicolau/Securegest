@@ -1,6 +1,7 @@
 const sequelize = require("../../../utils/sequelize");
 const { DataTypes } = require("sequelize");
 const Departamento = require("../departments/Department");
+const Municipio = require("../../counties/County");
 
 const Funcionario = sequelize.define('funcionarios', {
   id_funcionario: {
@@ -45,11 +46,6 @@ const Funcionario = sequelize.define('funcionarios', {
     allowNull: true,
     field: "cargo"
   },
-  data_contratacao: {
-    type: DataTypes.DATEONLY,
-    allowNull: true,
-    field: "data_contratacao"
-  },
   departamento_id: {
     type: DataTypes.INTEGER,
     allowNull: true,
@@ -59,10 +55,47 @@ const Funcionario = sequelize.define('funcionarios', {
       key: 'id_departamento'
     }
   },
-  carga_horaria_diaria: {
-    type: DataTypes.TIME,
+  municipio_id: {
+    type: DataTypes.INTEGER,
     allowNull: true,
-    field: "carga_horaria_diaria"
+    field: "municipio_id",
+    references: {
+      model: Municipio,
+      key: 'id_municipio'
+    }
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: "email"
+  },
+  telefone: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: "telefone"
+  },
+  senha: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: "senha"
+  },
+  isactive: {
+    type: DataTypes.TINYINT,
+    allowNull: false,
+    defaultValue: 0,
+    field: "isactive"
+  },
+  photo_path: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 0,
+    field: "photo_path"
+  },
+  empresa: {
+    type: DataTypes.ENUM('Protector'),
+    allowNull: false,
+    defaultValue: 'Protector',
+    field: 'empresa'
   },
   created_at: {
     type: DataTypes.DATE,
@@ -84,5 +117,6 @@ const Funcionario = sequelize.define('funcionarios', {
 });
 
 Funcionario.belongsTo(Departamento, { foreignKey: 'departamento_id', as: 'departamento' });
+Funcionario.belongsTo(Municipio, { foreignKey: 'municipio_id', as: 'municipio' });
 
 module.exports = Funcionario;
