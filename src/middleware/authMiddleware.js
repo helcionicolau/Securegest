@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { userModel, roleModel } = require('../models');
+const { employeesModel, roleModel } = require('../models');
 
 module.exports = {
   authenticateUserMiddleware: async (req, res, next) => {
@@ -17,28 +17,25 @@ module.exports = {
       // Chave secreta
       const secretKey = process.env.JWT_KEY || 'kndio289y32niw0h10';
 
-      // Debug: Log do token e chave secreta
-      /*console.log('Token:', token);*/
-      /*console.log('JWT Key:', secretKey);*/
-      
+      // Decodifica o token JWT
       const decodedToken = jwt.verify(token, secretKey);
 
-      // Verificação de validade do token
+      // Verifica se o token expirou
       if (decodedToken.exp <= Math.floor(Date.now() / 1000)) {
         return res.status(401).json({ error: 'Token expirado' });
       }
 
-      // Obter o nome da função (role) do usuário a partir do token JWT
-      const roleName = await getRoleNameFromToken(decodedToken.userId);
+      // Obtém o nome da função (role) do funcionário a partir do token
+      const roleName = await getRoleNameFromToken(decodedToken.n_mec);
       if (!roleName) {
         return res.status(401).json({ error: 'Nome da função (role) não encontrado no token' });
       }
 
-      // Adicionar os dados decodificados à solicitação para uso posterior
+      // Adiciona os dados do funcionário decodificados à requisição
       req.userData = {
-        userId: decodedToken.userId,
+        n_mec: decodedToken.n_mec,
         scope: decodedToken.scope,
-        roleName: roleName // Adicione o nome da função (role) à solicitação
+        roleName: roleName // Nome da função (role)
       };
 
       next();
@@ -49,16 +46,16 @@ module.exports = {
   }
 };
 
-// Função para obter o nome da função (role) do usuário a partir do ID do usuário
-async function getRoleNameFromToken(userId) {
+// Função para obter o nome da função (role) do funcionário a partir do número mecânico
+async function getRoleNameFromToken(n_mec) {
   try {
-    // Consultar o usuário para obter o role_id
-    const user = await userModel.findByPk(userId);
-    if (!user) {
-      throw new Error('Usuário não encontrado');
+    // Consultar o funcionário para obter o role_id
+    const employee = await employeesModel.findOne({ where: { n_mec } });
+    if (!employee) {
+      throw new Error('Funcionário não encontrado');
     }
 
-    const roleId = user.role_id;
+    const roleId = employee.role_id;
 
     // Consultar a tabela de funções (roles) para obter o nome da função
     const role = await roleModel.findByPk(roleId);
@@ -66,8 +63,8 @@ async function getRoleNameFromToken(userId) {
       throw new Error('Função (Role) não encontrada');
     }
 
-    console.log('Nome da função (role) do usuário:', role.nome); // Log para imprimir o nome do papel (role)
-    
+    console.log('Nome da função (role) do funcionário:', role.nome); // Log para imprimir o nome da função (role)
+
     return role.nome; // Retorna o nome da função (role)
   } catch (error) {
     console.error('Erro ao obter o nome da função (role) do token:', error);

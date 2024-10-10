@@ -45,29 +45,6 @@ module.exports = {
   // Registrar Funcionário com Upload de Foto
   async registerFuncionario(req, res) {
     const {
-      n_mec,
-      nome,
-      sexo,
-      estado_civil,
-      data_nascimento,
-      nif,
-      cargo,
-      departamento_id,
-      municipio_id,
-      email,
-      telefone,
-      senha,
-      isactive,
-      empresa_id,
-    } = req.body;
-
-    try {
-      const hashedPassword = await bcrypt.hash(senha, 10); // Faz o hash da senha
-
-      // Se não houver foto no upload, usar ícone padrão
-      let photo_path = req.file ? req.file.path : 'https://www.example.com/user-icon.png';
-
-      const newFuncionario = await employeesModel.create({
         n_mec,
         nome,
         sexo,
@@ -79,18 +56,39 @@ module.exports = {
         municipio_id,
         email,
         telefone,
-        senha: hashedPassword, // Armazena a senha criptografada
         isactive,
-        photo_path,
         empresa_id,
-      });
+    } = req.body;
 
-      res.status(201).json({ message: 'Funcionário registrado com sucesso!', funcionario: newFuncionario });
+    try {
+        const hashedPassword = await bcrypt.hash(n_mec, 10); // Usar n_mec como senha padrão
+
+        let photo_path = req.file ? req.file.path : '../../../uploads/logo.jpg';
+
+        const newFuncionario = await employeesModel.create({
+            n_mec,
+            nome,
+            sexo,
+            estado_civil,
+            data_nascimento,
+            nif,
+            cargo,
+            departamento_id,
+            municipio_id,
+            email,
+            telefone,
+            senha: hashedPassword, // Senha criptografada com n_mec
+            isactive,
+            photo_path,
+            empresa_id,
+        });
+
+        res.status(201).json({ message: 'Funcionário registrado com sucesso!', funcionario: newFuncionario });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Erro ao registrar funcionário' });
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao registrar funcionário' });
     }
-  },
+},
 
   // Obter todos os funcionários
   async getAllFuncionarios(req, res) {
