@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { employeesModel, roleModel } = require('../models'); // Importando os modelos de funcionários e funções (roles)
+const { employeesModel, roleModel, departamentsModel } = require('../models'); // Importando os modelos de funcionários e funções (roles)
 
 module.exports = {
   authenticateUserMiddleware: async (req, res, next) => {
@@ -58,7 +58,7 @@ async function getEmployeeDataFromToken(n_mec) {
       where: { n_mec },
       include: [
         { model: roleModel, as: 'papel' }, // Inclui a tabela de funções (roles)
-        { model: Departamento, as: 'departamento' } // Inclui a tabela de departamentos
+        { model: departamentsModel, as: 'departamento' } // Inclui a tabela de departamentos
       ]
     });
 
