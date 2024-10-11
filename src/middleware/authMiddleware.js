@@ -33,6 +33,7 @@ module.exports = {
 
       // Adiciona os dados do funcionário (incluindo role_id e department_id) decodificados à requisição
       req.user = {
+        id_funcionario: employeeData.funcionarioId,
         n_mec: decodedToken.n_mec,
         role_id: employeeData.role_id, // ID da função (role_id)
         departamento_id: employeeData.departamento_id, // ID do departamento
