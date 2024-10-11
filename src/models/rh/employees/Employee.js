@@ -3,6 +3,7 @@ const { DataTypes } = require("sequelize");
 const Departamento = require("../departments/Department");
 const Municipio = require("../../counties/County");
 const Empresa = require("../../company/Company");
+const Papel = require("../../roles/Role");
 
 const Funcionario = sequelize.define('funcionarios', {
   id_funcionario: {
@@ -46,6 +47,15 @@ const Funcionario = sequelize.define('funcionarios', {
     type: DataTypes.STRING,
     allowNull: true,
     field: "cargo"
+  },
+  role_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    field: "role_id",
+    references: {
+      model: Papel,
+      key: 'id_role'
+    }
   },
   departamento_id: {
     type: DataTypes.INTEGER,
@@ -123,5 +133,6 @@ const Funcionario = sequelize.define('funcionarios', {
 Funcionario.belongsTo(Departamento, { foreignKey: 'departamento_id', as: 'departamento' });
 Funcionario.belongsTo(Municipio, { foreignKey: 'municipio_id', as: 'municipio' });
 Funcionario.belongsTo(Empresa, { foreignKey: 'empresa_id', as: 'empresa' });
+Funcionario.belongsTo(Papel, { foreignKey: 'role_id', as: 'papel' });
 
 module.exports = Funcionario;

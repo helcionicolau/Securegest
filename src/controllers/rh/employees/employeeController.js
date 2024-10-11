@@ -1,4 +1,4 @@
-const { employeesModel, departamentsModel, countyModel, companyModel } = require('../../../models/index');
+const { employeesModel, departamentsModel, countyModel, companyModel, roleModel } = require('../../../models/index');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
@@ -52,6 +52,7 @@ module.exports = {
         data_nascimento,
         nif,
         cargo,
+        role_id,
         departamento_id,
         municipio_id,
         email,
@@ -73,6 +74,7 @@ module.exports = {
             data_nascimento,
             nif,
             cargo,
+            role_id,
             departamento_id,
             municipio_id,
             email,
@@ -97,7 +99,8 @@ module.exports = {
         include: [
           { model: departamentsModel, as: 'departamento' },
           { model: countyModel, as: 'municipio' },
-          { model: companyModel, as: 'empresa' }
+          { model: companyModel, as: 'empresa' },
+          { model: roleModel, as: 'papel' }
         ]
       });
 
@@ -117,7 +120,8 @@ module.exports = {
         include: [
           { model: departamentsModel, as: 'departamento' },
           { model: countyModel, as: 'municipio' },
-          { model: companyModel, as: 'empresa' }
+          { model: companyModel, as: 'empresa' },
+          { model: roleModel, as: 'papel' }
         ]
       });
       if (!funcionario) {
@@ -141,7 +145,8 @@ module.exports = {
         include: [
           { model: departamentsModel, as: 'departamento' },
           { model: countyModel, as: 'municipio' },
-          { model: companyModel, as: 'empresa' }
+          { model: companyModel, as: 'empresa' },
+          { model: roleModel, as: 'papel' }
         ]
       });
 
@@ -166,7 +171,8 @@ module.exports = {
         include: [
           { model: departamentsModel, as: 'departamento' },
           { model: countyModel, as: 'municipio' },
-          { model: companyModel, as: 'empresa' }
+          { model: companyModel, as: 'empresa' },
+          { model: roleModel, as: 'papel' }
         ]
       });
 
