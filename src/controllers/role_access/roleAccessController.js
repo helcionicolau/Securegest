@@ -1,13 +1,14 @@
-const { roleAccessModel, roleModel, menuModel } = require( '../../models' );
+const { roleAccessModel, roleModel, departamentsModel } = require( '../../models' );
 
 module.exports = {
   async createRoleAccess( req, res ) {
-    const { role_id, menu_id, haveedit, haveadd, havedelete } = req.body;
+    const { role_id, departamento_id, haview, haveedit, haveadd, havedelete } = req.body;
 
     try {
       const newRoleAccess = await roleAccessModel.create( {
         role_id,
-        menu_id,
+        departamento_id, 
+        haview,
         haveedit,
         haveadd,
         havedelete,
@@ -22,7 +23,10 @@ module.exports = {
   async getAllRoleAccess( req, res ) {
     try {
       const roleAccesses = await roleAccessModel.findAll( {
-        include: [{ model: roleModel, as: 'role' }, { model: menuModel, as: 'menu' }],
+        include: [
+          { model: roleModel, as: 'role' }, 
+          { model: departamentsModel, as: 'departamento' }
+        ],
       } );
 
       res.json( roleAccesses );
@@ -39,7 +43,7 @@ module.exports = {
       const roleAccess = await roleAccessModel.findByPk( roleAccessId, {
         include: [
           { model: roleModel, as: 'role' },
-          { model: menuModel, as: 'menu' }
+          { model: departamentsModel, as: 'departamento' }
         ]
       } );
       if ( !roleAccess ) {

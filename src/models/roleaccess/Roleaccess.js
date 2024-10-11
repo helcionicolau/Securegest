@@ -3,7 +3,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../utils/sequelize");
 const Role = require("../roles/Role");
-const Menu = require("../menus/Menu");
+const Departamento = require("../rh/departments/Department");
 
 const RoleAccess = sequelize.define('role_access', {
   id_rm: {
@@ -22,14 +22,20 @@ const RoleAccess = sequelize.define('role_access', {
       key: 'id_role'
     }
   },
-  menu_id: {
+  departamento_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: "menu_id",
+    field: "departamento_id",
     references: {
-      model: Menu,
-      key: 'id_menu'
+      model: Departamento,
+      key: 'id_departamento'
     }
+  },
+  haview: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+    field: "haview"
   },
   haveedit: {
     type: DataTypes.BOOLEAN,
@@ -69,6 +75,6 @@ const RoleAccess = sequelize.define('role_access', {
 });
 
 RoleAccess.belongsTo(Role, { foreignKey: 'role_id', as: 'role' });
-RoleAccess.belongsTo(Menu, { foreignKey: 'menu_id', as: 'menu' });
+RoleAccess.belongsTo(Departamento, { foreignKey: 'departamento_id', as: 'departamento' });
 
 module.exports = RoleAccess;
