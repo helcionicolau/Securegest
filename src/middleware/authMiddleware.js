@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { employeesModel, roleModel, departamentsModel } = require('../models'); // Importando os modelos de funcionários e funções (roles)
+const { employeesModel, roleModel, departamentsModel } = require('../models');
 
 module.exports = {
   authenticateUserMiddleware: async (req, res, next) => {
@@ -31,10 +31,10 @@ module.exports = {
         return res.status(401).json({ error: 'Dados do funcionário não encontrados no token' });
       }
 
-      // Adiciona os dados do funcionário (incluindo role_id e department_id) decodificados à requisição
+      // Adiciona os dados do funcionário (incluindo role_id, department_id e funcionario_id) à requisição
       req.user = {
-        id_funcionario: employeeData.funcionarioId,
         n_mec: decodedToken.n_mec,
+        funcionario_id: decodedToken.funcionarioId, // Adicionando o ID do funcionário
         role_id: employeeData.role_id, // ID da função (role_id)
         departamento_id: employeeData.departamento_id, // ID do departamento
         roleName: employeeData.roleName // Nome da função (role)
