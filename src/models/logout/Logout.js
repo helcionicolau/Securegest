@@ -8,10 +8,10 @@ module.exports = db.define('logs_logout', {
         autoIncrement: true, // Adicionado para indicar autoincremento
         field: "id"
     },
-    user_id: {
+    funcionario_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        field: "user_id"
+        field: "funcionario_id"
     },
     data_hora: {
         type: DataTypes.DATE,

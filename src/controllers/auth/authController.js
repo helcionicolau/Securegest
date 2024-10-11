@@ -40,16 +40,13 @@ exports.loginFuncionario = async (req, res) => {
 
 exports.logoutFuncionario = async (req, res) => {
     try {
+        // Verifique se o ID do funcionário está presente no token decodificado
         if (!req.userData || !req.userData.funcionarioId) {
             return res.status(400).json({ error: 'ID do funcionário não fornecido' });
         }
 
         const funcionarioId = req.userData.funcionarioId; // ID do funcionário que fez logout
         const logoutTime = new Date(); // Hora atual
-
-        if (req.userData.funcionarioId !== funcionarioId) {
-            return res.status(403).json({ error: ERROR_LOGOUT_UNAUTHORIZED });
-        }
 
         // Verifique se o funcionário existe antes de criar o registro na tabela logs_logout
         const funcionarioExists = await Funcionario.findByPk(funcionarioId);
@@ -60,8 +57,8 @@ exports.logoutFuncionario = async (req, res) => {
 
         // Inserir um registro na tabela de logs_logout
         await Logout.create({
-            user_id: funcionarioId, // Pode manter o campo como user_id, ou ajustar se necessário
-            data_hora: logoutTime
+            funcionario_id: funcionarioId, // Usando o campo correto 'funcionario_id'
+            data_hora: logoutTime // Hora do logout
         });
 
         res.json({ message: 'Logout bem-sucedido' });
@@ -70,3 +67,4 @@ exports.logoutFuncionario = async (req, res) => {
         res.status(500).json({ error: ERROR_LOGOUT_FAILED });
     }
 };
+
