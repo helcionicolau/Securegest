@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { employeesModel, roleModel } = require('../models');
+const { employeesModel, roleModel } = require('../models'); // Importando os modelos de funcionários e funções (roles)
 
 module.exports = {
   authenticateUserMiddleware: async (req, res, next) => {
@@ -25,18 +25,22 @@ module.exports = {
         return res.status(401).json({ error: 'Token expirado' });
       }
 
-      // Obtém o nome da função (role) do funcionário a partir do token
-      const roleName = await getRoleNameFromToken(decodedToken.n_mec);
-      if (!roleName) {
-        return res.status(401).json({ error: 'Nome da função (role) não encontrado no token' });
+      // Obtém os detalhes do funcionário a partir do número mecânico
+      const employeeData = await getEmployeeDataFromToken(decodedToken.n_mec);
+      if (!employeeData) {
+        return res.status(401).json({ error: 'Dados do funcionário não encontrados no token' });
       }
 
-      // Adiciona os dados do funcionário decodificados à requisição
-      req.userData = {
+      // Adiciona os dados do funcionário (incluindo role_id e department_id) decodificados à requisição
+      req.user = {
         n_mec: decodedToken.n_mec,
-        scope: decodedToken.scope,
-        roleName: roleName // Nome da função (role)
+        role_id: employeeData.role_id, // ID da função (role_id)
+        departamento_id: employeeData.departamento_id, // ID do departamento
+        roleName: employeeData.roleName // Nome da função (role)
       };
+
+      // Exibe as informações do funcionário no console
+      console.log('Funcionário autenticado:', req.user);
 
       next();
     } catch (error) {
@@ -46,28 +50,30 @@ module.exports = {
   }
 };
 
-// Função para obter o nome da função (role) do funcionário a partir do número mecânico
-async function getRoleNameFromToken(n_mec) {
+// Função para obter os dados do funcionário (role_id e department_id) a partir do número mecânico
+async function getEmployeeDataFromToken(n_mec) {
   try {
-    // Consultar o funcionário para obter o role_id
-    const employee = await employeesModel.findOne({ where: { n_mec } });
+    // Consultar o funcionário pelo número mecânico (n_mec)
+    const employee = await employeesModel.findOne({ 
+      where: { n_mec },
+      include: [
+        { model: roleModel, as: 'papel' }, // Inclui a tabela de funções (roles)
+        { model: Departamento, as: 'departamento' } // Inclui a tabela de departamentos
+      ]
+    });
+
     if (!employee) {
       throw new Error('Funcionário não encontrado');
     }
 
-    const roleId = employee.role_id;
-
-    // Consultar a tabela de funções (roles) para obter o nome da função
-    const role = await roleModel.findByPk(roleId);
-    if (!role) {
-      throw new Error('Função (Role) não encontrada');
-    }
-
-    console.log('Nome da função (role) do funcionário:', role.nome); // Log para imprimir o nome da função (role)
-
-    return role.nome; // Retorna o nome da função (role)
+    // Retornar os dados do funcionário, incluindo role_id, departamento_id e roleName
+    return {
+      role_id: employee.role_id,
+      departamento_id: employee.departamento_id,
+      roleName: employee.papel.nome // Nome da função (role) a partir da associação com 'papel'
+    };
   } catch (error) {
-    console.error('Erro ao obter o nome da função (role) do token:', error);
+    console.error('Erro ao obter os dados do funcionário do token:', error);
     return null;
   }
 }
