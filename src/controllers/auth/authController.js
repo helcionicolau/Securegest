@@ -5,7 +5,6 @@ const Logout = require('../../models/logout/Logout');
 
 const JWT_KEY = process.env.JWT_KEY || "hoih989t7r8fb66rev65ec56eoc760/908y7te342312";
 const TOKEN_EXPIRATION = '24h'; // Tempo de expiração de 24 horas
-// const TOKEN_EXPIRATION = '180s'; // Tempo de expiração de 3 minutos
 
 const ERROR_INVALID_CREDENTIALS = 'Credenciais inválidas';
 const ERROR_FUNCIONARIO_NOT_FOUND = 'Funcionário não encontrado';
@@ -23,7 +22,11 @@ exports.loginFuncionario = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { funcionarioId: funcionario.id_funcionario, scope: 'funcionario' },
+            { 
+                funcionarioId: funcionario.id_funcionario, 
+                n_mec: funcionario.n_mec, // Adicionando n_mec ao payload do token
+                scope: 'funcionario' 
+            },
             JWT_KEY,
             { expiresIn: TOKEN_EXPIRATION }
         );
