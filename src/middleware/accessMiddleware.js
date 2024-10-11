@@ -27,22 +27,22 @@ const accessMiddleware = (action) => {
             // Verificando as permissões com base na ação
             switch (action) {
                 case 'view':
-                    if (!roleAccess.can_view) {
+                    if (!roleAccess.haview) {
                         return res.status(403).json({ message: 'Permissão negada: Visualizar não autorizado.' });
                     }
                     break;
                 case 'add':
-                    if (!roleAccess.can_add) {
+                    if (!roleAccess.haveadd) {
                         return res.status(403).json({ message: 'Permissão negada: Adicionar não autorizado.' });
                     }
                     break;
                 case 'update':
-                    if (!roleAccess.can_update) {
+                    if (!roleAccess.haveedit) {
                         return res.status(403).json({ message: 'Permissão negada: Atualizar não autorizado.' });
                     }
                     break;
                 case 'delete':
-                    if (!roleAccess.can_delete) {
+                    if (!roleAccess.havedelete) {
                         return res.status(403).json({ message: 'Permissão negada: Excluir não autorizado.' });
                     }
                     break;
