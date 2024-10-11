@@ -4,7 +4,7 @@ const funcionarioController = require('../../../controllers/rh/employees/employe
 const authMiddleware = require('../../../middleware/authMiddleware');
 
 // Rotas para o CRUD de funcionários
-router.post('/register', authMiddleware.authenticateUserMiddleware, funcionarioController.registerFuncionario);
+router.post('/register', funcionarioController.registerFuncionario);
 router.get('/', authMiddleware.authenticateUserMiddleware, funcionarioController.getAllFuncionarios);
 router.get('/:funcionarioId', authMiddleware.authenticateUserMiddleware, funcionarioController.getFuncionarioById);
 router.put('/:funcionarioId', authMiddleware.authenticateUserMiddleware, funcionarioController.updateFuncionario);
