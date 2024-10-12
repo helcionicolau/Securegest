@@ -18,12 +18,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Rotas para o CRUD de funcionários
-router.post('/register', authMiddleware.authenticateUserMiddleware, accessMiddleware('add'), upload.single('foto'), funcionarioController.registerFuncionario);
+router.post('/register', authMiddleware.authenticateUserMiddleware, accessMiddleware('add'), upload.single('photo_path'), funcionarioController.registerFuncionario);
 router.get('/', authMiddleware.authenticateUserMiddleware, accessMiddleware('view'), funcionarioController.getAllFuncionarios);
 router.get('/:funcionarioId', authMiddleware.authenticateUserMiddleware, accessMiddleware('view'), funcionarioController.getFuncionarioById);
 
 // Atualizar funcionário com upload de nova foto
-router.put('/:funcionarioId', authMiddleware.authenticateUserMiddleware, accessMiddleware('update'), upload.single('foto'), funcionarioController.updateFuncionario);
+router.put('/:funcionarioId', authMiddleware.authenticateUserMiddleware, accessMiddleware('update'), upload.single('photo_path'), funcionarioController.updateFuncionario);
 
 router.delete('/:funcionarioId', authMiddleware.authenticateUserMiddleware, accessMiddleware('delete'), funcionarioController.deleteFuncionario);
 
