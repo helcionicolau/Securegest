@@ -44,11 +44,11 @@ exports.loginFuncionario = async (req, res) => {
 exports.logoutFuncionario = async (req, res) => {
     try {
         // Verificar se o ID do funcionário está presente
-        if (!req.user || !req.user.funcionarioId) { // Correção para 'funcionarioId'
+        if (!req.user || !req.user.funcionario_id) { // Correção para 'funcionarioId'
             return res.status(400).json({ error: 'ID do funcionário não fornecido' });
         }
 
-        const funcionarioId = req.user.funcionarioId;
+        const funcionarioId = req.user.funcionario_id;
         const logoutTime = new Date();
 
         // Verificar se o funcionário existe
