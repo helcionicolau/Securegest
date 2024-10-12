@@ -3,20 +3,34 @@ const router = express.Router();
 const funcionarioController = require('../../../controllers/rh/employees/employeeController');
 const authMiddleware = require('../../../middleware/authMiddleware');
 const accessMiddleware = require('../../../middleware/accessMiddleware');
+const multer = require('multer');
+
+// Configuração do multer para upload de fotos
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
 
 // Rotas para o CRUD de funcionários
-router.post('/register', authMiddleware.authenticateUserMiddleware, accessMiddleware('add'), funcionarioController.registerFuncionario);
+router.post('/register', authMiddleware.authenticateUserMiddleware, accessMiddleware('add'), upload.single('foto'), funcionarioController.registerFuncionario);
 router.get('/', authMiddleware.authenticateUserMiddleware, accessMiddleware('view'), funcionarioController.getAllFuncionarios);
 router.get('/:funcionarioId', authMiddleware.authenticateUserMiddleware, accessMiddleware('view'), funcionarioController.getFuncionarioById);
-router.put('/:funcionarioId', authMiddleware.authenticateUserMiddleware, accessMiddleware('update'), funcionarioController.updateFuncionario);
+
+// Atualizar funcionário com upload de nova foto
+router.put('/:funcionarioId', authMiddleware.authenticateUserMiddleware, accessMiddleware('update'), upload.single('foto'), funcionarioController.updateFuncionario);
+
 router.delete('/:funcionarioId', authMiddleware.authenticateUserMiddleware, accessMiddleware('delete'), funcionarioController.deleteFuncionario);
 
-// Adicione a nova rota para obter funcionários por departamento
+// Adicionar rota para obter funcionários por departamento
 router.get('/departamento/:departamentoId', authMiddleware.authenticateUserMiddleware, accessMiddleware('view'), funcionarioController.getFuncionariosByDepartamentoId);
 
-// Nova rota para obter funcionários por cargo
+// Adicionar rota para obter funcionários por cargo
 router.get('/cargo/:cargo', authMiddleware.authenticateUserMiddleware, accessMiddleware('view'), funcionarioController.getFuncionariosByCargo);
 
 module.exports = router;
-
-// Created by António Baptista #(24/08/2023)
