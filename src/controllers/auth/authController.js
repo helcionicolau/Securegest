@@ -36,7 +36,7 @@ exports.loginFuncionario = async (req, res) => {
         );
 
         // Atualizar o status do funcionário para ONLINE
-        await funcionario.update({ status: 'ONLINE' });
+        await funcionario.update({ status: 'ONLINE', updated_at: new Date() });
 
         res.json({ token });
     } catch (error) {
@@ -63,7 +63,7 @@ exports.logoutFuncionario = async (req, res) => {
         }
 
         // Atualizar o status para OFFLINE no logout
-        await funcionarioExists.update({ status: 'OFFLINE' });
+        await funcionarioExists.update({ status: 'OFFLINE', updated_at: new Date() });
 
         // Inserir um registro na tabela de logout
         await Logout.create({
