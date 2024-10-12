@@ -4,7 +4,6 @@ const funcionarioController = require('../../../controllers/rh/employees/employe
 const authMiddleware = require('../../../middleware/authMiddleware');
 const accessMiddleware = require('../../../middleware/accessMiddleware');
 const multer = require('multer');
-const caminho = require('../../../uploads/')
 
 // Configuração do multer para upload de fotos
 const storage = multer.diskStorage({
