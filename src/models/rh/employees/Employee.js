@@ -96,6 +96,12 @@ const Funcionario = sequelize.define('funcionarios', {
     defaultValue: 0,
     field: "isactive"
   },
+  status: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'OFFLINE',
+    field: 'status'
+  },
   photo_path: {
     type: DataTypes.STRING,
     allowNull: false,

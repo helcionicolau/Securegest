@@ -24,12 +24,15 @@ exports.loginFuncionario = async (req, res) => {
         const token = jwt.sign(
             { 
                 funcionarioId: funcionario.id_funcionario, 
-                n_mec: funcionario.n_mec, // Adicionando n_mec ao payload do token
+                n_mec: funcionario.n_mec,
                 scope: 'funcionario' 
             },
             JWT_KEY,
             { expiresIn: TOKEN_EXPIRATION }
         );
+
+        // Atualizar o status do funcionário para ONLINE
+        await funcionario.update({ status: 'ONLINE' });
 
         res.json({ token });
     } catch (error) {
@@ -40,22 +43,25 @@ exports.loginFuncionario = async (req, res) => {
 
 exports.logoutFuncionario = async (req, res) => {
     try {
-        // Verifique se o ID do funcionário está presente no objeto correto
-        if (!req.user || !req.user.funcionario_id) { // Alterado de userData para user
+        // Verificar se o ID do funcionário está presente
+        if (!req.user || !req.user.funcionarioId) { // Correção para 'funcionarioId'
             return res.status(400).json({ error: 'ID do funcionário não fornecido' });
         }
 
-        const funcionarioId = req.user.funcionario_id; // ID do funcionário que fez logout
-        const logoutTime = new Date(); // Hora atual
+        const funcionarioId = req.user.funcionarioId;
+        const logoutTime = new Date();
 
-        // Verifique se o funcionário existe antes de criar o registro na tabela logs_logout
+        // Verificar se o funcionário existe
         const funcionarioExists = await Funcionario.findByPk(funcionarioId);
 
         if (!funcionarioExists) {
             return res.status(404).json({ error: ERROR_FUNCIONARIO_NOT_FOUND });
         }
 
-        // Inserir um registro na tabela de logs_logout
+        // Atualizar o status para OFFLINE no logout
+        await funcionarioExists.update({ status: 'OFFLINE' });
+
+        // Inserir um registro na tabela de logout
         await Logout.create({
             funcionario_id: funcionarioId,
             data_hora: logoutTime
@@ -67,4 +73,3 @@ exports.logoutFuncionario = async (req, res) => {
         res.status(500).json({ error: ERROR_LOGOUT_FAILED });
     }
 };
-
