@@ -62,6 +62,9 @@ module.exports = {
     } = req.body;
 
     try {
+      // Verificar se a pasta de uploads existe e criar se não existir
+      createDirectoryIfNotExists(UPLOAD_BASE_PATH);
+
       const hashedPassword = await bcrypt.hash(n_mec, 10); // Usar n_mec como senha padrão
 
       let photo_path = req.file ? req.file.path : '../../../uploads/logo.jpg';
