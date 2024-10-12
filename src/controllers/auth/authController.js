@@ -21,12 +21,16 @@ exports.loginFuncionario = async (req, res) => {
             return res.status(401).json({ error: ERROR_INVALID_CREDENTIALS });
         }
 
+        // Montar os dados que serão incluídos no token
+        const tokenPayload = {
+            funcionarioId: funcionario.id_funcionario, // ID do funcionário
+            n_mec: funcionario.n_mec,                   // Número mecânico
+            role_id: funcionario.role_id,               // ID do papel
+            departamento_id: funcionario.departamento_id // ID do departamento
+        };
+
         const token = jwt.sign(
-            { 
-                funcionarioId: funcionario.id_funcionario, 
-                n_mec: funcionario.n_mec,
-                scope: 'funcionario' 
-            },
+            tokenPayload,
             JWT_KEY,
             { expiresIn: TOKEN_EXPIRATION }
         );
