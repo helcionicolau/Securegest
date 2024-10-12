@@ -23,10 +23,11 @@ exports.loginFuncionario = async (req, res) => {
 
         // Montar os dados que serão incluídos no token
         const tokenPayload = {
-            funcionarioId: funcionario.id_funcionario, // ID do funcionário
-            n_mec: funcionario.n_mec,                   // Número mecânico
-            role_id: funcionario.role_id,               // ID do papel
-            departamento_id: funcionario.departamento_id // ID do departamento
+            funcionarioId: funcionario.id_funcionario,
+            n_mec: funcionario.n_mec,                   
+            role_id: funcionario.role_id,               
+            departamento_id: funcionario.departamento_id,
+            photo_path: funcionario.photo_path
         };
 
         const token = jwt.sign(
