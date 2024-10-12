@@ -21,12 +21,16 @@ exports.loginFuncionario = async (req, res) => {
             return res.status(401).json({ error: ERROR_INVALID_CREDENTIALS });
         }
 
+        // Montar os dados que serão incluídos no token
+        const tokenPayload = {
+            funcionario_id: funcionario.id_funcionario, // ID do funcionário
+            n_mec: funcionario.n_mec,                   // Número mecânico
+            role_id: funcionario.role_id,               // ID do papel
+            departamento_id: funcionario.departamento_id // ID do departamento
+        };
+
         const token = jwt.sign(
-            { 
-                funcionarioId: funcionario.id_funcionario, 
-                n_mec: funcionario.n_mec,
-                scope: 'funcionario' 
-            },
+            tokenPayload,
             JWT_KEY,
             { expiresIn: TOKEN_EXPIRATION }
         );
@@ -44,7 +48,7 @@ exports.loginFuncionario = async (req, res) => {
 exports.logoutFuncionario = async (req, res) => {
     try {
         // Verificar se o ID do funcionário está presente
-        if (!req.user || !req.user.funcionario_id) { // Correção para 'funcionarioId'
+        if (!req.user || !req.user.funcionario_id) {
             return res.status(400).json({ error: 'ID do funcionário não fornecido' });
         }
 
