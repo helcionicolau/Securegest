@@ -48,7 +48,7 @@ exports.loginFuncionario = async (req, res) => {
 exports.logoutFuncionario = async (req, res) => {
     try {
         // Verificar se o ID do funcionário está presente
-        if (!req.user || !req.user.funcionario_id) {
+        if (!req.user || !req.user.funcionario_id) { // Correção para 'funcionarioId'
             return res.status(400).json({ error: 'ID do funcionário não fornecido' });
         }
 
