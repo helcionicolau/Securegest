@@ -5,7 +5,7 @@ const path = require('path');
 const multer = require('multer');
 
 // Definir pasta base de upload
-const UPLOAD_BASE_PATH = path.join(__dirname, '../../../uploads/');
+const UPLOAD_BASE_PATH = path.join(__dirname, 'uploads/');
 
 // Função para criar diretórios dinamicamente
 const createDirectoryIfNotExists = (dirPath) => {
@@ -67,7 +67,7 @@ module.exports = {
 
       const hashedPassword = await bcrypt.hash(n_mec, 10); // Usar n_mec como senha padrão
 
-      let photo_path = req.file ? req.file.path : '../../../uploads/logo.jpg';
+      let photo_path = req.file ? req.file.path : 'uploads/logo.jpg';
 
       const newFuncionario = await employeesModel.create({
         n_mec,
