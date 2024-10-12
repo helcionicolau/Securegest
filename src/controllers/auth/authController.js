@@ -23,7 +23,7 @@ exports.loginFuncionario = async (req, res) => {
 
         // Montar os dados que serão incluídos no token
         const tokenPayload = {
-            funcionario_id: funcionario.id_funcionario, // ID do funcionário
+            funcionarioId: funcionario.id_funcionario, // ID do funcionário
             n_mec: funcionario.n_mec,                   // Número mecânico
             role_id: funcionario.role_id,               // ID do papel
             departamento_id: funcionario.departamento_id // ID do departamento
