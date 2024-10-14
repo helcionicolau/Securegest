@@ -5,7 +5,7 @@ const path = require('path');
 const multer = require('multer');
 
 // Definir pasta base de upload
-const UPLOAD_BASE_PATH = path.join(__dirname, 'uploads/');
+const UPLOAD_BASE_PATH = path.join(__dirname, '../../../uploads');
 
 // Função para criar diretórios dinamicamente
 const createDirectoryIfNotExists = (dirPath) => {
@@ -17,15 +17,15 @@ const createDirectoryIfNotExists = (dirPath) => {
 // Configuração do Multer para o upload da foto
 const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
-    const empresaId = req.body.empresa_id; // Pegando o ID da empresa do corpo da requisição
+    const empresaId = req.body.empresa_id;
 
     try {
       const empresa = await companyModel.findByPk(empresaId);
       if (!empresa) {
         return cb(new Error('Empresa não encontrada'));
       }
-      const dir = path.join(UPLOAD_BASE_PATH, empresa.nome.toLowerCase(), 'perfil'); // Usando o nome da empresa
-      createDirectoryIfNotExists(dir); // Cria diretórios da empresa/perfil se não existirem
+      const dir = path.join(UPLOAD_BASE_PATH, empresa.nome.toLowerCase(), 'perfil'); // Usar o nome da empresa
+      createDirectoryIfNotExists(dir);
       cb(null, dir);
     } catch (error) {
       cb(new Error('Erro ao buscar empresa: ' + error.message));
@@ -33,8 +33,8 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const n_mec = req.body.n_mec;
-    const fileExtension = path.extname(file.originalname); // Pega a extensão do arquivo (jpg, png, etc)
-    const fileName = `${n_mec}_${Date.now()}${fileExtension}`; // Cria um nome de arquivo único com o n_mec e data atual
+    const fileExtension = path.extname(file.originalname);
+    const fileName = `${n_mec}_${Date.now()}${fileExtension}`;
     cb(null, fileName);
   }
 });
@@ -58,16 +58,15 @@ module.exports = {
       email,
       telefone,
       isactive,
-      empresa_id,
+      empresa_id
     } = req.body;
 
     try {
-      // Verificar se a pasta de uploads existe e criar se não existir
       createDirectoryIfNotExists(UPLOAD_BASE_PATH);
 
       const hashedPassword = await bcrypt.hash(n_mec, 10); // Usar n_mec como senha padrão
 
-      let photo_path = req.file ? req.file.path : 'uploads/logo.jpg';
+      let photo_path = req.file ? req.file.path : '../../../uploads/logo.jpg';
 
       const newFuncionario = await employeesModel.create({
         n_mec,
@@ -82,10 +81,10 @@ module.exports = {
         municipio_id,
         email,
         telefone,
-        senha: hashedPassword, // Senha criptografada com n_mec
+        senha: hashedPassword,
         isactive,
         photo_path,
-        empresa_id,
+        empresa_id
       });
 
       res.status(201).json({ message: 'Funcionário registrado com sucesso!', funcionario: newFuncionario });
@@ -127,6 +126,7 @@ module.exports = {
           { model: roleModel, as: 'papel' }
         ]
       });
+
       if (!funcionario) {
         return res.status(404).json({ error: 'Funcionário não encontrado' });
       }

@@ -4,14 +4,30 @@ const funcionarioController = require('../../../controllers/rh/employees/employe
 const authMiddleware = require('../../../middleware/authMiddleware');
 const accessMiddleware = require('../../../middleware/accessMiddleware');
 const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Definir pasta base de upload na raiz do projeto
+const UPLOAD_BASE_PATH = path.join(__dirname, '../../../uploads');
+
+// Função para criar diretórios dinamicamente
+const createDirectoryIfNotExists = (dirPath) => {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+};
+
+// Certificar que a pasta de upload existe
+createDirectoryIfNotExists(UPLOAD_BASE_PATH);
 
 // Configuração do multer para upload de fotos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    createDirectoryIfNotExists(UPLOAD_BASE_PATH);
+    cb(null, UPLOAD_BASE_PATH); // Pasta raiz
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
+    cb(null, Date.now() + '-' + file.originalname); // Nome único com timestamp
   }
 });
 
