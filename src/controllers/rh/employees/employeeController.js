@@ -116,7 +116,7 @@ module.exports = {
   // Obter funcionário por ID
   async getFuncionarioById(req, res) {
     const funcionarioId = req.params.funcionarioId;
-
+  
     try {
       const funcionario = await employeesModel.findByPk(funcionarioId, {
         include: [
@@ -126,17 +126,21 @@ module.exports = {
           { model: roleModel, as: 'papel' }
         ]
       });
-
+  
       if (!funcionario) {
         return res.status(404).json({ error: 'Funcionário não encontrado' });
       }
-
+  
+      // Modificar o caminho da imagem para incluir a URL completa do servidor
+      funcionario.photo_path = `https://securegest.onrender.com${funcionario.photo_path}`;
+  
       res.json(funcionario);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro ao buscar funcionário por ID' });
     }
-  },
+  }
+  ,
 
   // Buscar funcionários por cargo
   async getFuncionariosByCargo(req, res) {
