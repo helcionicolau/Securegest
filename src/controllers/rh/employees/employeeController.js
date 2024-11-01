@@ -66,7 +66,7 @@ module.exports = {
 
       const hashedPassword = await bcrypt.hash(n_mec, 10); // Usar n_mec como senha padrão
 
-      let photo_path = req.file ? req.file.path : '../../../uploads/logo.jpg';
+      let photo_path = req.file ? req.file.path : 'https://avatars.githubusercontent.com/u/181027078?v=4';
 
       const newFuncionario = await employeesModel.create({
         n_mec,
