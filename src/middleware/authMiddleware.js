@@ -37,7 +37,8 @@ module.exports = {
         funcionario_id: decodedToken.funcionarioId, // Adicionando o ID do funcionário
         role_id: employeeData.role_id, // ID da função (role_id)
         departamento_id: employeeData.departamento_id, // ID do departamento
-        roleName: employeeData.roleName // Nome da função (role)
+        roleName: employeeData.roleName, // Nome da função (role)
+        empresa_id: employeeData.empresa_id
       };
 
       // Exibe as informações do funcionário no console
@@ -67,11 +68,12 @@ async function getEmployeeDataFromToken(n_mec) {
       throw new Error('Funcionário não encontrado');
     }
 
-    // Retornar os dados do funcionário, incluindo role_id, departamento_id e roleName
+    // Retornar os dados do funcionário, incluindo role_id, departamento_id, roleName e empresa_id
     return {
       role_id: employee.role_id,
       departamento_id: employee.departamento_id,
-      roleName: employee.papel.nome // Nome da função (role) a partir da associação com 'papel'
+      roleName: employee.papel.nome, // Nome da função (role) a partir da associação com 'papel'
+      empresa_id: employee.empresa_id
     };
   } catch (error) {
     console.error('Erro ao obter os dados do funcionário do token:', error);
