@@ -27,6 +27,7 @@ exports.loginFuncionario = async (req, res) => {
             n_mec: funcionario.n_mec,                   
             role_id: funcionario.role_id,               
             departamento_id: funcionario.departamento_id,
+            empresa_id: funcionario.empresa_id,
             photo_path: funcionario.photo_path
         };
 
